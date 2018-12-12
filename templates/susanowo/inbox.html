@@ -1,0 +1,72 @@
+{% extends "susanowo/base.html" %}
+
+{% block body %}
+    <div id="header">
+        インボックス
+    </div>
+
+    <div id="input">
+        <table>
+            <tbody>
+                <tr>
+                    <th>タイトル</th>
+                    <td><input type="text" /></td>
+                </tr>
+                <tr>
+                    <th>内容</th>
+                        <td><input type="text" /></td>
+                </tr>
+                <tr>
+                    <th>行動を起こす必要があるか？</th>
+                    <td><input type="checkbox" /></td>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="radio04 box">
+                            <label>
+                                <input class="radio04-input" name="radio04" type="radio" />
+                                <span class="radio04-parts">いつかやる</span>
+                            </label>
+                            <label>
+                                <input class="radio04-input" name="radio04" type="radio" />
+                                <span class="radio04-parts">参考資料</span>
+                            </label>
+                            <label>
+                                <input class="radio04-input" name="radio04" type="radio" />
+                                <span class="radio04-parts">ゴミ箱</span>
+                            </label>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <th>アクションは１つ？</th>
+                    <td><input type="checkbox" /></td>
+                </tr>
+                <tr>
+                    <th>２分以内で終わる？</th>
+                    <td><input type="checkbox" /></td>
+                </tr>
+                <tr>
+                    <th>自分でやるべき</th>
+                    <td><input type="checkbox" /></td>
+                </tr>
+                <tr>
+                    <th>特定の日にやるべき？</th>
+                    <td>
+                        <input type="checkbox" />
+                        <div class="checkbox04 box">
+                            <label>
+                                <input class="checkbox04-input" name="checkbox04[]" type="checkbox" />
+                                <span class="checkbox04-parts">Choose01</span>
+                            </label>
+                        </div>
+                    </td>
+                </tr>
+            
+                </tbody>
+        </table>
+    </div>
+
+    <div id="controller">
+    </div>
+{% endblock %}

@@ -1,20 +1,29 @@
 {% extends "susanowo/base.html" %}
 
 {% block body %}
-    <div id="header">
-        
+    <div id="header" style="position: relative; top: 10px; left:400px; height:10px;">
+        Getting Things Done X Bullet Journal
     </div>
 
-    <div id="menu">
-        <form>
-            <input type="button" name="btn_" value="登録"/><br/>
-            
-        </form>
+    <div id="menu" style="position: relative; top: 40px; left:10px; width: 170px; height: 20px;">
+        <ul class="menu_list">
+            <li><a href="/susanowo/inbox" class="square_btn">インボックス</a></li>
+            <li><a href="" class="square_btn">いつかやるリスト</a></li>
+            <li><a href="" class="square_btn">参考資料</a></li>
+            <li><a href="" class="square_btn">ゴミ箱</a></li>
+            <li><a href="" class="square_btn">プロジェクト</a></li>
+            <li><a href="" class="square_btn">依頼リスト</a></li>
+            <li><a href="" class="square_btn">次にとる行動</a></li>
+        </ul>
     </div>
 
-    <div id="controller">
-        <div id="gtd_date">
-
-        </div>
+    <div id="gtd_date" style="position: relative; top: 20px; left:300px; width: 200px;">
+        {{today}}
     </div>
+
+    <table id="todo_list">
+        <thead class="thead_class"></thead>
+        <tbody class="tbody_class">
+        </tbody>
+    </table>
 {% endblock %}

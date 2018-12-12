@@ -1,12 +1,13 @@
+{% load static %}
 <!DOCTYPE himl>
 <html>
     <head lang='ja>
     <meta charset='UTF-8'>
-    <link href="susanowo.css" rel="stylesheet" type="text/css">
     <title>
         GTD
     </title>
-    </head>
+    <link rel="stylesheet" href="{% static 'susanowo.css' %}" >
+</head>
 <body>
     {% block body %}
     {% endblock %}
