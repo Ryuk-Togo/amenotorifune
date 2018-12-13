@@ -64,16 +64,15 @@ body{
   position: relative;
   padding: 15px 20px 15px 53px;
   transition:.3s;
-  color: #444;
   border-radius: 8px;
-  border: 1px solid #ddd;
+  border: 0px solid;
   display:inline-block;
   line-height:1;
 }
 .checkbox04-input:checked + .checkbox04-parts{
-  background: #ff555e;
+  background: #993399;
   color: #fff;
-  border: 1px solid #ff555e;
+  border: 0px solid;
 }
 .checkbox04-parts::before{
   content: "";
@@ -100,62 +99,12 @@ body{
   display: block;
 }
 .checkbox04-input:checked + .checkbox04-parts::before {
-  border: 1px solid #ff555e;
+  border: 1px solid #993399;
 }
 .checkbox04-input:checked + .checkbox04-parts::after {
   left: 26px;
-  background: #ff555e;
+  background: #993399;
 }
-
-.checkbox04-input{
-    display: none;
-  }
-  .checkbox04-parts{
-    position: relative;
-    padding: 15px 20px 15px 53px;
-    transition:.3s;
-    color: #444;
-    border-radius: 8px;
-    border: 1px solid #ddd;
-    display:inline-block;
-    line-height:1;
-  }
-  .checkbox04-input:checked + .checkbox04-parts{
-    background: #ff555e;
-    color: #fff;
-    border: 1px solid #ff555e;
-  }
-  .checkbox04-parts::before{
-    content: "";
-    display: block;
-    left: 9px;
-    width: 30px;
-    height: 15px;
-    border-radius: 15px;
-    border: 1px solid #aaa;
-    background: #fff;
-    position: absolute;
-  }
-  .checkbox04-parts::after{
-    content: "";
-    display: block;
-    position: absolute;
-    top:17px;
-    left: 11px;
-    width: 13px;
-    height: 13px;
-    background: #aaa;
-    border-radius: 50%;
-    transition:.2s;
-    display: block;
-  }
-  .checkbox04-input:checked + .checkbox04-parts::before {
-    border: 1px solid #ff555e;
-  }
-  .checkbox04-input:checked + .checkbox04-parts::after {
-    left: 26px;
-    background: #ff555e;
-  }
 
   .radio04-input{
     display: none;
