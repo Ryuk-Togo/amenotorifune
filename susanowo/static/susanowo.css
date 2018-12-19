@@ -49,13 +49,19 @@ body{
 	background-color: #EEDDEE;
 }
 
-.thead_class, .tbody_class {
+/*.thead_class, .tbody_class {
     display: block;
+}
+.thead_class {
+    text-align: center;
 }
 .tbody_class {
     overflow-y: scroll;
-    height: 150px;
+    height: 500px;
 }
+.thead_class th,td {
+    background-color: #333333;
+}*/
 
 .checkbox-normal-input{
   display: none;
@@ -197,3 +203,4 @@ body{
 .cp_ipradio .disabled {
 	color: #9e9e9e;
 }
+
