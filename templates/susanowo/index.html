@@ -21,9 +21,22 @@
         {{today}}
     </div>
 
-    <table id="todo_list">
-        <thead class="thead_class"></thead>
-        <tbody class="tbody_class">
-        </tbody>
-    </table>
+    <div id="todo_list" style="position:absolute; top:10px; left:240px;">
+        <table class="header_class">
+            <tbody class="thead_class">
+                <tr class="header_tr_class">
+                    <th width="100">時刻</th>
+                    <td width="750">やること<td>
+                </tr>
+            </tbody>
+        </table>
+        <table class="detail_class">
+            <tbody class="tbody_class" style="height:600px;">
+                <tr class="detail_tr_class" ><th width="100">09:00</th><td width="750">あああああ<td></tr>
+                <tr><th>09:15</th><td>いいいいい<td></tr>
+                <tr><th>09:30</th><td>ううううう<td></tr>
+                <tr><th>09:45</th><td>えええええ<td></tr>
+            </tbody>
+        </table>
+    </div>
 {% endblock %}
