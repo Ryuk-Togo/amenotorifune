@@ -78,11 +78,6 @@ li.title_list {
     background-color: #333333;
 }*/
 
-.detail_class {
-    overflow-y: scroll;
-    height: 150px;
-}
-
 .thead_class, .tbody_class {
     display: block;
 }
@@ -96,7 +91,17 @@ li.title_list {
 	border: 1px solid #333333;
 }
 
+.detail_class tbody {
+    overflow-y: scroll;
+    height: 150px;
+}
+
 .detail_tr_class:hover {
+	background-color: #EEDDEE;
+	border: 1px solid #EEDDEE;
+}
+
+.detail_tr_class *:hover {
 	background-color: #EEDDEE;
 	border: 1px solid #EEDDEE;
 }
