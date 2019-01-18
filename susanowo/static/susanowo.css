@@ -8,7 +8,7 @@
 }
 
 body{
-	background-color:#333333;
+	background-color: #CCCCCC;
 	font:120% "Meiryo UI"
 }
 
@@ -64,46 +64,38 @@ li.title_list {
 	background-color: #EEDDEE;
 }
 
-/*.thead_class, .tbody_class {
-    display: block;
-}
-.thead_class {
-    text-align: center;
-}
-.tbody_class {
-    overflow-y: scroll;
-    height: 500px;
-}
-.thead_class th,td {
-    background-color: #333333;
-}*/
-
-.thead_class, .tbody_class {
-    display: block;
+.list_header_class {
+	width:100%;
 }
 
-.header_class {
-	background-color: #333333;
-	border-bottom: 1px solid #CC66CC;
+.list_body_class {
+	width:100%;
+	overflow-y:scroll;
+	overflow-x:hidden;
+	background:#BBBBBB
 }
 
-.detail_tr_class {
-	border: 1px solid #333333;
+table.list_class {
+	border:0px solid #CC66CC;
+	border-collapse:collapse;
+	table-layout:fixed;
 }
 
-.detail_class tbody {
-    overflow-y: scroll;
-    height: 150px;
+table.list_class td{
+	border:1px dashed #CC66CC;
 }
 
-.detail_tr_class:hover {
-	background-color: #EEDDEE;
-	border: 1px solid #EEDDEE;
+table.list_class th{
+	border:1px solid #CC66CC;
+	vertical-align:middle;
+	background-color:#CC66CC;
+	color:#f7f7f7;
 }
-
-.detail_tr_class *:hover {
-	background-color: #EEDDEE;
-	border: 1px solid #EEDDEE;
+table.list_class tr:nth-child(odd)  td{
+	background-color:#f7f7f7;
+}
+table.list_class tr:nth-child(even) td{
+	background-color:#f7f7f7;
 }
 
 .checkbox-slidebtn-input{
