@@ -21,22 +21,42 @@
         <div id="gtd_date" style="position: relative; top: 0px; left:0px; width: 200px;">
             {{today}}
         </div>
+
+        <!-- ========== テーブル全体を表す div ========== -->
+        <div style="width:417px; border-style:solid;border-width:1px;">
+        <!-- ===== ヘッダ部(THEAD相当)を表す div ===== -->
+            <div style="width:100%">
+                <table class="list_class">
+                    <colgroup>
+                        <col style='width:50px'>
+                        <col style='width:750px'>
+                        <col style='width:22px'>
+                    </colgroup>
+                    <thead>
+                        <tr><th>時刻</th><th>やること</th></tr>
+                    </thead>
+                </table>
+            </div>
+            <!-- ===== ボディー部(TBODY相当)を表す div ===== -->
+            <div style="height:120px; width:100%;overflow-y:scroll;overflow-x:hidden;background:#BBBBBB">
+                <table class="list_class">
+                    <colgroup>
+                        <col style='width:50px'>
+                        <col style='width:750px'>
+                    </colgroup>
+                    <tbody>
+                        <tr><td>09:00</td><td>あああああ<td></tr>
+                        <tr><td>09:15</td><td>いいいいい<td></tr>
+                        <tr><td>09:30</td><td>ううううう<td></tr>
+                        <tr><td>09:45</td><td>えええええ<td></tr>
+                        <tr><td>09:00</td><td>あああああ<td></tr>
+                        <tr><td>09:15</td><td>いいいいい<td></tr>
+                        <tr><td>09:30</td><td>ううううう<td></tr>
+                        <tr><td>09:45</td><td>えええええ<td></tr>            
+                    </tbody>
+                </table>
+            </div>
+        </div>
             
-        <table class="header_class">
-            <tbody class="thead_class">
-                <tr class="header_tr_class">
-                    <th width="100">時刻</th>
-                    <td width="750">やること<td>
-                </tr>
-            </tbody>
-        </table>
-        <table class="detail_class">
-            <tbody class="tbody_class" style="height:600px;">
-                <tr class="detail_tr_class" ><th width="100">09:00</th><td width="750">あああああ<td></tr>
-                <tr><th>09:15</th><td>いいいいい<td></tr>
-                <tr><th>09:30</th><td>ううううう<td></tr>
-                <tr><th>09:45</th><td>えええええ<td></tr>
-            </tbody>
-        </table>
     </div>
 {% endblock %}

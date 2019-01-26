@@ -184,7 +184,7 @@ table.list_class tr:nth-child(even) td{
 	color: #ffffff;
 	border: none;
 	outline: none;
-	background: #d7cbcb;
+	background: #ffffff;
 	-webkit-appearance: none;
 	        appearance: none;
 }
