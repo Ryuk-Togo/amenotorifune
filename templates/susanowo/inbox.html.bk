@@ -1,0 +1,106 @@
+{% extends "susanowo/base.html" %}
+
+{% block body %}
+    <div id="header">
+        インボックス
+    </div>
+
+    <div id="input">
+        <form method="POST" action=""
+            <table>
+                <tbody>
+                    <tr>
+                        <th>{{form.title.label}}</th>
+                        <td>{{form.title}}</td>
+                    </tr>
+                    <tr>
+                        <th>{{form.discriptoin.label}}</th>
+                            <!--<td><input type="text" /></td>-->
+                            <td>
+                                <textarea id="discriptoin" rows=5 cols=50>
+                                    {{form.discriptoin}}
+                                </textarea>
+                            </td>
+                    </tr>
+                    <tr>
+                        <td colspan=2>
+                                <div class="checkbox-slidebtn box">
+                                    <label>
+                                        <input id="should_action" class="checkbox-slidebtn-input" name="checkbox-slidebtn[]" type="checkbox" />
+                                        <span class="checkbox-slidebtn-parts">行動を起こす必要があるか？</span>
+                                    </label>
+                                </div>
+                            </td>
+                        </tr>
+                    <tr>
+                        <td colspan=2>
+                            <div class="cp_ipradio">
+                                <label>
+                                    <input type="radio" class="option-input radio" name="cpipr02" />
+                                    いつかやる
+                                </label>
+                                <label>
+                                    <input type="radio" class="option-input radio" name="cpipr02" />
+                                    参考資料
+                                </label>
+                                <label>
+                                    <input type="radio" class="option-input radio" name="cpipr02" />
+                                    ゴミ箱
+                                </label>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan=2>
+                            <div class="checkbox-slidebtn box">
+                                <label>
+                                    <input class="checkbox-slidebtn-input" name="checkbox-slidebtn[]" type="checkbox" />
+                                    <span class="checkbox-slidebtn-parts">アクションは１つ？</span>
+                                </label>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan=2>
+                            <div class="checkbox-slidebtn box">
+                                <label>
+                                    <input class="checkbox-slidebtn-input" name="checkbox-slidebtn[]" type="checkbox" />
+                                    <span class="checkbox-slidebtn-parts">２分以内で終わる？</span>
+                                </label>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan=2>
+                            <div class="checkbox-slidebtn box">
+                                <label>
+                                    <input class="checkbox-slidebtn-input" name="checkbox-slidebtn[]" type="checkbox" />
+                                    <span class="checkbox-slidebtn-parts">自分でやるべき</span>
+                                </label>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan=2>
+                            <div class="checkbox-slidebtn box">
+                                <label>
+                                    <input class="checkbox-slidebtn-input" name="checkbox-slidebtn[]" type="checkbox" />
+                                    <span class="checkbox-slidebtn-parts">特定の日にやるべき？</span>
+                                </label>
+                            </div>
+                        </td>
+                    </tr>
+                
+                    </tbody>
+            </table>
+        </form>
+    </div>
+
+    <div id="controller">
+        <ul class="">
+            <li><a href="/susanowo/inbox/submit" class="square_btn">登録</a></li>
+            <li><a href="/susanowo/index" class="square_btn">キャンセル</a></li>
+        </ul>    
+    </div>
+
+{% endblock %}

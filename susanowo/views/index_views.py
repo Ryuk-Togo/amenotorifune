@@ -8,9 +8,6 @@ def login(request):
 
 def index(request):
     d = {
-        'today': datetime.datetime.today().strftime("%Y/%m/%d")
+        'today': datetime.datetime.today().strftime("%Y/%m/%d"),
     }
     return render(request, 'susanowo/index.html', d)
-
-def inbox(request):
-    return render(request, 'susanowo/inbox.html')

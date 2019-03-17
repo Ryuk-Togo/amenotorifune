@@ -1,93 +1,36 @@
 {% extends "susanowo/base.html" %}
 
 {% block body %}
-    <div id="header">
-        インボックス
-    </div>
-
-    <div id="input">
-        <table>
-            <tbody>
-                <tr>
-                    <th>タイトル</th>
-                    <td><input type="text" /></td>
-                </tr>
-                <tr>
-                    <th>内容</th>
-                        <td><input type="text" /></td>
-                </tr>
-                <tr>
-                    <td colspan=2>
-                            <div class="checkbox-slidebtn box">
-                                <label>
-                                    <input class="checkbox-slidebtn-input" name="checkbox-slidebtn[]" type="checkbox" />
-                                    <span class="checkbox-slidebtn-parts">行動を起こす必要があるか？</span>
-                                </label>
-                            </div>
-                        </td>
-                    </tr>
-                <tr>
-                    <td colspan=2>
-                        <div class="cp_ipradio">
-                            <label>
-                                <input type="radio" class="option-input radio" name="cpipr02" />
-                                いつかやる
-                            </label>
-                            <label>
-                                <input type="radio" class="option-input radio" name="cpipr02" />
-                                参考資料
-                            </label>
-                            <label>
-                                <input type="radio" class="option-input radio" name="cpipr02" />
-                                ゴミ箱
-                            </label>
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td colspan=2>
-                        <div class="checkbox-slidebtn box">
-                            <label>
-                                <input class="checkbox-slidebtn-input" name="checkbox-slidebtn[]" type="checkbox" />
-                                <span class="checkbox-slidebtn-parts">アクションは１つ？</span>
-                            </label>
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td colspan=2>
-                        <div class="checkbox-slidebtn box">
-                            <label>
-                                <input class="checkbox-slidebtn-input" name="checkbox-slidebtn[]" type="checkbox" />
-                                <span class="checkbox-slidebtn-parts">２分以内で終わる？</span>
-                            </label>
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td colspan=2>
-                        <div class="checkbox-slidebtn box">
-                            <label>
-                                <input class="checkbox-slidebtn-input" name="checkbox-slidebtn[]" type="checkbox" />
-                                <span class="checkbox-slidebtn-parts">自分でやるべき</span>
-                            </label>
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td colspan=2>
-                        <div class="checkbox-slidebtn box">
-                            <label>
-                                <input class="checkbox-slidebtn-input" name="checkbox-slidebtn[]" type="checkbox" />
-                                <span class="checkbox-slidebtn-parts">特定の日にやるべき？</span>
-                            </label>
-                        </div>
-                    </td>
-                </tr>
-            
-                </tbody>
-        </table>
-    </div>
+<form method="post" action="">
+    {{form.title.label}}:
+    {{form.title}}
+    <br/>
+    {{form.discription.label}}:
+    {{form.discription}}
+    <br/>
+    {{form.should_action.label}}:
+    {{form.should_action}}
+    <br/>
+    {{form.where_dont_action.label}}:
+    {{form.where_dont_action}}
+    <br/>
+    {{form.single_action.label}}:
+    {{form.single_action}}
+    <br/>
+    {{form.can_do_tow_minite.label}}:
+    {{form.can_do_tow_minite}}
+    <br/>
+    {{form.should_myself.label}}:
+    {{form.should_myself}}
+    <br/>
+    {{form.should_do_than_2min.label}}:
+    {{form.should_do_than_2min}}
+    <br/>
+    <hr/>
+    {{form.user_id}}
+    <br/>
+    {{form.category}}
+    <br/>
 
     <div id="controller">
         <ul class="">
@@ -96,4 +39,5 @@
         </ul>    
     </div>
 
+</form>
 {% endblock %}
