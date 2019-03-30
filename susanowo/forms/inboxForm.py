@@ -53,6 +53,13 @@ class InboxForm(forms.Form):
         required=False,
     )
     
+class InboxModelForm(forms.ModelForm):
+
+    class Meta:
+        model = TTodo
+        fields = '__all__'
+
+    
 # class InboxModelForm(forms.ModelForm):
     
 #     class Meta:

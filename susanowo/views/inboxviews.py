@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.http import HttpResponse
-from susanowo.forms.inboxForm import InboxForm
+from susanowo.forms.inboxForm import InboxForm, InboxModelForm
 # from susanowo.models.ttodo import TTodo
 
 # Create your views here.
