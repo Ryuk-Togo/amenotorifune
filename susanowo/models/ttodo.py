@@ -1,11 +1,10 @@
 from django.db import models
 
-class T_Todo(models.Model):
+class TTodo(models.Model):
     # todo_id = AutoField(primary_key=True)  # 自動的に追加されるので定義不要
     title = models.CharField(max_length=30)
     discription = models.CharField(max_length=200)
     should_action = models.IntegerField()
-    where_dont_action = models.IntegerField()
     single_action = models.IntegerField()
     can_do_tow_minite = models.IntegerField()
     should_myself = models.IntegerField()

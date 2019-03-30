@@ -1,2 +1,2 @@
-from .inbox_views import *
-from .index_views import *
+from .inboxviews import *
+from .indexviews import *

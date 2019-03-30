@@ -1,6 +1,6 @@
 from django.conf.urls import url
 from . import views
-from susanowo.views.inbox_views import *
+from susanowo.views.inboxviews import *
 
 urlpatterns = [
     url(r'^$', views.login, name='login'),

@@ -1,6 +1,6 @@
 from django.db import models
 
-class T_Remaind(models.Model):
+class TRemaind(models.Model):
     # task_id = models.CharField(max_length=30)
     user_id = models.CharField(max_length=30)
     task_id = models.CharField(max_length=30)

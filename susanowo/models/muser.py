@@ -1,11 +1,9 @@
 from django.db import models
 
-class T_Task(models.Model):
-    # task_id = models.CharField(max_length=30)
+class MUser(models.Model):
     user_id = models.CharField(max_length=30)
-    todo_id = models.CharField(max_length=30)
-    task_date_time = models.DateTimeField()
-    task_discription = models.TextField()
+    user_name = models.CharField(max_length=30)
+    password = models.CharField(max_length=30)
     create_date = models.TimeField()
     create_pg_id = models.CharField(max_length=30)
     create_user_id = models.CharField(max_length=6)
