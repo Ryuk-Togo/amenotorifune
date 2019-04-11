@@ -5,14 +5,14 @@ from susanowo.forms.inboxForm import InboxForm, InboxModelForm
 
 # Create your views here.
 def inbox(request):
-    form = InboxForm(request.GET or None)
+    form = InboxModelForm(request.GET or None)
     d = {
         'form':form,
     }
     return render(request, 'susanowo/inbox.html', d)
 
 def inbox_submit(request):
-    form = InboxForm(request.POST)
+    form = InboxModelForm(request.POST)
     # t_todo = InboxModelForm()
     if form.is_valid():
         # t_todo.object.create(**form.cleaned_data)
