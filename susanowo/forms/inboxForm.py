@@ -53,23 +53,28 @@ class InboxForm(forms.Form):
         required=False,
     )
     
-class InboxModelForm(forms.ModelForm):
+# class InboxModelForm(forms.ModelForm):
 
-    class Meta:
-        model = TTodo
-        fields = '__all__'
-        widgets = {
-            'title' : forms.TextInput(attrs={'size':30}),
-            'discription' : forms.Textarea(attrs={'cols':80,'rows':5}),
-            'should_action' : forms.BooleanField(attrs={'label':"行動を起こす必要があるか？"}),
-            'where_dont_action' : forms.RadioSelect(attrs={''}),
-            'single_action' : forms.BooleanField(attrs={'label':"アクションは１つ？",required:False}),
-            'single_action' : forms.BooleanField(attrs={'label':"２分以内で終わる？",required:False}),
-            'single_action' : forms.BooleanField(attrs={'label':"自分でやるべき",required:False}),
-            'single_action' : forms.BooleanField(attrs={'label':"特定の日にやるべき？",required:False}),
-            'user_id' : forms.TextInput(attrs={'size':6}),
-            'category' : forms.TextInput(attrs={'size':6})
-        }
+#     should_action = forms.ModelMultipleChoiceField(
+#         queryset=InboxForm.objects,
+#         widget=forms.CheckboxSelectMultiple
+#     )
+
+#     class Meta:
+#         model = TTodo
+#         fields = '__all__'
+#         # widgets = {
+#         #     'title' : forms.TextInput(attrs={'size':30}),
+#         #     'discription' : forms.Textarea(attrs={'cols':80,'rows':5}),
+#         #     'should_action' : forms.BooleanField(attrs={'label':"行動を起こす必要があるか？"}),
+#         #     'where_dont_action' : forms.RadioSelect(attrs={}),
+#         #     'single_action' : forms.BooleanField(attrs={'label':"アクションは１つ？",required:False}),
+#         #     'single_action' : forms.BooleanField(attrs={'label':"２分以内で終わる？",required:False}),
+#         #     'single_action' : forms.BooleanField(attrs={'label':"自分でやるべき",required:False}),
+#         #     'single_action' : forms.BooleanField(attrs={'label':"特定の日にやるべき？",required:False}),
+#         #     'user_id' : forms.TextInput(attrs={'size':6}),
+#         #     'category' : forms.TextInput(attrs={'size':6})
+#         # }
 
     
 # class InboxModelForm(forms.ModelForm):
