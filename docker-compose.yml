@@ -1,5 +1,7 @@
 version: '3'
+
 services:
+
   # https://hub.docker.com/r/mysql/mysql-server/
   db:
     image: mysql/mysql-server:5.7
@@ -11,6 +13,7 @@ services:
       - ./sql:/docker-entrypoint-initdb.d
     ports:
       - "3306:3306"
+
   web:
     build: .
     command: sh -c "sleep 3; ./manage.py runserver 0.0.0.0:8000"
