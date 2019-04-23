@@ -16,7 +16,7 @@ class InboxForm(forms.Form):
     )
     
     discription = forms.CharField(
-        label='詳細',
+        label='タスクの詳細',
         required=True,
         widget=forms.Textarea(attrs={'rows':4, 'cols':40})
     )
