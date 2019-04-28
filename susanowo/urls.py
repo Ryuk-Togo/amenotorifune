@@ -1,10 +1,9 @@
 from django.conf.urls import url
 from . import views
-from susanowo.views.inboxviews import *
 
 urlpatterns = [
-    url(r'^$', views.login, name='login'),
-    url(r'^index/$', views.index, name='index'),
-    url(r'^inbox/$', views.inbox, name='inbox'),
-    # url(r'^inbox/submit/$', inbox, name='inbox_submit'),
+    url(r'^$', views.indexviews.login, name='login'),
+    url(r'^index/$', views.indexviews.index, name='index'),
+    url(r'^inbox/$', views.inboxviews.inbox, name='inbox'),
+    url(r'^inbox/submit/$', views.inboxviews.inbox_submit, name='inbox_submit'),
 ]
