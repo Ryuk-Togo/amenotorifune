@@ -20,4 +20,6 @@ from django.conf.urls import include, url
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('susanowo/', include('susanowo.urls')),
+    path('guestboard/', include('guestboard.urls')), 
+    # url(r'^guestboard/', include(('guestboard.urls', 'guestboard'),)), 
 ]

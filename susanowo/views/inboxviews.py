@@ -8,18 +8,20 @@ from susanowo.forms.inboxModelForm import InboxModelForm
 def inbox(request):
     form = InboxModelForm(request.GET or None)
     d = {
+        'message' : '',
         'form':form,
     }
     return render(request, 'susanowo/inbox.html', d)
 
 def inbox_submit(request):
-    form = InboxModelForm(request.POST)
-    # t_todo = InboxModelForm()
-    if form.is_valid():
-        # t_todo.object.create(**form.cleaned_data)
-        form.save();
-        return redirect('t_todo:t_todo_models')
+    mForm = InboxModelForm(request.POST)
+    if mForm.is_valid():
+        ttodo = mForm.save(commit=True)
+        ttodo.save()
+        return render(request, 'susanowo/index.html')
+
     d = {
-        'form': form
+        'message' : 'エラー発生',
+        'form': mForm,
     }
-    return render(request, 'susanowo/index.html', d)
+    return render(request, 'susanowo/indox.html', d)
