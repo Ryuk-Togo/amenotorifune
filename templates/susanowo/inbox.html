@@ -1,9 +1,12 @@
 {% extends "susanowo/base.html" %}
 
 {% block body %}
-<form method="post" action="/susanowo/inbox/submit/">
+<form method="post" action="{% url 'susanowo:inboxupd' %}">
     {% csrf_token %}
-    {{form.errors.your_name}}<br/>
+
+    {{form.user_id}}
+    <br/>
+
     {{form.title.label}}:<br/>
     {{form.title}}<br/>
     <br/>
@@ -13,6 +16,7 @@
     {{form.should_action}}
     {{form.should_action.label}}<br/>
     {{form.action_selection}}<br/>
+    <br/>
 
     {{form.single_action}}
     {{form.single_action.label}}<br/>
@@ -26,15 +30,10 @@
     {{form.should_do_than_2min}}
     {{form.should_do_than_2min.label}}<br/>
     <hr/>
-    {{form.user_id}}
-    <br/>
-    {{form.category}}
-    <br/>
 
     <div id="controller">
         <ul class="">
-            <li><a href="/susanowo/inbox/submit" class="square_btn">登録</a></li>
-            <li><input type="submit" value="登録" /></li>
+            <li><input type="submit" value="登録" class="square_btn" /></li>
             <li><a href="/susanowo/index" class="square_btn">キャンセル</a></li>
         </ul>    
     </div>

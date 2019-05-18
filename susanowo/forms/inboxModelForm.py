@@ -8,58 +8,57 @@ WHERE_DONT_ACTION = (
     ('3','ごみ箱')
 )
 
-class InboxForm(forms.Form):
-    title = forms.CharField(
-        label='タイトル',
-        max_length=30,
-        required=True,
-        widget=forms.TextInput()
-    )
+# class InboxForm(forms.Form):
+#     title = forms.CharField(
+#         label='タイトル',
+#         max_length=30,
+#         required=True,
+#         widget=forms.TextInput()
+#     )
     
-    discription = forms.CharField(
-        label='タスクの詳細',
-        required=True,
-        widget=forms.Textarea(attrs={'rows':4, 'cols':40})
-    )
+#     discription = forms.CharField(
+#         label='タスクの詳細',
+#         required=True,
+#         widget=forms.Textarea(attrs={'rows':4, 'cols':40})
+#     )
 
-    should_action = forms.BooleanField(
-        label='行動を起こす必要があるか？',
-        required=False,
-    )
+#     should_action = forms.BooleanField(
+#         label='行動を起こす必要があるか？',
+#         required=False,
+#     )
     
-    action_selection = forms.ChoiceField(
-        choices=WHERE_DONT_ACTION,
-        widget=forms.RadioSelect(),
-        required=False,
-    )
+#     action_selection = forms.ChoiceField(
+#         choices=WHERE_DONT_ACTION,
+#         widget=forms.RadioSelect(),
+#         required=False,
+#     )
     
-    single_action = forms.BooleanField(
-        label='アクションは１つ？',
-        required=False,
-    )
+#     single_action = forms.BooleanField(
+#         label='アクションは１つ？',
+#         required=False,
+#     )
     
-    can_do_tow_minite = forms.BooleanField(
-        label='２分以内で終わる？',
-        required=False,
-    )
+#     can_do_tow_minite = forms.BooleanField(
+#         label='２分以内で終わる？',
+#         required=False,
+#     )
     
-    should_myself = forms.BooleanField(
-        label='自分でやるべき',
-        required=False,
-    )
+#     should_myself = forms.BooleanField(
+#         label='自分でやるべき',
+#         required=False,
+#     )
     
-    should_do_than_2min = forms.BooleanField(
-        label='特定の日にやるべき？',
-        required=False,
-    )
+#     should_do_than_2min = forms.BooleanField(
+#         label='特定の日にやるべき？',
+#         required=False,
+#     )
 
 class InboxModelForm(forms.ModelForm):
 
-    action_selection = forms.ChoiceField(
-        choices=WHERE_DONT_ACTION,
-        widget=forms.RadioSelect(),
-        required=False,
-    )
+    # action_selection = forms.ChoiceField(
+    #     choices=WHERE_DONT_ACTION,
+    #     widget=forms.RadioSelect(),
+    # )
 
     class Meta:
         model = TTodo
