@@ -30,6 +30,11 @@ class TTodo(models.Model):
         choices=WHERE_DONT_ACTION,
         blank=True,
     )
+    delivery_date = models.DateField(
+        verbose_name='期限',
+        blank=True,
+        default=now,
+    )
     single_action = models.BooleanField(
         verbose_name='アクションは１つ？',
         blank=True,
