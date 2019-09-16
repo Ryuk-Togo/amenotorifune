@@ -5,7 +5,6 @@
 {% endblock %}
 
 {% block body %}
-{% csrf_token %}
 <script src="{% static 'js/susanowo/inbox.js' %}" ></script>
 
 <form method="post" action="{% url 'susanowo:inboxupd' %}">
