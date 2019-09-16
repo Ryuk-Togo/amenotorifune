@@ -33,7 +33,6 @@ class TTodo(models.Model):
     delivery_date = models.DateField(
         verbose_name='期限',
         blank=True,
-        default=now,
     )
     single_action = models.BooleanField(
         verbose_name='アクションは１つ？',

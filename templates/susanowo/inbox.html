@@ -8,47 +8,50 @@
 {% csrf_token %}
 <script src="{% static 'js/susanowo/inbox.js' %}" ></script>
 
-<ul class="menu_list">
-    <li>{{form.user_id}}</li>
+<form method="post" action="{% url 'susanowo:inboxupd' %}">
+    {% csrf_token %}
+    <ul class="menu_list">
+        <li>{{form.user_id}}</li>
 
-    <li>{{form.title.label}}:{{form.title}}</li>
+        <li>{{form.title.label}}:{{form.title}}</li>
 
-    <li>{{form.discription.label}}:{{form.discription}}</li>
+        <li>{{form.discription.label}}:{{form.discription}}</li>
 
-    <li>{{form.should_action}}
-    {{form.should_action.label}}</li>
-    <li>{{form.action_selection}}</li>
+        <li>{{form.should_action}}
+        {{form.should_action.label}}</li>
+        <li>{{form.action_selection}}</li>
 
-    <li>{{form.delivery_date.label}}
-    {{form.delivery_date}}</li>
-    <script>
-        $(function () {
-            // 日付は、年-月-日 の形式でお願いする。
-            let dateFormat = 'yy-mm-dd';
-            $('#id_delivery_date').datepicker({
-                dateFormat: dateFormat
+        <li>{{form.delivery_date.label}}
+        {{form.delivery_date}}</li>
+        <script>
+            $(function () {
+                // 日付は、年-月-日 の形式でお願いする。
+                let dateFormat = 'yy-mm-dd';
+                $('#id_delivery_date').datepicker({
+                    dateFormat: dateFormat
+                });
             });
-        });
-    </script>
+        </script>
 
-    <li>{{form.single_action}}
-    {{form.single_action.label}}</li>
+        <li>{{form.single_action}}
+        {{form.single_action.label}}</li>
 
-    <li>{{form.can_do_tow_minite}}
-    {{form.can_do_tow_minite.label}}</li>
+        <li>{{form.can_do_tow_minite}}
+        {{form.can_do_tow_minite.label}}</li>
 
-    <li>{{form.should_myself}}
-    {{form.should_myself.label}}</li>
+        <li>{{form.should_myself}}
+        {{form.should_myself.label}}</li>
 
-    <li>{{form.should_do_than_2min}}
-    {{form.should_do_than_2min.label}}</li>
-</ul>
+        <li>{{form.should_do_than_2min}}
+        {{form.should_do_than_2min.label}}</li>
+    </ul>
 
-<div id="controller">
-    <ul class="">
-        <li><a href="/susanowo/inbox/submit" class="square_btn">登録</a></li>
-        <li><a href="/susanowo/index" class="square_btn">キャンセル</a></li>
-    </ul>    
-</div>
+    <div id="controller">
+        <ul class="">
+            <li><input type="submit" value="登録" class="square_btn" /></li>
+            <li><a href="/susanowo/index" class="square_btn">キャンセル</a></li>
+        </ul>    
+    </div>
 
+</form>
 {% endblock %}
