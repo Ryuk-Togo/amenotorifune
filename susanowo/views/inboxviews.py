@@ -1,7 +1,9 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from susanowo.forms.inboxModelForm import InboxModelForm
+from susanowo.models import ttodo
 import datetime
+import logging
 # from susanowo.forms.inboxForm import InboxForm
 # from susanowo.models.ttodo import TTodo
 
@@ -17,15 +19,12 @@ def inbox(request):
 def inboxupd(request):
     mForm = InboxModelForm(request.POST)
     if mForm.is_valid():
-        mForm.save()
-        # ttodo = mForm.save(commit=True)
-        # ttodo.save()
-        d = {
-            'today': datetime.datetime.today().strftime("%Y/%m/%d"),
-        }
-        return render(request, 'susanowo/index.html', d)
+        todo = mForm.save()
+        todo.category = ttodo.computeCategory(todo)
+        todo.save()
+        return redirect('/susanowo/index')
     else:
         d = {
             'form':mForm
         }
-    return render(request, 'susanowo/indox.html')
+    return render(request, 'susanowo/indox.html', d)

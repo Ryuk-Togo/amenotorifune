@@ -64,6 +64,28 @@ li.title_list {
 	background-color: #EEDDEE;
 }
 
+.square_btn_small{
+    display: inline-block;
+    width:45px;
+	padding: 0.0em; 
+    text-decoration: none;
+    background: #f7f7f7;
+    color: #993399;
+    font-weight: bold;
+    box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.29);
+
+	margin: 0; 
+	list-style-type: none;
+	text-transform: uppercase;
+}
+.square_btn_small:active {
+    box-shadow: inset 0 0 2px rgba(128, 128, 128, 0.1);
+    transform: translateY(2px);
+}
+.square_btn_small:hover{
+	background-color: #EEDDEE;
+}
+
 .list_header_class {
 	width:100%;
 }
@@ -98,3 +120,14 @@ table.list_class tr:nth-child(even) td{
 	background-color:#f7f7f7;
 }
 
+.th_class {
+	text-align: center
+}
+
+.checkbox_class {
+	text-align: center
+}
+
+.date_class {
+	text-align: center
+}

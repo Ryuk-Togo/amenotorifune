@@ -1,8 +1,11 @@
 {% extends "susanowo/base.html" %}
 
+{% load static %}
 {% block body %}
+<script src="{% static 'js/susanowo/index.js' %}" ></script>
+
     <div id="header" style="position: relative; top: 10px; left:400px; height:10px;">
-        Getting Things Done X Bullet Journal
+        Getting Things Done
     </div>
 
     <div id="menu" style="position: relative; top: 50px; left:10px; width: 170px; height: 20px;">
@@ -11,9 +14,6 @@
             <li><a href="" class="square_btn">いつかやるリスト</a></li>
             <li><a href="" class="square_btn">参考資料</a></li>
             <li><a href="" class="square_btn">ゴミ箱</a></li>
-            <li><a href="" class="square_btn">プロジェクト</a></li>
-            <li><a href="" class="square_btn">依頼リスト</a></li>
-            <li><a href="" class="square_btn">次にとる行動</a></li>
         </ul>
     </div>
 
@@ -23,36 +23,38 @@
         </div>
 
         <!-- ========== テーブル全体を表す div ========== -->
-        <div style="width:417px; border-style:solid;border-width:1px;">
+        <div style="width:1000px; border-style:solid;border-width:1px;">
         <!-- ===== ヘッダ部(THEAD相当)を表す div ===== -->
             <div style="width:100%">
                 <table class="list_class">
-                    <colgroup>
-                        <col style='width:50px'>
-                        <col style='width:750px'>
-                        <col style='width:22px'>
-                    </colgroup>
                     <thead>
-                        <tr><th>時刻</th><th>やること</th></tr>
+                        <tr>
+                            <th class="th_class" style='width:50px'>完了</th>
+                            <th class="th_class" style='width:150px'>アクション</th>
+                            <th class="th_class" style='width:100px'>期限</th>
+                            <th class="th_class" style='width:200px'>タイトル</th>
+                            <th class="th_class" style='width:550px'>内容</th>
+                            <th class="th_class" style='width:50px'>編集</th>
+                            <th class="th_class" style='width:50px'>削除</th>
+                        </tr>
                     </thead>
                 </table>
             </div>
             <!-- ===== ボディー部(TBODY相当)を表す div ===== -->
-            <div style="height:120px; width:100%;overflow-y:scroll;overflow-x:hidden;background:#BBBBBB">
+            <div style="height:500px; width:100%;overflow-y:scroll;overflow-x:hidden;background:#BBBBBB">
                 <table class="list_class">
-                    <colgroup>
-                        <col style='width:50px'>
-                        <col style='width:750px'>
-                    </colgroup>
                     <tbody>
-                        <tr><td>09:00</td><td>あああああ<td></tr>
-                        <tr><td>09:15</td><td>いいいいい<td></tr>
-                        <tr><td>09:30</td><td>ううううう<td></tr>
-                        <tr><td>09:45</td><td>えええええ<td></tr>
-                        <tr><td>09:00</td><td>あああああ<td></tr>
-                        <tr><td>09:15</td><td>いいいいい<td></tr>
-                        <tr><td>09:30</td><td>ううううう<td></tr>
-                        <tr><td>09:45</td><td>えええええ<td></tr>            
+                        {% for todo in ttodos %}
+                        <tr>
+                            <td class="checkbox_class" style='width:50px'><input id="completed_{{todo.id}}" class="checkbox_class" type="checkbox" value="{{todo.completed}}" onchange="updCompleted({{todo.id}})" /></td>
+                            <td style='width:150px'>{{todo.category_name}}<td>
+                            <td class="date_class" style='width:100px'>{{todo.delivery_date|date:"Y/m/d"}}</td>
+                            <td style='width:200px'>{{todo.title}}<td>
+                            <td style='width:550px'>{{todo.discription}}<td>
+                            <td style='width:50px'><a href="/susanowo/inbox" class="square_btn_small">編集</a><td>
+                            <td class="checkbox_class" style='width:50px'><input type="checkbox" value="{{todo.deleted}}" /><td>
+                        </tr>
+                        {% endfor %}
                     </tbody>
                 </table>
             </div>

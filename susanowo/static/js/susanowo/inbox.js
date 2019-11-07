@@ -1,5 +1,7 @@
 $(document).ready(function(){
-    $('input[name="action_selection"]').prop('disabled', true);
+    $('input[name="user_id"]').prop('disabled', true);
+//    $('input[name="action_selection"]').prop('disabled', true);
+    $('#id_action_selection').prop('disabled', false);
     $('input[name="delivery_date"]').prop('disabled', true);
     $('input[name="single_action"]').prop('disabled', true);
     $('input[name="can_do_tow_minite"]').prop('disabled', true);
@@ -12,12 +14,12 @@ $(function() {
         var is_should_action = $('input[name="should_action"]').prop('checked');
         if (is_should_action) {
             // 行動を起こす必要がある
-            $('input[name="action_selection"]').prop('disabled', false);
+            $('#id_action_selection').prop('disabled', true);
             $('input[name="delivery_date"]').prop('disabled', false);
             $('input[name="single_action"]').prop('disabled', false);
         } else {
             // 行動を起こす必要はない
-            $('input[name="action_selection"]').prop('disabled', true);
+            $('#id_action_selection').prop('disabled', false);
             $('input[name="delivery_date"]').prop('disabled', true);
             $('input[name="single_action"]').prop('disabled', true);
             $('input[name="can_do_tow_minite"]').prop('disabled', true);

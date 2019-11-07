@@ -11,6 +11,7 @@
     {% csrf_token %}
     <ul class="menu_list">
         <li>{{form.user_id}}</li>
+        <li>{{form.category}}</li>
 
         <li>{{form.title.label}}:{{form.title}}</li>
 
@@ -27,7 +28,8 @@
                 // 日付は、年-月-日 の形式でお願いする。
                 let dateFormat = 'yy-mm-dd';
                 $('#id_delivery_date').datepicker({
-                    dateFormat: dateFormat
+                    dateFormat: dateFormat,
+                    defaultDate: null,
                 });
             });
         </script>
@@ -41,8 +43,8 @@
         <li>{{form.should_myself}}
         {{form.should_myself.label}}</li>
 
-        <li>{{form.should_do_than_2min}}
-        {{form.should_do_than_2min.label}}</li>
+        <li>{{form.should_do_oneday}}
+        {{form.should_do_oneday.label}}</li>
     </ul>
 
     <div id="controller">
