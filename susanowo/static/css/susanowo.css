@@ -104,7 +104,7 @@ table.list_class {
 }
 
 table.list_class td{
-	border:1px dashed #CC66CC;
+	border:1px solid #CC66CC;
 }
 
 table.list_class th{
@@ -113,12 +113,12 @@ table.list_class th{
 	background-color:#CC66CC;
 	color:#f7f7f7;
 }
-table.list_class tr:nth-child(odd)  td{
+/*table.list_class tr:nth-child(odd)  td{
 	background-color:#f7f7f7;
 }
-table.list_class tr:nth-child(even) td{
+table.list_class tr:nth-child(even	) td{
 	background-color:#f7f7f7;
-}
+}*/
 
 .th_class {
 	text-align: center
@@ -130,4 +130,22 @@ table.list_class tr:nth-child(even) td{
 
 .date_class {
 	text-align: center
+}
+
+.normal_row {
+	border:1px solid #CC66CC;
+	background-color:#f7f7f7;
+	color:#CC66CC;
+}
+
+.completed_row {
+	border:1px solid #f7f7f7;
+	background-color:#990099;
+	color:#f7f7f7;
+}
+
+.deleted_row {
+	border:1px solid #CC66CC;
+	background-color:#666666;
+	color:#f7f7f7;
 }

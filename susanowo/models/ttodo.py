@@ -27,9 +27,8 @@ class TTodo(models.Model):
         max_length=30,
         help_text='タスクのタイトルを入力してください',
     )
-    discription = models.CharField(
+    discription = models.TextField(
         verbose_name='タスクの詳細',
-        max_length=200,
         help_text='タスクの詳細な内容を入力して下さい',
     )
     should_action = models.BooleanField(
@@ -83,6 +82,12 @@ class TTodo(models.Model):
         blank=True,
         default=False,
     )
+    request_pertner = models.CharField(
+        verbose_name='依頼した人',
+        help_text='自分で行わない場合、依頼した人を入力して下さい。',
+        max_length=200,
+        blank=True,
+    )
     create_date = models.DateTimeField(
         verbose_name='登録日時',
         blank=True,
@@ -112,10 +117,21 @@ class TTodo(models.Model):
 
     def category_name(self):
         if self.category in CATEGORY:
-            return CATEGORY.get(self.category)
+            return CATEGORY[self.category]
         else:
             return ''
-        # return self.category
+    
+    def isCompleted(self):
+        if self.completed==1:
+            return 'checked'
+        else:
+            return ''
+
+    def isDeleted(self):
+        if self.deleted==1:
+            return 'checked'
+        else:
+            return ''
 
 def computeCategory(todo):
     category = '99'

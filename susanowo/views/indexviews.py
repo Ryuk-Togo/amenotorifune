@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from susanowo.models.ttodo import TTodo
 import datetime
+import json
 
 # Create your views here.
 def login(request):
@@ -10,19 +11,20 @@ def login(request):
 def index(request):
     d = {
         'today': datetime.datetime.today().strftime("%Y/%m/%d"),
-        'ttodos': TTodo.objects.filter(deleted=False).order_by('category','delivery_date'),
+        'ttodos': TTodo.objects.order_by('deleted','category','delivery_date'),
     }
-    
+
     return render(request, 'susanowo/index.html', d)
 
-def complete(request):
-    if request.POST == 'POST':
-        id = request.POST['id']
-        value = request.POST['value']
-        mForm = TTodo.objects.filter(id=id)
-        mForm.completed = value
-        if mForm.is_valid():
-            mForm.save()
+def modstatus(request):
+    if request.method == 'POST':
+        id = request.POST.get('param_id')
+        complete = request.POST.get('param_complete')
+        delete = request.POST.get('param_delete')
 
-    return redirect('/susanowo/index')
+        t_todo = TTodo.objects.get(id=id)
+        t_todo.completed = complete
+        t_todo.deleted = delete
+        t_todo.save()
 
+    return HttpResponse(t_todo)

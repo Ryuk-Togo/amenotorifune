@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from susanowo.forms.inboxModelForm import InboxModelForm
 from susanowo.models import ttodo
+from susanowo.models.ttodo import TTodo
 import datetime
 import logging
 # from susanowo.forms.inboxForm import InboxForm
@@ -11,6 +12,10 @@ import logging
 def inbox(request):
     form = InboxModelForm(request.GET or None)
     # form = InboxModelForm{user_id="admin")
+    if "rownum" in request.GET:
+        id = request.GET.get("rownum")
+        t_todo = TTodo.objects.get(id=id)
+        form = InboxModelForm(instance=t_todo)
     d = {
         'form':form,
     }
