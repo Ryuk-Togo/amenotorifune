@@ -6,7 +6,8 @@ $(document).ready(function(){
     $('input[name="single_action"]').prop('disabled', true);
     $('input[name="can_do_tow_minite"]').prop('disabled', true);
     $('input[name="should_myself"]').prop('disabled', true);
-    $('input[name="should_do_than_2min"]').prop('disabled', true);
+    $('input[name="request_pertner"]').prop('disabled', true);
+    $('input[name="should_do_oneday"]').prop('disabled', true);
 });
 $(function() {
     // 行動を起こす必要がある
@@ -24,8 +25,9 @@ $(function() {
             $('input[name="single_action"]').prop('disabled', true);
             $('input[name="can_do_tow_minite"]').prop('disabled', true);
             $('input[name="should_myself"]').prop('disabled', true);
-            $('input[name="should_do_than_2min"]').prop('disabled', true);
-        }
+            $('input[name="request_pertner"]').prop('disabled', true);
+            $('input[name="should_do_oneday"]').prop('disabled', true);
+                }
     });
 
     // アクションは１つ
@@ -36,8 +38,9 @@ $(function() {
         } else {
             $('input[name="can_do_tow_minite"]').prop('disabled', true);
             $('input[name="should_myself"]').prop('disabled', true);
-            $('input[name="should_do_than_2min"]').prop('disabled', true);
-        }
+            $('input[name="request_pertner"]').prop('disabled', true);
+            $('input[name="should_do_oneday"]').prop('disabled', true);
+                }
     });
 
     // 2分以内でおわる？
@@ -47,7 +50,8 @@ $(function() {
             $('input[name="should_myself"]').prop('disabled', false);
         } else {
             $('input[name="should_myself"]').prop('disabled', true);
-            $('input[name="should_do_than_2min"]').prop('disabled', true);
+            $('input[name="request_pertner"]').prop('disabled', true);
+            $('input[name="should_do_oneday"]').prop('disabled', true);
         }
     });
 
@@ -55,9 +59,11 @@ $(function() {
     $('input[name="should_myself"]').change(function() {
         var is_should_myself = $('input[name="should_myself"]').prop('checked');
         if (is_should_myself) {
-            $('input[name="should_do_than_2min"]').prop('disabled', false);
+            $('input[name="request_pertner"]').prop('disabled', false);
+            $('input[name="should_do_oneday"]').prop('disabled', false);
         } else {
-            $('input[name="should_do_than_2min"]').prop('disabled', true);
+            $('input[name="request_pertner"]').prop('disabled', true);
+            $('input[name="should_do_oneday"]').prop('disabled', true);
         }
     });
 
