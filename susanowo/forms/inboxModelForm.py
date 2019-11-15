@@ -24,6 +24,6 @@ class InboxModelForm(forms.ModelForm):
     class Meta:
         model = TTodo
         fields = '__all__'
-        # widgets = {
-        #     'delivery_date': forms.SelectDateWidget
-        # }
+        widgets = {
+            'discription': forms.Textarea(attrs={'rows':15, 'cols':80}),
+        }
