@@ -101,6 +101,7 @@ table.list_class {
 	border:0px solid #CC66CC;
 	border-collapse:collapse;
 	table-layout:fixed;
+	text-align: center;
 }
 
 table.list_class td{
@@ -113,6 +114,19 @@ table.list_class th{
 	background-color:#CC66CC;
 	color:#f7f7f7;
 }
+
+table.simple_class td{
+	border:1px solid #CC66CC;
+}
+
+table.simple_class th{
+	border:1px solid #f7f7f7;
+	vertical-align:top;
+	text-align:right;
+	background-color:#CC66CC;
+	color:#f7f7f7;
+}
+
 /*table.list_class tr:nth-child(odd)  td{
 	background-color:#f7f7f7;
 }

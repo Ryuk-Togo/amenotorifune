@@ -6,56 +6,73 @@
 
 {% block body %}
 <script src="{% static 'js/susanowo/inbox.js' %}" ></script>
+<link rel="stylesheet" href="{% static 'css/susanowo/inbox.css' %}" >
+
+<div id="header">
+    インボックス
+</div>
 
 <form method="post" action="{% url 'susanowo:inboxupd' %}">
     {% csrf_token %}
-    <ul class="menu_list">
-        <li>{{form.user_id}}</li>
-        <li>{{form.category}}</li>
-
-        <li>{{form.title.label}}:{{form.title}}</li>
-
-        <li>{{form.discription.label}}:{{form.discription}}</li>
-
-        <li>{{form.should_action}}
-        {{form.should_action.label}}</li>
-        <li>{{form.action_selection}}</li>
-
-        <li>{{form.delivery_date.label}}
-        {{form.delivery_date}}</li>
-        <script>
-            $(function () {
-                // 日付は、年-月-日 の形式でお願いする。
-                let dateFormat = 'yy-mm-dd';
-                $('#id_delivery_date').datepicker({
-                    dateFormat: dateFormat,
-                    defaultDate: null,
+    <table class="simple_class">
+        <tr>
+            <th style="width:250px">{{form.title.label}}</th>
+            <td style="width:750px">{{form.title}}</td>
+        </tr>
+        <tr>
+            <th>{{form.discription.label}}</th>
+            <td>{{form.discription}}</li>
+        </tr>
+        <tr>
+            <th>{{form.should_action.label}}</th>
+            <td>{{form.should_action}}</td>
+        </tr>
+        <tr>
+            <th>{{form.action_selection.label}}</th>
+            <td>{{form.action_selection}}</td>
+        </tr>
+        <tr>
+            <th>{{form.delivery_date.label}}</th>
+            <td>{{form.delivery_date}}</td>
+            <script>
+                $(function () {
+                    // 日付は、年-月-日 の形式でお願いする。
+                    let dateFormat = 'yy-mm-dd';
+                    $('#id_delivery_date').datepicker({
+                        dateFormat: dateFormat,
+                        defaultDate: null,
+                    });
                 });
-            });
-        </script>
+            </script>
+        </tr>
+        <tr>
+            <th>{{form.single_action.label}}</th>
+            <td>{{form.single_action}}</td>
+        </tr>
+        <tr>
+            <th>{{form.can_do_tow_minite.label}}</th>
+            <td>{{form.can_do_tow_minite}}</td>
+        </tr>
+        <tr>
+            <th>{{form.should_myself.label}}</th>
+            <td>{{form.should_myself}}</td>
+        </tr>
+        <tr>
+            <th>{{form.request_pertner.label}}</th>
+            <td>{{form.request_pertner}}</td>
+        </tr>
+        <tr>
+            <th>{{form.should_do_oneday.label}}</th>
+            <td>{{form.should_do_oneday}}</yd>
+        </tr>
+    </table>
 
-        <li>{{form.single_action}}
-        {{form.single_action.label}}</li>
-
-        <li>{{form.can_do_tow_minite}}
-        {{form.can_do_tow_minite.label}}</li>
-
-        <li>{{form.should_myself}}
-            {{form.should_myself.label}}</li>
-    
-        <li>{{form.request_pertner.label}}
-        {{form.request_pertner}}</li>
-        
-        <li>{{form.should_do_oneday}}
-        {{form.should_do_oneday.label}}</li>
-    </ul>
-
-    <div id="controller">
-        <ul class="">
-            <li><input type="submit" value="登録" class="square_btn" /></li>
-            <li><a href="/susanowo/index" class="square_btn">キャンセル</a></li>
-        </ul>    
-    </div>
+    <table id="controller">
+        <tr>
+            <td style="width:500px;text-align:center;"><input type="submit" value="登録" class="square_btn" /></td>
+            <td style="width:500px;text-align:center;"><a href="/susanowo/index" class="square_btn">キャンセル</a></td>
+        </tr>    
+    </table>
 
 </form>
 {% endblock %}
