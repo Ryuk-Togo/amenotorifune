@@ -36,7 +36,7 @@ class TTodo(models.Model):
         blank=True,
     )
     action_selection = models.CharField(
-        verbose_name='行動',
+        verbose_name='行動しない場合',
         max_length=1,
         choices=WHERE_DONT_ACTION,
         blank=True,
@@ -61,6 +61,11 @@ class TTodo(models.Model):
     should_do_oneday = models.BooleanField(
         verbose_name='特定の日にやるべき？',
         blank=True,
+    )
+    date_should_do = models.DateField(
+        verbose_name='実行日',
+        blank=True,
+        null=True,
     )
     user_id = models.CharField(
         verbose_name='ログインID',
