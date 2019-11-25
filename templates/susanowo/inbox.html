@@ -65,6 +65,20 @@
             <th>{{form.should_do_oneday.label}}</th>
             <td>{{form.should_do_oneday}}</yd>
         </tr>
+        <tr>
+            <th>{{form.date_should_do.label}}</th>
+            <td>{{form.date_should_do}}</td>
+            <script>
+                $(function () {
+                    // 日付は、年-月-日 の形式でお願いする。
+                    let dateFormat = 'yy-mm-dd';
+                    $('#id_date_should_do').datepicker({
+                        dateFormat: dateFormat,
+                        defaultDate: null,
+                    });
+                });
+            </script>
+        </tr>
     </table>
 
     <table id="controller">
