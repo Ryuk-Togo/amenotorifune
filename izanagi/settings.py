@@ -77,19 +77,16 @@ WSGI_APPLICATION = 'izanagi.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/2.1/ref/settings/#databases
 
-import pymysql
-pymysql.install_as_MySQLdb()
+# import pymysql
+# pymysql.install_as_MySQLdb()
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql',
+        'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'izanami',
         'USER': 'izanami',
-        'PASSWORD': 'P@ssw0rd_izanami',
+        'PASSWORD': 'izanami',
         'HOST': 'db',
-        'PORT': 3306,
-        'OPTIONS': {
-            'charset': 'utf8mb4',
-        },
+        'PORT': 5432,
     }
 }
 # DATABASES = {
