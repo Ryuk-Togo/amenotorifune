@@ -1,3 +1,3 @@
-CREATE DATABASE IF NOT EXISTS izanami CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
-CREATE USER IF NOT EXISTS 'izanami'@'%' IDENTIFIED BY 'P@ssw0rd_izanami';
-GRANT ALL PRIVILEGES ON izanami.* TO 'izanami'@'%';
+CREATE DATABASE izanami OWNER = postgres TEMPLATE = template0 ENCODING = 'UTF8' LC_COLLATE = 'C' LC_CTYPE = 'C';
+CREATE USER izanami WITH PASSWORD izanami;
+GRANT ALL PRIVILEGES ON DATABASE izanami TO admin;

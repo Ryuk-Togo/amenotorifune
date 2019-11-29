@@ -1,11 +1,14 @@
 from django.conf.urls import url
+from django.urls import path
 from . import views
 
 app_name = "susanowo"
 urlpatterns = [
     url(r'^$', views.indexviews.login, name='login'),
     url(r'^index/$', views.indexviews.index, name='index'),
-    url(r'^inbox/$', views.inboxviews.inbox, name='inbox'),
-    url(r'^inboxupd/$', views.inboxviews.inboxupd, name='inboxupd'),
+    url(r'^inbox/$', views.inboxviews.newInbox, name='inbox'),
+    url(r'^inboxupd/$', views.inboxviews.inboxAdd, name='inboxupd'),
     url(r'^modstatus/$', views.indexviews.modstatus, name='modstatus'),
+    path('inbox/<int:todo_id>', views.inboxviews.inbox, name='inbox'),
+    path('inboxupd/<int:todo_id>', views.inboxviews.inboxUpd, name='inboxupd'),
 ]

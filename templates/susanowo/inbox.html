@@ -11,9 +11,13 @@
 <div id="header">
     インボックス
 </div>
-
+{% if todo_id == '' %}
 <form method="post" action="{% url 'susanowo:inboxupd' %}">
-    {% csrf_token %}
+{% else %}
+<form method="post" action="{% url 'susanowo:inboxupd' todo_id %}">
+{% endif %}
+        {% csrf_token %}
+    <input type="hidden" name="id" id="id_id" value="{{todo_id}}" />
     <table class="simple_class">
         <tr>
             <th style="width:250px">{{form.title.label}}</th>

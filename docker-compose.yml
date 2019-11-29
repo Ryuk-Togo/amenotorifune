@@ -1,25 +1,24 @@
-version: '3'
+version: '3.6'
 
 services:
 
-  # https://hub.docker.com/r/mysql/mysql-server/
   db:
-    image: mysql/mysql-server:5.7
-    environment:
-      - MYSQL_ROOT_PASSWORD=P@ssw0rd
-      - MYSQL_ROOT_HOST=%
-    volumes:
-      - ./db-datadir:/var/lib/mysql
-      - ./sql:/docker-entrypoint-initdb.d
+    image: postgres:11
     ports:
-      - "3306:3306"
+      - 5432:5432
+    environment:
+      - POSTGRES_DB=izanami
+      - POSTGRES_USER=izanami
+      - POSTGRES_PASSWORD=izanami
+    volumes:
+      - ./db-datadir:/var/lib/postgresql/data
 
   web:
     build: .
-    command: sh -c "sleep 3; ./manage.py runserver 0.0.0.0:8000"
+    command: python ./manage.py runserver 0.0.0.0:8000
     volumes:
       - .:/code
     ports:
-      - "8000:8000"
+      - 8000:8000
     depends_on:
       - db
