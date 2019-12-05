@@ -11,4 +11,6 @@ urlpatterns = [
     url(r'^modstatus/$', views.indexviews.modstatus, name='modstatus'),
     path('inbox/<int:todo_id>', views.inboxviews.inbox, name='inbox'),
     path('inboxupd/<int:todo_id>', views.inboxviews.inboxUpd, name='inboxupd'),
+    url(r'^gomibako/$', views.gomiviews.gomibakoList, name='gomibako'),
+    url(r'^gomisakujo/$', views.gomiviews.gomiSakujo, name='gomisakujo'),
 ]
