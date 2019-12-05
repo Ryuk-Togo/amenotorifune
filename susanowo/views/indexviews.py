@@ -1,8 +1,8 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
+from django.db.models import Q
 from susanowo.models.ttodo import TTodo
 import datetime
-import json
 
 # Create your views here.
 def login(request):
@@ -11,7 +11,7 @@ def login(request):
 def index(request):
     d = {
         'today': datetime.datetime.today().strftime("%Y/%m/%d"),
-        'ttodos': TTodo.objects.order_by('deleted','category','delivery_date'),
+        'ttodos': TTodo.objects.filter(~Q(category='07') & ~Q(category='08')).order_by('deleted','category','delivery_date'),
     }
 
     return render(request, 'susanowo/index.html', d)
