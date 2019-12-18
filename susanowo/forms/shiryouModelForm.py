@@ -12,12 +12,13 @@ from django.core.files.storage import default_storage
 #         return default_storage.url(file_name)
 
 class TShiryouModelForm(forms.ModelForm):
-    attach = forms.FileField(label='資料ファイル')
-
     class Meta:
         model = TShiryou
-        # fields = ('todo_id', 'attach')
-        fields = '__all__'
+        fields = ('todo_id','attach')
+        # fields = '__all__'
+        widgets = {
+            'todo_id': forms.HiddenInput(),
+        }
 
 # class BaseUploadFormSet(forms.BaseFormSet):
 #     def save(self):

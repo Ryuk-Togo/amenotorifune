@@ -73,10 +73,9 @@ import datetime
 #         return self.render_to_response(context)
 
 def multi_upload_with_model(request,todo_id):
-    # formset = UploadModelFormSet(request.POST or None, files=request.FILES or None, queryset=TShiryou.objects.none())
-    ShiryouFormSet = UploadModelFormSet(request.POST or None, files=request.FILES or None, queryset=TShiryou.objects.filter(todo_id=todo_id).order_by('id'))
+    initial = [{'todo_id':todo_id}]
+    formset = UploadModelFormSet(request.POST or None, files=request.FILES or None, queryset=TShiryou.objects.none(), initial=initial)
     if request.method == 'POST':
-        formset = UploadModelFormSet(request.POST, files=request.FILES)
         if formset.is_valid():
             formset.save()
             # return redirect('susanowo:file_list')
@@ -84,9 +83,10 @@ def multi_upload_with_model(request,todo_id):
         else:
             return HttpResponse("valid false")
     else:
-        formset = ShiryouFormSet
         context = {
+            'today': datetime.datetime.today().strftime("%Y/%m/%d"),
             'formset': formset,
+            'shiryou': TShiryou.objects.filter(todo_id=todo_id).order_by('id'),
             'todo_id': todo_id,
         }
 
