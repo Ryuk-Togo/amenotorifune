@@ -1,6 +1,9 @@
 from django.db import models
 from django.utils.timezone import now
 
+def get_upload_dir(instance, filename):
+    return 'susanowo/shiryou/{0}/{1}'.format(instance.todo_id,filename)
+
 class TShiryou(models.Model):
     # id = models.AutoField(
     #     primary_key=True
@@ -9,7 +12,7 @@ class TShiryou(models.Model):
         verbose_name='タスクのid',
     )
     attach = models.FileField(
-        # upload_to='susanowo/shiryou/',
+        upload_to=get_upload_dir,
         verbose_name='添付ファイル',
     )
     create_date = models.DateTimeField(

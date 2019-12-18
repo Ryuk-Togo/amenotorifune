@@ -21,3 +21,4 @@ db-datadir/
 !docker-compose.yml
 !Dockerfile
 !requirements.txt
+media/

@@ -13,6 +13,7 @@ urlpatterns = [
     path('inboxupd/<int:todo_id>', views.inboxviews.inboxUpd, name='inboxupd'),
     url(r'^gomibako/$', views.gomiviews.gomibakoList, name='gomibako'),
     url(r'^gomisakujo/$', views.gomiviews.gomiSakujo, name='gomisakujo'),
-    path('shiryou/<int:todo_id>', views.shiryouviews.shiryouList, name='shiryou'),
-    path('shiryouupd/<int:todo_id>', views.shiryouviews.shiryouupd, name='shiryouupd'),
+    # path('shiryou/<int:todo_id>', views.shiryouviews.shiryouList, name='shiryou'),
+    path('shiryou/<int:todo_id>', views.shiryouviews.multi_upload_with_model, name='shiryou'),
+    # path('shiryouupd/<int:todo_id>', views.shiryouviews.shiryouupd, name='shiryouupd'),
 ]

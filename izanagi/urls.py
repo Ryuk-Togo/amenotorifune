@@ -24,6 +24,8 @@ urlpatterns = [
     path('susanowo/', include('susanowo.urls')),
     path('guestboard/', include('guestboard.urls')), 
     # url(r'^guestboard/', include(('guestboard.urls', 'guestboard'),)), 
+    # path('uploader/', include('uploader.urls')), 
+    url(r'^uploader/', include('uploader.urls')), 
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
