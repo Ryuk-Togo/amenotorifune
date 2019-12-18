@@ -12,8 +12,8 @@ class TShiryou(models.Model):
         verbose_name='タスクのid',
     )
     attach = models.FileField(
+        '資料',
         upload_to=get_upload_dir,
-        verbose_name='添付ファイル',
     )
     create_date = models.DateTimeField(
         verbose_name='登録日時',

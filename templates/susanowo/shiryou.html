@@ -4,58 +4,37 @@
 {% block body %}
 <script src="{% static 'js/susanowo/shiryou.js' %}" ></script>
 <form action="" method="POST" enctype="multipart/form-data">
-    {{ formset.management_form }}
     {% csrf_token %}
     <div id="header" style="position: relative; left:100px;">
         資料登録
     </div>
     
-    <div id="gtd_date">
+    <div id="gtd_date" style="position: relative; left:100px;">
         {{today}}
     </div>
 
+    <!-- ========== ファイルアップローダー div ========== -->
+    <div style="width:700px; position: relative; border-width:0px; left:100px;">
+        {{formset.as_p}}
+        <input type="submit" id="add" name="add" class="class_add square_btn_small" value="登録" />
+    </div>
     <!-- ========== テーブル全体を表す div ========== -->
-    <div style="width:700px; border-style:solid; border-width:1px; left:100px;">
-        <!-- ===== ヘッダ部(THEAD相当)を表す div ===== -->
-        <div style="width:100%">
-            <table class="list_class">
-                <thead>
-                    <tr>
-                        <th class="th_class" style='width:600px'>ファイル名</th>
-                        <th class="th_class" style='width:50px'>追加</th>
-                        <th class="th_class" style='width:50px'>削除</th>
-                    </tr>
-                </thead>
-            </table>
-        </div>
+    <div style="width:700px; border-style:solid; position: relative; border-width:1px; left:100px;">
         <!-- ===== ボディー部(TBODY相当)を表す div ===== -->
-        <div style="height:400px; width:100%;overflow-y:scroll;overflow-x:hidden;background:#BBBBBB">
-            <table id="shiryou" class="list_class">
-                <tbody id="shiryou_tbody">
-                    {% for form in formset.forms %}
-                    <tr id="row" class="normal_row">
-                        <td style='width:600px;'>
-                                <input type="hidden" id="todo_id" name="todo_id" value="{{todo_id}}" />
-                                {{form.todo_id}}
-                                {{form.attach}}
-                        </td>
-                        <td style='width:50px'>
-                            <input type="button" id="add" name="add" class="class_add square_btn_small" value="追加" />
-                        </td>
-                        <td style='width:50px'>
-                            <input type="button" id="del" name="del" class="class_del square_btn_small" value="削除" />
-                        </td>
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
+        <div style="height:400px; width:100%;overflow-y:scroll;overflow-x:hidden; left:100px;">
+            アップロードしたファイル<br/>
+            <ul class="menu_list">
+            {% for form in shiryou %}
+                <li><a href="{{form.attach.url}}">{{form.attach.url}}</a>
+                <input type="button" id="del" name="del" class="class_del square_btn_small" value="削除" />
+            {% endfor %}
+            </li>
         </div>
     </div>
             
     <table id="controller" style="position: relative; left:100px;">
         <tr>
-            <td style="width:100px;text-align:center;"><input type="submit" value="登録" class="square_btn" /></td>
-            <td style="width:300px;text-align:center;"><a href="/susanowo/index" class="square_btn">キャンセル</a></td>
+            <td style="width:300px;text-align:center;"><a href="/susanowo/index" class="square_btn">戻る</a></td>
         </tr>    
     </table>
 </form>
