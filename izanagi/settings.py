@@ -33,6 +33,7 @@ ALLOWED_HOSTS = []
 INSTALLED_APPS = [
     'susanowo.apps.SusanowoConfig',
     'guestboard.apps.GuestboardConfig',
+    'uploader.apps.UploaderConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -140,6 +141,10 @@ ROOT_PATH = os.path.dirname(__file__)
 STATICFILES_DIRS = (
     [os.path.join(ROOT_PATH, 'static')]
 )
+
+# File Upload
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_URL = '/media/'
 
 import logging
 
