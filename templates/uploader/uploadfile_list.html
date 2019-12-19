@@ -1,0 +1,13 @@
+{% extends 'uploader/base.html' %}
+
+{% block content %}
+    <p><a href="{% url 'uploader:single_upload_with_model' %}">ファイルアップロードへ</a></p>
+    <p><a href="{% url 'uploader:single_upload' %}">ファイルアップロード(モデルなし)へ</a></p>
+    <p><a href="{% url 'uploader:multi_upload' %}">ファイル一括アップロード(モデルなし)へ</a></p>
+    <p><a href="{% url 'uploader:multi_upload_with_model' %}">ファイル一括アップロードへ</a></p>
+
+    <h1>ファイルの一覧</h1>
+    {% for uploadfile in uploadfile_list %}
+        <p><a href="{{ uploadfile.file.url }}">{{ uploadfile.file.url }}</a></p>
+    {% endfor %}
+{% endblock %}
