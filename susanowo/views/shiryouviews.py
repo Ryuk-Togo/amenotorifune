@@ -91,3 +91,15 @@ def multi_upload_with_model(request,todo_id):
         }
 
     return render(request, 'susanowo/shiryou.html', context)
+
+def delete_file(request):
+    if request.method == 'POST':
+        id = request.POST.get("btnDel")
+        todo_id = request.POST.get("todo_id")
+        tshiryou = TShiryou.objects.get(id=id)
+        if tshiryou is None:
+            return HttpResponse("id:" + id)
+
+        else:
+            tshiryou.delete()
+            return redirect('/susanowo/shiryou/' + todo_id)

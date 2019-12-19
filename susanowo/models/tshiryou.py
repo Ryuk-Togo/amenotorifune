@@ -1,5 +1,7 @@
 from django.db import models
+from django.db.models.signals import post_delete
 from django.utils.timezone import now
+from django.dispatch import receiver
 
 def get_upload_dir(instance, filename):
     return 'susanowo/shiryou/{0}/{1}'.format(instance.todo_id,filename)
@@ -45,3 +47,7 @@ class TShiryou(models.Model):
     def __str__(self):
         """ファイルのURLを返す"""
         return self.file.url
+# モデル削除後に`file_field`を削除する。
+@receiver(post_delete, sender=TShiryou)
+def delete_file(sender, instance, **kwargs):
+    instance.attach.delete(False)

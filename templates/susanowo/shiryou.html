@@ -12,13 +12,17 @@
     <div id="gtd_date" style="position: relative; left:100px;">
         {{today}}
     </div>
-
+    {% csrf_token %}
     <!-- ========== ファイルアップローダー div ========== -->
     <div style="width:700px; position: relative; border-width:0px; left:100px;">
         {{formset.as_p}}
         <input type="submit" id="add" name="add" class="class_add square_btn_small" value="登録" />
     </div>
     <!-- ========== テーブル全体を表す div ========== -->
+</form>
+<form action="{% url 'susanowo:delete_file' %}" method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+    <input type="hidden" id="todo_id" name="todo_id" value="{{todo_id}}" />
     <div style="width:700px; border-style:solid; position: relative; border-width:1px; left:100px;">
         <!-- ===== ボディー部(TBODY相当)を表す div ===== -->
         <div style="height:400px; width:100%;overflow-y:scroll;overflow-x:hidden; left:100px;">
@@ -26,7 +30,7 @@
             <ul class="menu_list">
             {% for form in shiryou %}
                 <li><a href="{{form.attach.url}}">{{form.attach.url}}</a>
-                <input type="button" id="del" name="del" class="class_del square_btn_small" value="削除" />
+                <button type="submit" id="btnDel_{{form.id}}" name="btnDel" class="class_del square_btn_small" value="{{form.id}}">削除</button>
             {% endfor %}
             </li>
         </div>
