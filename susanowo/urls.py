@@ -18,4 +18,6 @@ urlpatterns = [
     # path('shiryouupd/<int:todo_id>', views.shiryouviews.shiryouupd, name='shiryouupd'),
     # path('delete_file/<int:id>', views.shiryouviews.delete_file, name='delete_file'),
     url(r'^delete_file/$', views.shiryouviews.delete_file, name='delete_file'),
+    url(r'^shiryou_list/$', views.shiryouviews.shiryou_list, name='shiryou_list'),
+    url(r'^shiryou_delete/$', views.shiryouviews.shiryou_delete, name='shiryou_delete'),
 ]

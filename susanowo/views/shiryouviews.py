@@ -4,6 +4,7 @@ from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.core.files.storage import FileSystemStorage
 from susanowo.models.tshiryou import TShiryou
+from susanowo.models.ttodo import TTodo
 from susanowo.forms.shiryouModelForm import TShiryouModelForm, UploadModelFormSet
 import datetime
 
@@ -103,3 +104,18 @@ def delete_file(request):
         else:
             tshiryou.delete()
             return redirect('/susanowo/shiryou/' + todo_id)
+
+def shiryou_list(request):
+    d = {
+        'today': datetime.datetime.today().strftime("%Y/%m/%d"),
+        'ttodos': TTodo.objects.filter(category='07').order_by('create_date'),
+    }
+    return render(request, 'susanowo/shiryou_list.html', d)
+
+def shiryou_delete(request):
+    deleted_list = request.POST.getlist('deleted')
+    for id in deleted_list:
+        t_todo = TTodo.objects.get(id=id)
+        t_todo.delete()
+
+    return redirect('/susanowo/index')
