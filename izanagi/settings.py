@@ -32,6 +32,7 @@ ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
     'susanowo.apps.SusanowoConfig',
+    'omoikane.apps.OmoikaneConfig',
     'guestboard.apps.GuestboardConfig',
     'uploader.apps.UploaderConfig',
     'django.contrib.admin',

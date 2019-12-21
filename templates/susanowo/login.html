@@ -1,0 +1,44 @@
+{% extends "susanowo/base.html" %}
+
+{% load static %}
+{% block body %}
+<script src="{% static 'js/susanowo/inbox.js' %}" ></script>
+<link rel="stylesheet" href="{% static 'css/susanowo/inbox.css' %}" >
+
+<div id="" style="position: relative; top: 10px; left:400px; height:10px;">
+
+<div id="header">
+    GTD ログイン<br/>
+    <br/>
+</div>
+<form method="post" action="{% url 'susanowo:login' %}" id="modstatus">
+    {% csrf_token %}
+    <table class="simple_class">
+        <tr>
+            <th style="width:50px">{{form.user_id.label}}</th>
+            <td style="width:200px">{{form.user_id}}{{form.user_id.errors.0}}</td>
+        </tr>
+        <tr>
+            <th>{{form.password.label}}</th>
+            <td>{{form.password}}{{form.user_id.errors.0}}</td>
+        </tr>
+    </table>
+    {% if form.non_field_errors %}
+    <div class="ui red message">
+        <ul class="menu_list">
+        {% for non_field_error in form.non_field_errors %}
+        <li>{{ non_field_error }}</li>
+        {% endfor %}
+        </ul>
+    </div>
+    {% endif %}
+    <br/>
+    <table id="controller">
+        <tr>
+            <td style="text-align:center;"><input type="submit" value="ログイン" class="square_btn" /></td>
+        </tr>    
+    </table>
+
+</form>
+</div>
+{% endblock %}
