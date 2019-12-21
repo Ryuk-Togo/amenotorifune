@@ -1,0 +1,61 @@
+{% extends "susanowo/base.html" %}
+
+{% load static %}
+{% block body %}
+<script src="{% static 'js/susanowo/shiryou.js' %}" ></script>
+<form method="post" action="{% url 'susanowo:shiryou_delete' %}" id="shiryou_delete">
+    {% csrf_token %}
+
+    <div id="header" style="position: relative; left:100px;">
+        参考資料
+    </div>
+
+    <div id="todo_list" style="position: relative; left:100px;">
+        <div id="gtd_date">
+            {{today}}
+        </div>
+
+        <!-- ========== テーブル全体を表す div ========== -->
+        <div style="width:800px; border-style:solid;border-width:1px;">
+        <!-- ===== ヘッダ部(THEAD相当)を表す div ===== -->
+            <div style="width:100%">
+                <table class="list_class">
+                    <thead>
+                        <tr>
+                            <th class="th_class" style='width:50px'>削除<input type="checkbox" id="chkAllDel" onchange="allCheckChange(); return false;"></th>
+                            <th class="th_class" style='width:200px'>タイトル</th>
+                            <th class="th_class" style='width:550px'>内容</th>
+                            <th class="th_class" style='width:50px'>添付</th>
+                        </tr>
+                    </thead>
+                </table>
+            </div>
+            <!-- ===== ボディー部(TBODY相当)を表す div ===== -->
+            <div style="height:400px; width:100%;overflow-y:scroll;overflow-x:hidden;background:#BBBBBB">
+                <table id="shiryou" class="list_class">
+                    <tbody>
+                        {% for todo in ttodos %}
+                        <tr id="row{{todo.id}}" class="normal_row">
+                            <td class="checkbox_class" style='width:50px'>
+                                <input id="deleted_{{todo.id}}" name="deleted" class="checkbox_class" type="checkbox" value="{{todo.id}}" />
+                            <td>
+                            <td style='width:200px'>{{todo.title}}<td>
+                            <td style='width:550px'>{{todo.discription}}<td>
+                            <td style='width:50px'><a href="{% url 'susanowo:shiryou' todo.id %}" >資料</a><td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+            
+    </div>
+
+    <table id="controller" style="position: relative; left:100px;">
+        <tr>
+            <td style="width:100px;text-align:center;"><input type="submit" value="削除" class="square_btn" /></td>
+            <td style="width:300px;text-align:center;"><a href="/susanowo/index" class="square_btn">キャンセル</a></td>
+        </tr>    
+    </table>
+</form>
+{% endblock %}
