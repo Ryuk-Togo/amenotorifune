@@ -1,12 +1,13 @@
 from django.db import models
 from django.utils.timezone import now
 
+# Create your models here.
 class MUser(models.Model):
     user_id = models.CharField(
         verbose_name='ユーザID',
         max_length=30,
         help_text='システムにログインするIDを入力してください',
-        default=''
+        blank=False,
     )
     user_name = models.CharField(
         verbose_name='ユーザ名',
@@ -18,7 +19,7 @@ class MUser(models.Model):
         verbose_name='パスワード',
         max_length=30,
         help_text='システムにログインするパスワードを入力してください',
-        default=''
+        blank=False,
     )
     create_date = models.DateTimeField(
         verbose_name='登録日時',
