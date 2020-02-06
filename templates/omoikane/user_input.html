@@ -1,0 +1,104 @@
+{% extends "omoikane/base.html" %}
+
+{% load static %}
+{% block header %}
+<script src="{% static 'js/omoikane/user_input.js' %}" ></script>
+{% endblock %}
+
+{% block body %}
+{{title}}<br/>
+<br/>
+{% ifequal shori '' %}
+    <form method="post" action="{% url 'omoikane:user_input' %}">
+{% else %}
+    <form method="post" action="{% url 'omoikane:user_input_modify' user_id shori %}">
+{% endifequal %}
+
+    {% csrf_token %}
+    
+    {% ifequal shori '' %}
+    <table class="simple_class">
+        <tr>
+            <th style="width:50px">{{form.user_id.label}}</th>
+            <td style="width:200px">{{form.user_id}}{{form.user_id.errors.0}}</td>
+        </tr>
+        <tr>
+            <th>{{form.user_name.label}}</th>
+            <td>{{form.user_name}}{{form.user_name.errors.0}}</td>
+        </tr>
+        <tr>
+            <th>{{form.password.label}}</th>
+            <td>{{form.password}}{{form.password.errors.0}}</td>
+        </tr>
+        <tr>
+            <th>{{form.password1.label}}</th>
+            <td>{{form.password1}}{{form.password1.errors.0}}</td>
+        </tr>
+    </table>
+    {% endifequal %}
+
+    {% ifequal shori 'm' %}
+    <table class="simple_class">
+        <tr>
+            <th style="width:100px">{{form.user_id.label}}</th>
+            <td style="width:200px">{{form.user_id}}{{form.user_id.errors.0}}</td>
+        </tr>
+        <tr>
+            <th>{{form.user_name.label}}</th>
+            <td>{{form.user_name}}{{form.user_name.errors.0}}</td>
+        </tr>
+        <tr>
+            <th>{{form.password_now.label}}</th>
+            <td>{{form.password_now}}{{form.password_now.errors.0}}</td>
+        </tr>
+        <tr>
+            <th>{{form.password1.label}}</th>
+            <td>{{form.password1}}{{form.password1.errors.0}}</td>
+        </tr>
+        <tr>
+            <th>{{form.re_password1.label}}</th>
+            <td>{{form.re_password1}}{{form.re_password1.errors.0}}</td>
+        </tr>
+    </table>
+    {% endifequal %}
+
+    {% ifequal shori 'd' %}
+    <table class="simple_class">
+        <tr>
+            <th style="width:50px">{{form.user_id.label}}</th>
+            <td style="width:200px">{{form.user_id}}{{form.user_id.errors.0}}</td>
+        </tr>
+        <tr>
+            <th>{{form.user_name.label}}</th>
+            <td>{{form.user_name}}{{form.user_name.errors.0}}</td>
+        </tr>
+        <tr>
+            <th>{{form.password.label}}</th>
+            <td>{{form.password}}{{form.password.errors.0}}</td>
+        </tr>
+    </table>
+    {% endifequal %}
+
+    {% if form.non_field_errors %}
+    <br/>
+    <div class="errmsg">
+        <ul>
+        {% for non_field_error in form.non_field_errors %}
+        <li class="errmsg">{{ non_field_error }}</li>
+        {% endfor %}
+        </ul>
+    </div>
+    {% endif %}
+    <br/>
+    <table id="controller">
+        <tr>
+            {% ifequal shori 'd' %}
+                <td style="text-align:center;"><input type="submit" value="削除" class="square_btn" /></td>
+            {% else %}
+                <td style="text-align:center;"><input type="submit" value="登録" class="square_btn" /></td>
+            {% endifequal %}
+            <td style="text-align:center;"><input type="button" id="btn_cancel" value="キャンセル" class="square_btn" /></td>
+        </tr>    
+    </table>
+
+{% endblock %}

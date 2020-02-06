@@ -1,0 +1,59 @@
+{% load static %}
+<!DOCTYPE himl>
+<html>
+    <head lang='ja'>
+    <meta charset='UTF-8'>
+        <title>システムメニュー</title>
+    </head>
+    <script src="{% static 'js/omoikane/user_input.js' %}" ></script>
+    <link rel="stylesheet" href="{% static 'css/omoikane/omoikane.css' %}" >
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}" >
+    <link rel="stylesheet" href="{% static 'css/jquery-ui.css' %}" >
+    <script src="{% static 'js/bootstrap.js' %}" ></script>
+    <script src="{% static 'js/jquery-3.3.1.js' %}" ></script>
+    <script src="{% static 'js/jquery-ui.js' %}" ></script>
+    <script src="{% static 'js/common.js' %}" ></script>
+<body>
+    <div id="header">
+        ユーザ登録<br/>
+        <br/>
+    </div>
+
+<form method="post" action="{% url 'omoikane:user_input' %}">
+    {% csrf_token %}
+    
+    <table class="simple_class">
+        <tr>
+            <th style="width:50px">{{form.user_id.label}}</th>
+            <td style="width:200px">{{form.user_id}}{{form.user_id.errors.0}}</td>
+        </tr>
+        <tr>
+            <th>{{form.user_name.label}}</th>
+            <td>{{form.user_name}}{{form.user_name.errors.0}}</td>
+        </tr>
+        <tr>
+            <th>{{form.password.label}}</th>
+            <td>{{form.password}}{{form.user_id.errors.0}}</td>
+        </tr>
+        <tr>
+                <th>{{form.password1.label}}</th>
+                <td>{{form.password1}}{{form.user_id.errors.0}}</td>
+            </tr>
+    </table>
+    {% if form.non_field_errors %}
+    <br/>
+    <div class="errmsg">
+        <ul>
+        {% for non_field_error in form.non_field_errors %}
+        <li class="errmsg">{{ non_field_error }}</li>
+        {% endfor %}
+        </ul>
+    </div>
+    {% endif %}
+    <br/>
+    <table id="controller" style="width:250px">
+        <tr>
+            <td style="text-align:center;"><input type="submit" value="登録" class="square_btn" /></td>
+            <td style="text-align:center;"><input type="button" id="btn_cancel" value="キャンセル" class="square_btn" /></td>
+        </tr>    
+    </table>
