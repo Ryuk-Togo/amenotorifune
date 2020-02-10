@@ -55,30 +55,32 @@ class MUser(models.Model):
     )
 
 def get_upload_dir(instance, filename):
-    return 'omoikane/icon/{0}/{1}'.format(instance.menu_id,instance.icon)
+    return 'omoikane/icon/{0}/{1}'.format(instance.id,instance.icon)
 
 class MMenu(models.Model):
-    # id = models.AutoField(
-    #     primary_key=True
-    # )  # 自動的に追加されるので定義不要
-    menu_id = models.IntegerField(
-        verbose_name='メニューid',
+    id = models.AutoField(
+        primary_key=True,
+        verbose_name='メニューID',
     )
     menu_name = models.CharField(
-        verbose_name='システム名称',
+        verbose_name='メニュー名称',
         max_length=50,
         help_text='システム名を入力してください',
+        blank=False,
         default=''
     )
     url = models.CharField(
         verbose_name='URL',
         max_length=100,
         help_text='システムのURLを入力してください',
+        blank=False,
         default=''
     )
     icon = models.ImageField(
-        verbose_name='アイコン',
+        verbose_name='リンクアイコン',
         upload_to=get_upload_dir,
+        blank=True,
+        null=True,
     )
     create_date = models.DateTimeField(
         verbose_name='登録日時',

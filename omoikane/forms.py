@@ -1,6 +1,10 @@
 from django import forms
 from django.db import models
-from omoikane.models import MUser, MMenu, MAuth
+from omoikane.models import (
+    MUser,
+    MMenu,
+    MAuth,
+)
 
 class LoginModelForm(forms.ModelForm):
 
@@ -170,3 +174,57 @@ class UserDeleteModelForm(forms.ModelForm):
 
         return cleaned_data
 
+class MenuInputModelForm(forms.ModelForm):
+    
+    class Meta:
+        model = MMenu
+        fields = ('menu_name','url','icon')
+
+class MenuModifyModelForm(forms.ModelForm):
+    
+    menu_id = forms.CharField(label='ID',
+        widget=forms.HiddenInput(),
+    )
+
+    class Meta:
+        model = MMenu
+        fields = ('menu_name','url','icon')
+
+    def clean(self):
+        cleaned_data = super().clean()
+        v_menu_id = cleaned_data.get('menu_id')
+        # v_menu_id = self.cleaned_data['id']
+        # v_menu_id = self.instance.id
+        menu = None
+        try:
+            menu = MMenu.objects.get(id=v_menu_id)
+        except:
+            raise forms.ValidationError("メニューが存在しません。")
+
+        return cleaned_data
+
+class MenuDeleteModelForm(forms.ModelForm):
+    
+    menu_id = forms.CharField(label='ID',
+        widget=forms.HiddenInput(),
+    )
+
+    class Meta:
+        model = MMenu
+        fields = ('menu_name','url','icon')
+        widgets = {
+            'menu_name': forms.TextInput(attrs={'readonly': 'readonly'}),
+            'url': forms.TextInput(attrs={'readonly': 'readonly'}),
+            'icon': forms.TextInput(attrs={'readonly': 'readonly'}),
+        }
+
+    def clean(self):
+        cleaned_data = super().clean()
+        v_menu_id = cleaned_data.get('menu_id') 
+        menu = None
+        try:
+            menu = MMenu.objects.get(pk=v_menu_id)
+        except:
+            raise forms.ValidationError("メニューが存在しません。")
+
+        return cleaned_data

@@ -1,0 +1,93 @@
+{% extends "omoikane/base.html" %}
+
+{% load static %}
+{% block header %}
+<script src="{% static 'js/omoikane/menu_input.js' %}" ></script>
+{% endblock %}
+
+{% block body %}
+{{title}}<br/>
+<br/>
+{% ifequal shori '' %}
+    <form method="post" enctype="multipart/form-data" action="{% url 'omoikane:menu_input' %}">
+{% else %}
+    <form method="post" enctype="multipart/form-data" action="{% url 'omoikane:menu_input_modify' id shori %}">
+{% endifequal %}
+
+    {% csrf_token %}
+    {{form.menu_id}}
+
+    {% ifequal shori '' %}
+    <table class="simple_class">
+        <tr>
+            <th style="width:100px">{{form.menu_name.label}}</th>
+            <td style="width:200px">{{form.menu_name}}{{form.menu_name.errors.0}}</td>
+        </tr>
+        <tr>
+            <th>{{form.url.label}}</th>
+            <td>{{form.url}}{{form.url.errors.0}}</td>
+        </tr>
+        <tr>
+            <th>{{form.icon.label}}</th>
+            <td>{{form.icon}}{{form.icon.errors.0}}</td>
+        </tr>
+    </table>
+    {% endifequal %}
+
+    {% ifequal shori 'm' %}
+    <table class="simple_class">
+        <tr>
+            <th style="width:100px">{{form.menu_name.label}}</th>
+            <td style="width:200px">{{form.menu_name}}{{form.menu_name.errors.0}}</td>
+        </tr>
+        <tr>
+            <th>{{form.url.label}}</th>
+            <td>{{form.url}}{{form.url.errors.0}}</td>
+        </tr>
+        <tr>
+            <th>{{form.icon.label}}</th>
+            <td>{{form.icon}}{{form.icon.errors.0}}</td>
+        </tr>
+    </table>
+    {% endifequal %}
+
+    {% ifequal shori 'd' %}
+    <table class="simple_class">
+        <tr>
+            <th style="width:100px">{{form.menu_name.label}}</th>
+            <td style="width:400px">{{form.id.}}{{form.menu_name}}{{form.menu_name.errors.0}}</td>
+        </tr>
+        <tr>
+            <th>{{form.url.label}}</th>
+            <td>{{form.url}}{{form.url.errors.0}}</td>
+        </tr>
+        <tr>
+            <th>{{form.icon.label}}</th>
+            <td>{{form.icon}}{{form.icon.errors.0}}</td>
+        </tr>
+    </table>
+    {% endifequal %}
+
+    {% if form.non_field_errors %}
+    <br/>
+    <div class="errmsg">
+        <ul>
+        {% for non_field_error in form.non_field_errors %}
+        <li class="errmsg">{{ non_field_error }}</li>
+        {% endfor %}
+        </ul>
+    </div>
+    {% endif %}
+    <br/>
+    <table id="controller">
+        <tr>
+            {% ifequal shori 'd' %}
+                <td style="text-align:center;"><input type="submit" value="削除" class="square_btn" /></td>
+            {% else %}
+                <td style="text-align:center;"><input type="submit" value="登録" class="square_btn" /></td>
+            {% endifequal %}
+            <td style="text-align:center;"><input type="button" id="btn_cancel" value="キャンセル" class="square_btn" /></td>
+        </tr>    
+    </table>
+
+{% endblock %}
