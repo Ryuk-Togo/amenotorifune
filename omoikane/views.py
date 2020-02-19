@@ -16,6 +16,9 @@ from omoikane.forms import (
     MenuInputModelForm,
     MenuModifyModelForm,
     MenuDeleteModelForm,
+    AuthHeaderForm,
+    AuthListForm,
+    AuthListFormSet,
 )
 from omoikane.models import (
     MUser,
@@ -26,6 +29,8 @@ import datetime
 import logging
 import os
 from izanagi import settings
+from django.forms import formsets
+
 
 # Create your views here.
 # ログイン画面
@@ -173,7 +178,8 @@ def menu_input(request):
         mmenu = MMenu()
         mmenu.menu_name = request.POST['menu_name']
         mmenu.url = request.POST['url']
-        mmenu.icon = request.FILES['icon']
+        if request.POST['icon']:
+            mmenu.icon = request.FILES['icon']
         mmenu.create_date = timezone.datetime.now()
         mmenu.create_pg_id = 'omoikane.update_input'
         mmenu.create_user_id = 'admin'
@@ -252,3 +258,167 @@ def menu_input_modify(request,id,shori):
             mmenu.delete()
             return redirect('/omoikane/menu_list/')
 
+def auth_header(request):
+    AuthListFormSet = formsets.formset_factory(form=AuthListForm, extra=0,)
+    if request.method == 'GET':
+        form_header = AuthHeaderForm(request.GET or None)
+        user_id = request.GET.get('user_name', None)
+        formSet = AuthListFormSet()
+
+        form_header = get_user_name_list(form_header)
+        if user_id is None or user_id=='':
+            form_header.fields['user_name'].initial = [' ']
+
+        else:
+            form_header.fields['user_name'].initial = [user_id]
+
+        context = {
+            'user':form_header,
+            'user_id':user_id,
+            'form':formSet,
+        }
+
+        return render(request, 'omoikane/auth_list.html',context)
+
+    elif request.method == 'POST':
+        user_id = request.POST['user_name']
+        form_header = AuthHeaderForm(request.POST or None)
+        form_header = get_user_name_list(form_header)
+        form_header.fields['user_name'].initial = [user_id]
+
+        mmenus = MMenu.objects.all().order_by('id')
+        menu_list = []
+
+        for menu in mmenus:
+            is_select = False
+
+            try:
+                auth = MAuth.objects.filter(user_id=user_id, menu_id=menu.id)
+            except:
+                auth = None
+
+            if auth:
+                is_select = True
+
+            menu_list.append({
+                'is_select': is_select,
+                'menu_id': menu.id,
+                'menu_name': menu.menu_name,
+            })
+
+        formSet = AuthListFormSet(initial=menu_list)
+        context = {
+            'user':form_header,
+            'user_id':user_id,
+            'form':formSet,
+        }
+
+        return render(request, 'omoikane/auth_list.html',context)
+
+def auth_list(request):
+    if request.method == 'POST':
+        user_id = request.POST['user_id']
+        form_header = AuthHeaderForm(request.POST or None)
+        formSets = AuthListFormSet(request.POST or None)
+
+        if formSets.is_valid():
+            for formSet in formSets:
+                # data = repr(formSet.cleaned_data)
+                # return HttpResponse(data)
+
+                # if data.get('is_select'):
+                #     auth = MAuth()
+                #     auth.user_id = data.get('user_id')
+                #     auth.menu_id = data.get('menu_id')
+                #     auth.save()
+                if formSet.cleaned_data['is_select']:
+                    auth = MAuth()
+                    auth.user_id = user_id
+                    auth.menu_id = formSet.cleaned_data['menu_id']
+                    auth.save()
+
+        else:
+            context = {
+                'user':form_header,
+                'user_id':user_id,
+                'form':formSets,
+            }
+
+            return render(request, 'omoikane/auth_list.html',context)
+
+        return redirect('/omoikane/main/')
+
+    
+        # for formSet in formSets:
+        #     if formSet.is_valid():
+        #         for form in formSet:
+        #             return HttpResponse(form)
+
+        #     else:
+        #         context = {
+        #             'user':form_header,
+        #             'user_id':user_id,
+        #             'form':formSets,
+        #         }
+        #         return HttpResponse('error')
+                
+        # return render(request, 'omoikane/auth_list.html',context)
+
+        # else:
+        #     mauth = MAuth.objects.filter(user_id=user_id)
+        #     mauth.delete()
+
+        #     # data = 'test'
+        #     # data = repr(formSet.cleaned_data)
+        #     # return HttpResponse(data)
+        #     # data = formSet.cleaned_data
+        #     data = [AuthHeaderForm(prefix=thing) for thing in ['is_select','menu_name','menu_id']]
+
+        #     for form in data:
+        #         if form.is_select:
+        #             auth = MAuth()
+        #             auth.user_id = user_id
+        #             auth.menu_id = form.menu_id
+        #             auth.create_pg_id = 'auth_list'
+        #             auth.update_pg_id = 'auth_list'
+        #             auth.save()
+        #         else:
+        #             context = {
+        #                 'user':form_header,
+        #                 'user_id':user_id,
+        #                 'form':formSet,
+        #             }
+        #             return render(request, 'omoikane/auth_list.html',context)
+
+        # return redirect('/omoikane/main/')
+
+        # user_id = request.POST['user_id']
+        # is_select_list = request.POST.getlist['is_select']
+        # menu_id_list = request.POST.getlist['menu_id']
+        # mauth = MAuth.objects.all()
+        # mauth.delete()
+
+        # cnt = len(is_select_list)
+        # for row in range(cnt):
+
+        #     is_select = is_select_list(row)
+        #     if is_select:
+        #         menu_id = menu_id_list(row)
+        #         auth = MAuth()
+        #         auth.user_id = user_id
+        #         auth.menu_id = menu_id
+        #         auth.create_pg_id = 'auth_list'
+        #         auth.update_pg_id = 'auth_list'
+        #         auth.save()
+
+        # return redirect('/omoikane/mein/')
+
+def get_user_name_list(form_header):
+    musers = MUser.objects.all().order_by('id')
+    user_choice = []
+    user_choice.append((' ', ''))
+    for user in musers:
+        user_choice.append((user.user_id, user.user_name))
+
+    form_header.fields['user_name'].choices = user_choice
+    return form_header

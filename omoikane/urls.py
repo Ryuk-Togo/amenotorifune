@@ -13,5 +13,7 @@ urlpatterns = [
     url(r'^menu_list/$', views.menu_list, name='menu_list'),
     path('menu_input_modify/<int:id>/<str:shori>/', views.menu_input_modify, name='menu_input_modify'),
     url(r'^menu_input/$', views.menu_input, name='menu_input'),
+    url(r'^auth_header/$', views.auth_header, name='auth_header'),
+    url(r'^auth_list/$', views.auth_list, name='auth_list'),
 
 ]

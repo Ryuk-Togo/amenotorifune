@@ -1,5 +1,6 @@
 from django import forms
-from django.db import models
+from django.forms import formsets
+from django.forms import models
 from omoikane.models import (
     MUser,
     MMenu,
@@ -228,3 +229,37 @@ class MenuDeleteModelForm(forms.ModelForm):
             raise forms.ValidationError("メニューが存在しません。")
 
         return cleaned_data
+
+class AuthHeaderForm(forms.Form):
+
+    user_name = forms.ChoiceField(
+        required=False,
+        label='ユーザ名',
+        widget=forms.Select(attrs={'user_id': 'user_name',})
+    )
+
+class AuthListForm(forms.ModelForm):
+    
+    is_select = forms.BooleanField(
+        label='選択',
+        required=False,
+        widget=forms.CheckboxInput(
+            attrs={'class': 'check'}
+        ),
+    )
+
+    menu_id = forms.CharField(label='メニューID',
+        widget=forms.HiddenInput(),
+    )
+
+    class Meta:
+        model = MMenu
+        fields = ('id','menu_name')
+        widgets = {
+            'id': forms.HiddenInput(),
+            'menu_name': forms.TextInput(attrs={'readonly': 'readonly'}),
+        }
+
+AuthListFormSet = formsets.formset_factory(form=AuthListForm, extra=0,)
+# AuthListFormSet = formsets.formset_factory(form=AuthListForm, extra=0, formset=models.BaseModelFormSet)
+# AuthListFormSet = forms.inlineformset_factory(MAuth, fields='__all__')

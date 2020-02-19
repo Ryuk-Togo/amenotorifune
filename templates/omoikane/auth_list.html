@@ -1,0 +1,73 @@
+{% extends "omoikane/base.html" %}
+
+{% load static %}
+{% block header %}
+<script src="{% static 'js/omoikane/auth_list.js' %}" ></script>
+{% endblock %}
+
+{% block body %}
+権限付与<br/>
+    
+<form method="post" action="{% url 'omoikane:auth_header' %}">
+    {% csrf_token %}
+    {{user.user_name}}
+    <input type="submit" value="検索" id="btnUserList" class="square_btn" />
+</form>
+
+<form method="post" action="{% url 'omoikane:auth_list' %}">
+    {% csrf_token %}
+    <input type="hidden" id="id_user_id" name="user_id" value="{{user_id}}" />
+    <!-- ========== テーブル全体を表す div ========== -->
+    <div style="width:350px; border-style:solid;border-width:0px;">
+    <!-- ===== ヘッダ部(THEAD相当)を表す div ===== -->
+        <div style="width:100%">
+            <table class="list_class">
+                <thead>
+                    <tr>
+                        <th class="th_class" style='width:50px'>選択</th>
+                        <th class="th_class" style='width:300px'>メニュー名</th>
+                    </tr>
+                </thead>
+            </table>
+        </div>
+        <!-- ===== ボディー部(TBODY相当)を表す div ===== -->
+        <div style="height:350px; width:100%;overflow-y:scroll;overflow-x:hidden;background:#BBBBBB">
+            {{ form.management_form }}
+            <table class="list_class">
+                <tbody name="auth">
+                {% for menu in form %}
+                    <tr id="row">
+                        <td class="td_class" style='width:50px'>
+                            {{menu.is_select}}
+                        <td>
+                        <td class="td_class" style='width:300px'>
+                            {{menu.menu_name}}
+                        </td>
+                        <td>
+                            {{menu.menu_id}}
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    {% if form.non_field_errors %}
+    <br/>
+    <div class="errmsg">
+        <ul>
+        {% for non_field_error in form.non_field_errors %}
+        <li class="errmsg">{{ non_field_error }}</li>
+        {% endfor %}
+        </ul>
+    </div>
+    {% endif %}
+    <br/>
+    <table id="controller">
+        <tr>
+            <td style="text-align:center;"><input type="submit" value="登録" class="square_btn" /></td>
+            <td style="text-align:center;"><input type="button" id="btn_cancel" value="キャンセル" class="square_btn" /></td>
+        </tr>    
+    </table>
+
+{% endblock %}
