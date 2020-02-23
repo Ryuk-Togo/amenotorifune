@@ -6,6 +6,7 @@
     <title>
         Settings
     </title>
+    <LINK rel="shortcut icon" href="{% static 'icon/omoikane.ico' %}">
     <link rel="stylesheet" href="{% static 'css/omoikane/omoikane.css' %}" >
     <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}" >
     <link rel="stylesheet" href="{% static 'css/jquery-ui.css' %}" >
@@ -22,7 +23,7 @@
         <tbody>
             <tr>
                 <th style="width:200px;height:50px" class="menu">settings</th>
-                <td class="menu"></td>
+                <td style="text-align: right;" class="menu">{{user_id}}({{user_name}})</td>
             </tr>
             <tr>
                 <th class="menu" style="vertical-align:top;">

@@ -37,6 +37,13 @@ $(document).ajaxSend(function(event, xhr, settings) {
 	}
 });
 
+$(function() {
+	$('.tab_link').click(function(){
+		$url = $(this).attr('href');
+		window.open($url,'_blank');
+	});
+});
+
 /**
  * djangoに渡すbool型の変換
  * @param {HTMLのチェックボックスの値} bol 

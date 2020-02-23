@@ -48,15 +48,50 @@ def login(request):
                 'form': form
             }
             return render(request, 'omoikane/login.html', context)
-        return redirect('/omoikane/main/')
+        
+        user_id = form.cleaned_data['user_id']
+        user = MUser.objects.get(user_id=user_id)
+        request.session['LOGIN_USER_ID'] = user.user_id
+        request.session['LOGIN_USER_NAME'] = user.user_name
+    return redirect('/omoikane/menu/')
+    # return render(request, 'omoikane/menu.html')
+
+def menu(request):
+    if request.method == 'GET':
+        user_id = request.session.get('LOGIN_USER_ID')
+        user_name = request.session.get('LOGIN_USER_NAME')
+
+        auth_list = MAuth.objects.filter(user_id=user_id).order_by('menu_id')
+        menu_list = []
+        for auth in auth_list:
+            menu = MMenu.objects.get(id=auth.menu_id)
+            data = {
+                'menu_name':menu.menu_name,
+                'url':menu.url,
+                'icon':menu.icon,
+            }
+            menu_list.append(data)
+        
+        context = {
+            'menu_list': menu_list,
+            'user_id': user_id,
+            'user_name': user_name,
+        }
+        return render(request, 'omoikane/menu.html',context)
 
 def main(request):
-    return render(request, 'omoikane/main.html')
+    context = {
+        'user_id':request.session.get('LOGIN_USER_ID'),
+        'user_name':request.session.get('LOGIN_USER_NAME'),
+    }
+    return render(request, 'omoikane/main.html',context)
 
 def login_input(request):
     if request.method == 'GET':
         form = UserInputModelForm(request.GET or None)
         context = {
+            'user_id':request.session.get('LOGIN_USER_ID'),
+            'user_name':request.session.get('LOGIN_USER_NAME'),
             'form': form,
             'shori': '',
             'title': const.USER_SHORI['']
@@ -66,6 +101,8 @@ def login_input(request):
         form = UserInputModelForm(request.POST)
         if not form.is_valid():
             context = {
+                'user_id':request.session.get('LOGIN_USER_ID'),
+                'user_name':request.session.get('LOGIN_USER_NAME'),
                 'form': form,
                 'title': const.USER_SHORI['']
             }
@@ -77,6 +114,8 @@ def user_list(request):
     if request.method == 'GET':
         musers = MUser.objects.all().order_by('user_name')
         context = {
+            'user_id':request.session.get('LOGIN_USER_ID'),
+            'user_name':request.session.get('LOGIN_USER_NAME'),
             'musers': musers
         }
         return render(request, 'omoikane/user_list.html',context)
@@ -88,6 +127,7 @@ def user_input_modify(request,user_id,shori):
         context = {
             'form': form,
             'user_id': user_id,
+            'user_name':request.session.get('LOGIN_USER_NAME'),
             'shori': shori,
             'title': const.USER_SHORI[shori],
         }
@@ -100,6 +140,7 @@ def user_input_modify(request,user_id,shori):
                 context = {
                     'form': form,
                     'user_id': user_id,
+                    'user_name':request.session.get('LOGIN_USER_NAME'),
                     'shori': shori,
                     'title': const.USER_SHORI[shori],
                 }
@@ -120,6 +161,7 @@ def user_input_modify(request,user_id,shori):
                 context = {
                     'form': form,
                     'user_id': user_id,
+                    'user_name':request.session.get('LOGIN_USER_NAME'),
                     'shori': shori,
                     'title': const.USER_SHORI[shori],
                 }
@@ -132,6 +174,8 @@ def user_input(request):
     if request.method == 'GET':
         form = UserInputModelForm(request.GET or None)
         context = {
+            'user_id':request.session.get('LOGIN_USER_ID'),
+            'user_name':request.session.get('LOGIN_USER_NAME'),
             'form': form,
             'shori': '',
             'title': const.USER_SHORI[''],
@@ -141,6 +185,8 @@ def user_input(request):
         form = UserInputModelForm(request.POST)
         if not form.is_valid():
             context = {
+                'user_id':request.session.get('LOGIN_USER_ID'),
+                'user_name':request.session.get('LOGIN_USER_NAME'),
                 'form': form,
                 'shori': '',
                 'title': const.USER_SHORI[''],
@@ -153,6 +199,8 @@ def menu_list(request):
     if request.method == 'GET':
         mmenus = MMenu.objects.all().order_by('id')
         context = {
+            'user_id':request.session.get('LOGIN_USER_ID'),
+            'user_name':request.session.get('LOGIN_USER_NAME'),
             'mmenus': mmenus
         }
         return render(request, 'omoikane/menu_list.html',context)
@@ -161,6 +209,8 @@ def menu_input(request):
     if request.method == 'GET':
         form = MenuInputModelForm(request.GET or None)
         context = {
+            'user_id':request.session.get('LOGIN_USER_ID'),
+            'user_name':request.session.get('LOGIN_USER_NAME'),
             'form': form,
             'shori': '',
             'title': const.MENU_SHORI[''],
@@ -170,6 +220,8 @@ def menu_input(request):
         form = MenuInputModelForm(request.POST)
         if not form.is_valid():
             context = {
+                'user_id':request.session.get('LOGIN_USER_ID'),
+                'user_name':request.session.get('LOGIN_USER_NAME'),
                 'form': form,
                 'shori': '',
                 'title': const.MENU_SHORI[''],
@@ -200,6 +252,8 @@ def menu_input_modify(request,id,shori):
         }
         form = MenuModifyModelForm(initial=initialize)
         context = {
+            'user_id':request.session.get('LOGIN_USER_ID'),
+            'user_name':request.session.get('LOGIN_USER_NAME'),
             'form': form,
             'id': id,
             'shori': shori,
@@ -213,6 +267,8 @@ def menu_input_modify(request,id,shori):
             form = MenuModifyModelForm(request.POST, files=request.FILES or None)
             if not form.is_valid():
                 context = {
+                    'user_id':request.session.get('LOGIN_USER_ID'),
+                    'user_name':request.session.get('LOGIN_USER_NAME'),
                     'form': form,
                     'id': id,
                     'shori': shori,
@@ -246,6 +302,8 @@ def menu_input_modify(request,id,shori):
             form = MenuDeleteModelForm(request.POST)
             if not form.is_valid():
                 context = {
+                    'user_id':request.session.get('LOGIN_USER_ID'),
+                    'user_name':request.session.get('LOGIN_USER_NAME'),
                     'form': form,
                     'id': id,
                     'shori': shori,
@@ -274,7 +332,8 @@ def auth_header(request):
 
         context = {
             'user':form_header,
-            'user_id':user_id,
+            'user_id':request.session.get('LOGIN_USER_ID'),
+            'user_name':request.session.get('LOGIN_USER_NAME'),
             'form':formSet,
         }
 
@@ -309,7 +368,9 @@ def auth_header(request):
         formSet = AuthListFormSet(initial=menu_list)
         context = {
             'user':form_header,
-            'user_id':user_id,
+            'user_id':request.session.get('LOGIN_USER_ID'),
+            'user_name':request.session.get('LOGIN_USER_NAME'),
+            'cmb_user_id':user_id,
             'form':formSet,
         }
 
@@ -320,6 +381,9 @@ def auth_list(request):
         user_id = request.POST['user_id']
         form_header = AuthHeaderForm(request.POST or None)
         formSets = AuthListFormSet(request.POST or None)
+
+        mauth = MAuth.objects.filter(user_id=user_id)
+        mauth.delete()
 
         if formSets.is_valid():
             for formSet in formSets:
@@ -341,6 +405,7 @@ def auth_list(request):
             context = {
                 'user':form_header,
                 'user_id':user_id,
+                'user_name':request.session.get('LOGIN_USER_NAME'),
                 'form':formSets,
             }
 

@@ -16,7 +16,7 @@
 
 <form method="post" action="{% url 'omoikane:auth_list' %}">
     {% csrf_token %}
-    <input type="hidden" id="id_user_id" name="user_id" value="{{user_id}}" />
+    <input type="hidden" id="id_user_id" name="user_id" value="{{cmb_user_id}}" />
     <!-- ========== テーブル全体を表す div ========== -->
     <div style="width:350px; border-style:solid;border-width:0px;">
     <!-- ===== ヘッダ部(THEAD相当)を表す div ===== -->
