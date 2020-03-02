@@ -27,6 +27,7 @@ urlpatterns = [
     # path('uploader/', include('uploader.urls')), 
     url(r'^uploader/', include('uploader.urls')), 
     path('omoikane/', include('omoikane.urls')),
+    path('tukuyomi/', include('tukuyomi.urls')),
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

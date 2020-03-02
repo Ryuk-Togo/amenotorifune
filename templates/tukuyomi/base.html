@@ -1,0 +1,77 @@
+{% load static %}
+<!DOCTYPE himl>
+<html>
+    <head lang='ja'>
+    <meta charset='UTF-8'>
+    <title>
+        電子マネー管理
+    </title>
+    <LINK rel="shortcut icon" href="{% static 'icon/tukuyomi.ico' %}">
+    <link rel="stylesheet" href="{% static 'css/tukuyomi/tukuyomi.css' %}" >
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}" >
+    <link rel="stylesheet" href="{% static 'css/jquery-ui.css' %}" >
+    <script src="{% static 'js/bootstrap.js' %}" ></script>
+    <script src="{% static 'js/jquery-3.3.1.js' %}" ></script>
+    <script src="{% static 'js/jquery-ui.js' %}" ></script>
+    <script src="{% static 'js/common.js' %}" ></script>
+    {% block header %}
+    {% endblock %}
+</head>
+<body>
+    {{message}}
+    <table style="width:100%;height:100%;">
+        <tbody>
+            <tr>
+                <th style="width:150px;height:25px" class="menu th_center_class">
+                    <img src="{% static 'icon/tukuyomi.ico' %}"/><br/>
+                    電子マネー管理
+                </th>
+                <td style="text-align:center; width:150px;" class="menu th_center_class">
+                    <a href="{% url 'tukuyomi:assert_list' %}" >
+                        <img src="{% static 'png/tukuyomi/useinfo.png' %}"/><br/>
+                        利用者情報<br/>
+                    </a>
+                </td>
+                <td style="text-align:center; width:150px;" class="menu th_center_class">
+                    <a href="{% url 'tukuyomi:assert_list' %}" >
+                        <img src="{% static 'png/tukuyomi/assert.png' %}"/><br/>
+                        資産名<br/>    
+                    </a>
+                </td>
+                <td style="text-align:center; width:150px;" class="menu th_center_class">
+                    <a href="{% url 'tukuyomi:buyer_list' %}" >
+                        <img src="{% static 'png/tukuyomi/buyer.png' %}"/><br/>
+                        購入者<br/>
+                    </a>
+                </td>
+                <td style="text-align:center; width:150px;" class="menu th_center_class">
+                    <img src="{% static 'png/tukuyomi/refund.png' %}"/><br/>
+                    返金<br/>
+                </td>
+                <td style="text-align:right; width:auto" class="menu th_center_class">
+                    {{user_id}}({{user_name}})
+                </td>
+            </tr>
+            <tr>
+                <td class="main_body" colspan="6">
+                    {% block body %}
+                    {% endblock %}
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <br/>
+    {% if form.non_field_errors %}
+    <br/>
+    <div class="errmsg">
+        <ul>
+        {% for non_field_error in form.non_field_errors %}
+        <li class="errmsg">{{ non_field_error }}</li>
+        {% endfor %}
+        </ul>
+    </div>
+    {% endif %}
+    <br/>
+
+</body>
+</html>

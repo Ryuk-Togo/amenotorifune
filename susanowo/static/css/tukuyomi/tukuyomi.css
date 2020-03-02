@@ -1,0 +1,112 @@
+@charset "utf-8";
+/* CSS Document */
+
+* {
+	margin:0; padding:0;
+	line-height:1.5;
+}
+
+body{
+	font:120% "Meiryo UI";
+}
+
+a{
+	color:#f7f78b;
+	text-decoration:none;
+}
+
+a:visited{
+	color:#f7f78b;
+	text-decoration:none;
+}
+
+a:hover{
+	color:#f7f78b;
+	text-decoration:none;
+}
+
+a:active{
+	color:#f7f78b;
+	text-decoration:none;
+}
+
+.square_btn {
+	width:170px;
+	height:50px;
+	padding: 0.5em; 
+    font-weight: bold;
+	margin: 2; 
+}
+
+.errmsg {
+	background-color: #f7f78b;
+	color:#FF0000;
+}
+
+.title_class {
+	font-size: 20px;
+	font-weight: bold;
+}
+
+.menu {
+	background-color: #121246;
+	color:#f7f78b;
+	padding: 1em;
+    font-weight: bold;
+	margin: 2; 
+}
+
+.list_class {
+	border-collapse: collapse;
+}
+
+.cell_class {
+	border-collapse: collapse;
+	border-style: solid;
+	border-width: 1px;
+}
+
+.tr_class {
+	border-bottom:1px solid #121246;
+}
+
+.th_class {
+	border-color: #121246;
+	background-color: #121246;
+	color:#f7f78b;
+}
+
+.th_center_class {
+	border-color: #121246;
+	background-color: #121246;
+	color:#f7f78b;
+	text-align: center;
+}
+
+.th_right_class {
+	border-color: #121246;
+	background-color: #121246;
+	color:#f7f78b;
+	text-align: right;
+}
+
+.td_class {
+	border-color: #121246;
+	background-color: #f7f78b;
+	color:#121246;
+}
+
+.td_center_class {
+	border-color: #121246;
+	background-color: #f7f78b;
+	text-align: center;
+	color:#121246;
+}
+
+.main_body {
+	background-color: #f7f78b;
+	color:#121246;
+	vertical-align:top;
+	padding: 1em;
+	margin: 2; 
+}

@@ -1,0 +1,41 @@
+{% load static %}
+<!DOCTYPE himl>
+<html>
+    <head lang='ja'>
+    <meta charset='UTF-8'>
+        <title>電子マネー管理システムログイン</title>
+    </head>
+    <link rel="stylesheet" href="{% static 'css/tukuyomi/tukuyomi.css' %}" >
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}" >
+    <link rel="stylesheet" href="{% static 'css/jquery-ui.css' %}" >
+    <script src="{% static 'js/bootstrap.js' %}" ></script>
+    <script src="{% static 'js/jquery-3.3.1.js' %}" ></script>
+    <script src="{% static 'js/jquery-ui.js' %}" ></script>
+    <script src="{% static 'js/common.js' %}" ></script>
+<body>
+<div id="header">
+    電子マネー管理システムログイン<br/>
+    <br/>
+</div>
+<form method="post" action="/tukuyomi/">
+    {% csrf_token %}
+    <table class="simple_class">
+        <tr>
+            <th style="width:50px">{{form.user_id.label}}</th>
+            <td style="width:200px">{{form.user_id}}{{form.user_id.errors.0}}</td>
+        </tr>
+        <tr>
+            <th>{{form.password.label}}</th>
+            <td>{{form.password}}{{form.user_id.errors.0}}</td>
+        </tr>
+    </table>
+    <table id="controller" style="width:250px">
+        <tr>
+            <td style="text-align:center;"><input type="submit" value="ログイン" class="square_btn" /></td>
+        </tr>    
+    </table>
+
+</form>
+</div>
+</body>
+</html>

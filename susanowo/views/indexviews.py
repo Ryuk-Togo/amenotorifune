@@ -9,10 +9,15 @@ import datetime
 # Create your views here.
 def login(request):
     if request.method == 'GET':
+        user_id = request.session.get('LOGIN_USER_ID')
         form = MUserModelForm(request.GET or None)
         context = {
             'form': form
         }
+
+        if user_id:
+            return redirect('/susanowo/index')
+
         return render(request, 'susanowo/login.html', context)
     else:
         form = MUserModelForm(request.POST)

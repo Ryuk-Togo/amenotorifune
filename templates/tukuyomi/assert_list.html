@@ -1,0 +1,72 @@
+{% extends "tukuyomi/base.html" %}
+
+{% load static %}
+{% block header %}
+<script src="{% static 'js/tukuyomi/assert_input.js' %}" ></script>
+{% endblock %}
+
+{% block body %}
+<div class="title_class">
+    資産名一覧<br/><br/>
+</div>
+    
+<form method="post" action="{% url 'tukuyomi:assert_list' %}">
+    {% csrf_token %}
+    
+    <!-- ========== テーブル全体を表す div ========== -->
+    <div style="width:550px; border-style:solid;border-width:0px;">
+    <!-- ===== ヘッダ部(THEAD相当)を表す div ===== -->
+        <div style="width:100%">
+            <table class="list_class">
+                <thead>
+                    <tr>
+                        <th class="th_center_class" style='width:400px'>資産名</th>
+                        <th class="th_center_class" style='width:50px'>編集</th>
+                        <th class="th_center_class" style='width:50px'>追加</th>
+                        <th class="th_center_class" style='width:50px'>削除</th>
+                    </tr>
+                </thead>
+            </table>
+        </div>
+        <!-- ===== ボディー部(TBODY相当)を表す div ===== -->
+        <div style="height:100%; width:100%;overflow-y:scroll;overflow-x:hidden;">
+            <table class="list_class">
+                <tbody>
+                    {% ifequal form|length 0 %}
+                    <tr class="tr_class" id="row{{menu.id}}">
+                        <td class="td_class" style='width:400px'><td>
+                        <td class="td_center_class" style='width:50px'><td>
+                        <td class="td_center_class" style='width:50px'>
+                            <a href="{% url 'tukuyomi:assert_input' %}" >
+                                <img src="{% static 'png/common/insert.png' %}"/>
+                            </a>
+                        <td>
+                        <td class="td_center_class" style='width:50px'><td>
+                    </tr>
+                    {% else %}
+                        {% for assert in form %}
+                        <tr id="row{{assert.id}}">
+                            <td class="td_class" style='width:400px'>{{assert.assertNm}}<td>
+                            <td class="td_center_class" style='width:50px'>
+                                <a href="{% url 'tukuyomi:assert_input_modify' assert.id 'm' %}" >
+                                    <img src="{% static 'png/common/edit.png' %}"/>
+                                </a>
+                            <td>
+                            <td class="td_center_class" style='width:50px'>
+                                <a href="{% url 'tukuyomi:assert_input' %}" >
+                                    <img src="{% static 'png/common/insert.png' %}"/>
+                                </a>
+                            <td>
+                            <td class="td_center_class" style='width:50px'>
+                                <a href="{% url 'tukuyomi:assert_input_modify' assert.id 'd' %}" >
+                                    <img src="{% static 'png/common/delete.png' %}"/>
+                                </a>
+                            <td>
+                        </tr>
+                        {% endfor %}
+                    {% endifequal %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+{% endblock %}
