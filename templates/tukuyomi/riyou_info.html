@@ -1,0 +1,52 @@
+{% extends "tukuyomi/base.html" %}
+
+{% load static %}
+{% block header %}
+<script src="{% static 'js/tukuyomi/riyou_info.js' %}" ></script>
+{% endblock %}
+
+{% block body %}
+<div class="title_class">
+    利用者情報<br/><br/>
+</div>
+    
+<form method="post" action="{% url 'tukuyomi:assert_list' %}">
+    {% csrf_token %}
+    <!-- ========== テーブル全体を表す div ========== -->
+    <div style="width:550px; border-style:solid;border-width:0px; text-align: center;">
+        <a class="normal_class" id="minus_month" href="{% url 'tukuyomi:riyou_info' next_prev.prev_y next_prev.prev_m %}" >＜</a>
+        　{{used_year}}/{{used_month}}　
+        <a class="normal_class" id="plus_month" href="{% url 'tukuyomi:riyou_info' next_prev.next_y next_prev.next_m %}" >＞</a>
+        <!-- ===== ヘッダ部(THEAD相当)を表す div ===== -->
+        <div style="width:100%">
+            <table class="list_class">
+                <thead>
+                    <tr>
+                        <th class="th_header th_center_class " style='width:400px'>資産名</th>
+                        <th class="th_header th_right_class" style='width:200px'>金額</th>
+                    </tr>
+                </thead>
+            </table>
+        </div>
+        <!-- ===== ボディー部(TBODY相当)を表す div ===== -->
+        <div style="height:100%; width:100%;overflow-y:scroll;overflow-x:hidden;">
+            <table class="list_class">
+                <tbody>
+                    {% for rec in form %}
+                    <tr class="tr_class" id="row{{assert.id}}">
+                        <td class="td_class" style='width:400px'>
+                            <a class="normal_class" href="{% url 'tukuyomi:shiharai_info' used_year used_month rec.assert_id %}" >
+                                {{rec.assert_nm}}
+                            </a>
+                        </td>
+                        <td class="td_right_class" style='width:200px'>
+                            {{rec.sum_amt}}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</form>
+{% endblock %}

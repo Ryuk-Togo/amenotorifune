@@ -1,0 +1,71 @@
+{% extends "tukuyomi/base.html" %}
+
+{% load static %}
+{% block header %}
+<script src="{% static 'js/tukuyomi/buyer_input.js' %}" ></script>
+{% endblock %}
+
+{% block body %}
+<div class="title_class">
+    購入者入力<br/><br/>
+</div>
+
+{% ifequal shori '' %}
+    <form method="post" action="{% url 'tukuyomi:buyer_input' %}">
+{% else %}
+    <form method="post" action="{% url 'tukuyomi:buyer_input_modify' id shori %}">
+{% endifequal %}
+
+    {% csrf_token %}
+    {{form.id}}
+
+    {% ifequal shori '' %}
+    <table class="simple_class">
+        <tr>
+            <th class="th_right_class" style="width:100px">{{form.byuerMn.label}}</th>
+            <td class="td_class" style="width:200px">{{form.buyerNm}}{{form.buyerNm.errors.0}}</td>
+        </tr>
+    </table>
+    {% endifequal %}
+
+    {% ifequal shori 'm' %}
+    <table class="simple_class">
+        <tr>
+            <th class="th_right_class" style="width:100px">{{form.buyerNm.label}}</th>
+            <td class="td_class" style="width:200px">{{form.buyerNm}}{{form.buyerNm.errors.0}}</td>
+        </tr>
+    </table>
+    {% endifequal %}
+
+    {% ifequal shori 'd' %}
+    <table class="simple_class">
+        <tr>
+            <th class="th_right_class" style="width:100px">{{form.buyerNm.label}}</th>
+            <td class="td_class" style="width:200px">{{form.buyerNm}}{{form.buyerNm.errors.0}}</td>
+        </tr>
+    </table>
+    {% endifequal %}
+
+    {% if form.non_field_errors %}
+    <br/>
+    <div class="errmsg">
+        <ul>
+        {% for non_field_error in form.non_field_errors %}
+        <li class="errmsg">{{ non_field_error }}</li>
+        {% endfor %}
+        </ul>
+    </div>
+    {% endif %}
+    <br/>
+    <table id="controller">
+        <tr>
+            {% ifequal shori 'd' %}
+                <td style="text-align:center;"><input type="submit" value="削除" class="square_btn" /></td>
+            {% else %}
+                <td style="text-align:center;"><input type="submit" value="登録" class="square_btn" /></td>
+            {% endifequal %}
+            <td style="text-align:center;"><input type="button" id="btn_cancel" value="キャンセル" class="square_btn" /></td>
+        </tr>    
+    </table>
+
+{% endblock %}

@@ -33,6 +33,7 @@ ALLOWED_HOSTS = []
 INSTALLED_APPS = [
     'susanowo.apps.SusanowoConfig',
     'omoikane.apps.OmoikaneConfig',
+    'tukuyomi.apps.TukuyomiConfig',
     'guestboard.apps.GuestboardConfig',
     'uploader.apps.UploaderConfig',
     'django.contrib.admin',
@@ -52,6 +53,8 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+
+SESSION_ENGINE = 'django.contrib.sessions.backends.cache'
 
 ROOT_URLCONF = 'izanagi.urls'
 
@@ -123,7 +126,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Asia/Tokyo'
 
 USE_I18N = True
 

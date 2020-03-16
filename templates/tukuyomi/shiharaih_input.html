@@ -1,0 +1,147 @@
+{% extends "tukuyomi/base.html" %}
+
+{% load static %}
+{% block header %}
+<script src="{% static 'js/tukuyomi/menu_input.js' %}" ></script>
+<style type="text/css">
+    <!--
+    input[id$="used_amt"] {
+        text-align: right;
+    }
+    -->
+</style>
+{% endblock %}
+
+{% block body %}
+<div class="title_class">
+    利用登録<br/><br/>
+</div>
+
+{% ifequal shori '' %}
+    <form method="post" action="{% url 'tukuyomi:shiharaih_input' assert_cd %}">
+{% else %}
+    <form method="post" action="{% url 'tukuyomi:shiharaih_input_modify' shiharaih_id shori %}">
+{% endifequal %}
+
+    {% csrf_token %}
+
+    {% ifequal shori '' %}
+    <table class="simple_class">
+        <tr>
+            <th class="th_header th_right_class" style="width:100px">資産名</th>
+            <td class="td_class" style="width:200px">{{assert_nm}}</td>
+        </tr>
+        <tr>
+            <th class="th_header th_right_class" style="width:100px">{{form.used_date.label}}</th>
+            <td class="td_class" style="width:200px">
+                {{form.used_date}}{{form.used_date.errors.0}}
+                <script>
+                    $(function () {
+                        // 日付は、年/月/日 の形式でお願いする。
+                        let dateFormat = 'yy-mm-dd';
+                        $('#id_used_date').datepicker({
+                            dateFormat: dateFormat
+                        });
+                    });
+                </script>
+            </td>
+        </tr>
+        <tr>
+            <th class="th_header th_right_class" style="width:100px">{{form.shop_name.label}}</th>
+            <td class="td_class" style="width:200px">{{form.shop_name}}{{form.shop_name.errors.0}}</td>
+        </tr>
+        <tr>
+            <th class="th_header th_right_class" style="width:100px">{{form.used_amt.label}}</th>
+            <td class="td_class" style="width:200px">{{form.used_amt}}{{form.used_amt.errors.0}}</td>
+        </tr>
+        <tr>
+            <th class="th_header th_right_class" style="width:100px">{{form.receipt.label}}</th>
+            <td class="td_class" style="width:200px">{{form.receipt}}{{form.receipt.errors.0}}</td>
+        </tr>
+    </table>
+    {% endifequal %}
+
+    {% ifequal shori 'm' %}
+    <table class="simple_class">
+        <tr>
+            <th class="th_header th_right_class" style="width:100px">資産名</th>
+            <td class="td_class" style="width:200px">{{assert_nm}}</td>
+        </tr>
+        <tr>
+            <th class="th_header th_right_class" style="width:100px">{{form.used_date.label}}</th>
+            <td class="td_class" style="width:200px">
+                {{form.used_date}}{{form.used_date.errors.0}}
+                <script>
+                    $(function () {
+                        // 日付は、年/月/日 の形式でお願いする。
+                        let dateFormat = 'yy-mm-dd';
+                        $('#id_used_date').datepicker({
+                            dateFormat: dateFormat
+                        });
+                    });
+                </script>
+            </td>
+        </tr>
+        <tr>
+            <th class="th_header th_right_class" style="width:100px">{{form.shop_name.label}}</th>
+            <td class="td_class" style="width:200px">{{form.shop_name}}{{form.shop_name.errors.0}}</td>
+        </tr>
+        <tr>
+            <th class="th_header th_right_class" style="width:100px">{{form.used_amt.label}}</th>
+            <td class="td_class" style="width:200px">{{form.used_amt}}{{form.used_amt.errors.0}}</td>
+        </tr>
+        <tr>
+            <th class="th_header th_right_class" style="width:100px">{{form.receipt.label}}</th>
+            <td class="td_class" style="width:200px">{{form.receipt}}{{form.receipt.errors.0}}</td>
+        </tr>
+    </table>
+    {% endifequal %}
+
+    {% ifequal shori 'd' %}
+    <table class="simple_class">
+        <tr>
+            <th class="th_header th_right_class" style="width:100px">資産名</th>
+            <td class="td_class" style="width:200px">{{assert_nm}}</td>
+        </tr>
+        <tr>
+            <th class="th_header th_right_class" style="width:100px">{{form.used_date.label}}</th>
+            <td class="td_class" style="width:200px">{{form.used_date}}{{form.used_date.errors.0}}</td>
+        </tr>
+        <tr>
+            <th class="th_header th_right_class" style="width:100px">{{form.shop_name.label}}</th>
+            <td class="td_class" style="width:200px">{{form.shop_name}}{{form.shop_name.errors.0}}</td>
+        </tr>
+        <tr>
+            <th class="th_header th_right_class" style="width:100px">{{form.used_amt.label}}</th>
+            <td class="td_class" style="width:200px">{{form.used_amt}}{{form.used_amt.errors.0}}</td>
+        </tr>
+        <tr>
+            <th class="th_header th_right_class" style="width:100px">{{form.receipt.label}}</th>
+            <td class="td_class" style="width:200px">{{form.receipt}}{{form.receipt.errors.0}}</td>
+        </tr>
+    </table>
+    {% endifequal %}
+
+    {% if form.non_field_errors %}
+    <br/>
+    <div class="errmsg">
+        <ul>
+        {% for non_field_error in form.non_field_errors %}
+        <li class="errmsg">{{ non_field_error }}</li>
+        {% endfor %}
+        </ul>
+    </div>
+    {% endif %}
+    <br/>
+    <table id="controller">
+        <tr>
+            {% ifequal shori 'd' %}
+                <td style="text-align:center;"><input type="submit" value="削除" class="square_btn" /></td>
+            {% else %}
+                <td style="text-align:center;"><input type="submit" value="登録" class="square_btn" /></td>
+            {% endifequal %}
+            <td style="text-align:center;"><input type="button" id="btn_cancel" value="キャンセル" class="square_btn" /></td>
+        </tr>    
+    </table>
+
+{% endblock %}

@@ -1,0 +1,74 @@
+{% extends "tukuyomi/base.html" %}
+
+{% load static %}
+{% block header %}
+<script src="{% static 'js/tukuyomi/shiharaim_input.js' %}" ></script>
+<style type="text/css">
+    <!--
+    input[id$="sum_user_amt"] {
+        text-align: right;
+    }
+    -->
+</style>
+{% endblock %}
+
+{% block body %}
+<div class="title_class">
+    利用登録<br/><br/>
+</div>
+
+<form method="post" action="{% url 'tukuyomi:shiharaim_input' assert_cd y m d shop_name %}">
+    {% csrf_token %}
+    <input type="hidden" id="total_count" name="shiharai_row" value="{{shiharai_row}}" />
+    <!-- ========== テーブル全体を表す div ========== -->
+    <div style="width:710px; border-style:solid;border-width:0px; text-align: center;">
+        <!-- ===== ヘッダ部(THEAD相当)を表す div ===== -->
+        <div style="width:100%">
+            <table class="list_class">
+                <thead>
+                    <tr>
+                        <th class="th_header th_center_class" style="width:200px">品名</th>
+                        <th class="th_header th_center_class" style="width:200px">購入者</th>
+                        <th class="th_header th_center_class" style="width:200px">金額</th>
+                        <th class="th_header th_center_class" style="width:50px">追加</th>
+                        <th class="th_header th_center_class" style="width:50px">削除</th>
+                    </tr>
+                </thead>
+            </table>
+        </div>
+        <!-- ===== ボディー部(TBODY相当)を表す div ===== -->
+        <div style="height:100%; width:100%;overflow-y:scroll;overflow-x:hidden;">
+            {{ formset.management_form }}
+            <table class="list_class">
+                <tbody id="forms">
+                {% with shm_row=0 %}
+                {% for form in formset %}
+                    <tr class="tr_class" id="row{{shm_row}}">
+                        <td class="td_class" style="width:200px">{{form.item_nm}}{{form.item_nm.errors.0}}</td>
+                        <td class="td_class" style="width:200px">{{form.buyer_choice}}{{form.buyer_choice.errors.0}}</td>
+                        <td class="td_class" style="width:200px; text-align: right;">{{form.sum_user_amt}}{{form.sum_user_amt.errors.0}}</td>
+                        <td class="td_class" style="width:50px">
+                            <img id="insert" src="{% static 'png/common/insert.png' %}" name="{{shm_row}}" />
+                        </td>
+                        <td class="td_class" style="width:50px">
+                            <img id="delete" src="{% static 'png/common/delete.png' %}" name="{{shm_row}}" />
+                        </td>
+                        <td class="td_class" style="width:0px">{{form.id}}</td>
+                        <td class="td_class" style="width:0px">{{form.shiharai_row}}</td>
+                        <td><input type="hidden" value="{{ shm_row|add:1 }}" /></td>
+                    </tr>
+                    {% endfor %}
+                {% endwith %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <br/>
+    <table id="controller">
+        <tr>
+            <td style="text-align:center;"><input type="submit" value="登録" class="square_btn" /></td>
+            <td style="text-align:center;"><input type="button" id="btn_cancel" value="キャンセル" class="square_btn" /></td>
+        </tr>    
+    </table>
+
+{% endblock %}

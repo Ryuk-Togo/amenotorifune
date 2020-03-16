@@ -1,0 +1,59 @@
+{% extends "omoikane/base.html" %}
+
+{% load static %}
+{% block header %}
+<script src="{% static 'js/omoikane/user_input.js' %}" ></script>
+{% endblock %}
+
+{% block body %}
+ユーザ一覧<br/>
+    
+<form method="post" action="{% url 'omoikane:user_list' %}">
+    {% csrf_token %}
+    
+    <!-- ========== テーブル全体を表す div ========== -->
+    <div style="width:750px; border-style:solid;border-width:0px;">
+    <!-- ===== ヘッダ部(THEAD相当)を表す div ===== -->
+        <div style="width:100%">
+            <table class="list_class">
+                <thead>
+                    <tr>
+                        <th class="th_class" style='width:300px'>ユーザ名</th>
+                        <th class="th_class" style='width:300px'>ユーザID</th>
+                        <th class="th_center_class" style='width:50px'>編集</th>
+                        <th class="th_center_class" style='width:50px'>追加</th>
+                        <th class="th_center_class" style='width:50px'>削除</th>
+                    </tr>
+                </thead>
+            </table>
+        </div>
+        <!-- ===== ボディー部(TBODY相当)を表す div ===== -->
+        <div style="height:400px; width:100%;overflow-y:scroll;overflow-x:hidden;background:#BBBBBB">
+            <table class="list_class">
+                <tbody>
+                {% for user in musers %}
+                    <tr id="row{{user.id}}">
+                        <td class="td_class" style='width:300px'>{{user.user_name}}<td>
+                        <td class="td_class" style='width:300px'>{{user.user_id}}</td>
+                        <td class="td_center_class" style='width:50px'><a href="{% url 'omoikane:user_input_modify' user.user_id 'm' %}" >...</a><td>
+                        <td class="td_center_class" style='width:50px'><a href="{% url 'omoikane:user_input'  %}" >＋</a><td>
+                        <td class="td_center_class" style='width:50px'><a href="{% url 'omoikane:user_input_modify' user.user_id 'd' %}" >ー</a><td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    {% if form.non_field_errors %}
+    <br/>
+    <div class="errmsg">
+        <ul>
+        {% for non_field_error in form.non_field_errors %}
+        <li class="errmsg">{{ non_field_error }}</li>
+        {% endfor %}
+        </ul>
+    </div>
+    {% endif %}
+    <br/>
+
+{% endblock %}
