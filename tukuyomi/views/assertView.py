@@ -23,7 +23,7 @@ def assert_list(request):
         user_name = request.session.get('LOGIN_USER_NAME')
 
         # formSet = AssertListModelFormSet(queryset=MAssert.objects.filter(user_id=user_id).order_by('assertNm'))
-        massert = MAssert.objects.filter(user_id=user_id).order_by('assertNm')
+        massert = MAssert.objects.filter(user_id=user_id).order_by('assert_nm')
 
         context = {
             'user_id':user_id,
@@ -91,14 +91,14 @@ def assert_input_modify(request,id,shori):
             massert = form.save(commit=False)
             massert = get_object_or_404(MAssert, id=id)
             if shori=='m':
-                massert.assertNm       = request.POST['assertNm']
+                massert.assert_nm       = request.POST['assertNm']
                 massert.update_date    = timezone.datetime.now()
                 massert.update_pg_id   = 'assert_input'
                 massert.update_user_id = user_id
                 massert.save()
             elif shori=='d':
                 massert.delete()
-            return redirect('/tukuyomi/menu/')
+            return redirect('/tukuyomi/assert_list/')
         else:
             context = {
                 'user_id':user_id,

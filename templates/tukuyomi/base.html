@@ -27,19 +27,21 @@
                     電子マネー管理
                 </th>
                 <td style="text-align:center; width:150px;" class="menu th_center_class">
-                    <a href="{% url 'tukuyomi:assert_list' %}" >
+                {% with year="2020" month="03" %}
+                    <a class="menu_class" href="{% url 'tukuyomi:riyou_info' year month %}" >
+                    {% endwith %}
                         <img src="{% static 'png/tukuyomi/useinfo.png' %}"/><br/>
                         利用者情報<br/>
                     </a>
                 </td>
                 <td style="text-align:center; width:150px;" class="menu th_center_class">
-                    <a href="{% url 'tukuyomi:assert_list' %}" >
+                    <a class="menu_class" href="{% url 'tukuyomi:assert_list' %}" >
                         <img src="{% static 'png/tukuyomi/assert.png' %}"/><br/>
                         資産名<br/>    
                     </a>
                 </td>
                 <td style="text-align:center; width:150px;" class="menu th_center_class">
-                    <a href="{% url 'tukuyomi:buyer_list' %}" >
+                    <a class="menu_class" href="{% url 'tukuyomi:buyer_list' %}" >
                         <img src="{% static 'png/tukuyomi/buyer.png' %}"/><br/>
                         購入者<br/>
                     </a>
@@ -49,7 +51,8 @@
                     返金<br/>
                 </td>
                 <td style="text-align:right; width:auto" class="menu th_center_class">
-                    {{user_id}}({{user_name}})
+                    {{user_id}}({{user_name}})<br/><br/>
+                    <a class="menu_class" href="/tukuyomi/">ログアウト</a>
                 </td>
             </tr>
             <tr>

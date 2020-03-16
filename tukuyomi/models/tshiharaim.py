@@ -2,50 +2,55 @@ from django.db import models
 from django.db.models.signals import post_delete
 from django.utils.timezone import now
 from django.dispatch import receiver
+from tukuyomi.models.mbuyer import MBuyer
 
 class TShiharaiM(models.Model):
 
-    userId = models.CharField(
+    user_id = models.CharField(
         verbose_name='利用者コード',
         max_length=30,
         blank=False,
     )
 
-    usedDate = models.DateField(
+    used_date = models.DateField(
         verbose_name='利用日',
         blank=False,
     )
 
-    shopName = models.CharField(
+    shop_name = models.CharField(
         verbose_name='店名',
         max_length=30,
         blank=False,
     )
 
-    asseerCd = models.CharField(
+    assert_cd = models.IntegerField(
         verbose_name='資産名コード',
-        max_length=30,
         blank=False,
     )
 
-    itemNm = models.CharField(
+    item_nm = models.CharField(
         verbose_name='品名',
         max_length=30,
         blank=False,
     )
 
-    buyerCd = models.CharField(
+    buyer_cd = models.IntegerField(
         verbose_name='購入者コード',
-        max_length=30,
         blank=False,
     )
 
-    sumUserAmt = models.IntegerField(
+    # buyer_choice = models.ForeignKey(
+    #     MBuyer,
+    #     verbose_name='購入者',
+    #     on_delete=models.CASCADE
+    # )
+
+    sum_user_amt = models.IntegerField(
         verbose_name='金額',
         blank=False,
     )
 
-    refundBalance = models.IntegerField(
+    refund_balance = models.IntegerField(
         verbose_name='返金残高',
         blank=False,
     )

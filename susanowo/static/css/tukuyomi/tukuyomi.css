@@ -10,23 +10,23 @@ body{
 	font:120% "Meiryo UI";
 }
 
-a{
-	color:#f7f78b;
+a.menu_class {
+	color:#f7f7a2;
 	text-decoration:none;
 }
 
-a:visited{
-	color:#f7f78b;
+a:visited.menu_class {
+	color:#f5f5b4;
 	text-decoration:none;
 }
 
-a:hover{
-	color:#f7f78b;
+a:hover.menu_class {
+	color:#f5f5b4;
 	text-decoration:none;
 }
 
-a:active{
-	color:#f7f78b;
+a:active.menu_class {
+	color:#f5f5b4;
 	text-decoration:none;
 }
 
@@ -39,7 +39,7 @@ a:active{
 }
 
 .errmsg {
-	background-color: #f7f78b;
+	background-color: #f5f5b4;
 	color:#FF0000;
 }
 
@@ -49,8 +49,8 @@ a:active{
 }
 
 .menu {
-	background-color: #121246;
-	color:#f7f78b;
+	background-color: #02025e;
+	color:#f5f5b4;
 	padding: 1em;
     font-weight: bold;
 	margin: 2; 
@@ -67,46 +67,83 @@ a:active{
 }
 
 .tr_class {
-	border-bottom:1px solid #121246;
+	border-bottom:1px dashed #02025e;
+	height: 50px;
+}
+
+.th_header {
+	border-left:1px solid #f5f5b4;
+	border-right:1px solid #f5f5b4;
+	border-bottom:1px solid #f5f5b4;
 }
 
 .th_class {
-	border-color: #121246;
-	background-color: #121246;
-	color:#f7f78b;
+	background-color: #02025e;
+	color:#f5f5b4;
 }
 
 .th_center_class {
-	border-color: #121246;
-	background-color: #121246;
-	color:#f7f78b;
+	background-color: #02025e;
+	color:#f5f5b4;
 	text-align: center;
 }
 
 .th_right_class {
-	border-color: #121246;
-	background-color: #121246;
-	color:#f7f78b;
+	background-color: #02025e;
+	color:#f5f5b4;
 	text-align: right;
+	padding-right: 2px;
 }
 
 .td_class {
-	border-color: #121246;
-	background-color: #f7f78b;
-	color:#121246;
+	border-color: #02025e;
+	background-color: #f5f5b4;
+	color:#02025e;
 }
 
 .td_center_class {
-	border-color: #121246;
-	background-color: #f7f78b;
+	border-color: #02025e;
+	background-color: #f5f5b4;
 	text-align: center;
-	color:#121246;
+	color:#02025e;
+}
+
+.td_right_class {
+	border-color: #02025e;
+	background-color: #f5f5b4;
+	text-align: right;
+	color:#02025e;
+	padding-right: 2px;
 }
 
 .main_body {
-	background-color: #f7f78b;
-	color:#121246;
+	background-color: #f5f5b4;
+	color:#02025e;
 	vertical-align:top;
 	padding: 1em;
 	margin: 2; 
+}
+
+a.normal_class {
+	color:#8d035f;
+	text-decoration:none;
+    font-weight: bold;
+}
+
+a:visited.normal_class {
+	color:#8d035f;
+	text-decoration:none;
+    font-weight: bold;
+}
+
+a:hover.normal_class {
+	color:#8d035f;
+	text-decoration:none;
+    font-weight: bold;
+}
+
+a:active.normal_class {
+	color:#8d035f;
+	text-decoration:none;
+    font-weight: bold;
 }

@@ -20,10 +20,10 @@
             <table class="list_class">
                 <thead>
                     <tr>
-                        <th class="th_center_class" style='width:400px'>資産名</th>
-                        <th class="th_center_class" style='width:50px'>編集</th>
-                        <th class="th_center_class" style='width:50px'>追加</th>
-                        <th class="th_center_class" style='width:50px'>削除</th>
+                        <th class="th_header th_center_class" style='width:400px'>資産名</th>
+                        <th class="th_header th_center_class" style='width:50px'>編集</th>
+                        <th class="th_header th_center_class" style='width:50px'>追加</th>
+                        <th class="th_header th_center_class" style='width:50px'>削除</th>
                     </tr>
                 </thead>
             </table>
@@ -45,8 +45,8 @@
                     </tr>
                     {% else %}
                         {% for assert in form %}
-                        <tr id="row{{assert.id}}">
-                            <td class="td_class" style='width:400px'>{{assert.assertNm}}<td>
+                        <tr class="tr_class" id="row{{assert.id}}">
+                            <td class="td_class" style='width:400px'>{{assert.assert_nm}}<td>
                             <td class="td_center_class" style='width:50px'>
                                 <a href="{% url 'tukuyomi:assert_input_modify' assert.id 'm' %}" >
                                     <img src="{% static 'png/common/edit.png' %}"/>

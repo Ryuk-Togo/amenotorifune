@@ -71,3 +71,11 @@ function comfCheckboxChecked(checkVal) {
         return "";
     } 
 }
+
+function getYear() {
+	return new Date().getFullYear();
+}
+
+function getMonth() {
+	return new Date().getMonth();
+}

@@ -7,9 +7,9 @@ class AssertModelForm(forms.ModelForm):
 
     class Meta:
         model = MAssert
-        fields = ('id','assertNm')
+        fields = ('id','assert_nm')
         widgets = {
-            'assertNm': forms.TextInput(),
+            'assert_nm': forms.TextInput(),
         }
 
 # AssertListModelFormSet = formsets.formset_factory(form=AssertModelForm, extra=0,)

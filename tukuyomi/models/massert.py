@@ -11,7 +11,7 @@ class MAssert(models.Model):
         blank=False,
     )
 
-    assertNm = models.CharField(
+    assert_nm = models.CharField(
         verbose_name='資産名',
         max_length=60,
         blank=False,

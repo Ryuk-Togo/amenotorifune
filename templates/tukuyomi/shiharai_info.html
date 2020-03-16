@@ -1,0 +1,74 @@
+{% extends "tukuyomi/base.html" %}
+
+{% load static %}
+{% block header %}
+<script src="{% static 'js/tukuyomi/shiharai_info.js' %}" ></script>
+{% endblock %}
+
+{% block body %}
+<div class="title_class">
+    利用一覧<br/>
+    {{assert_nm}}　　{{used_year}}/{{used_month}}<br/>
+</div>
+    
+<form method="GET" action="{% url 'tukuyomi:shiharaih_input' assert_cd %}">
+    <!-- ========== テーブル全体を表す div ========== -->
+    <div style="width:900px; border-style:solid;border-width:0px; text-align: center;">
+        <!-- ===== ヘッダ部(THEAD相当)を表す div ===== -->
+        <div style="width:100%">
+            <table class="list_class">
+                <thead>
+                    <tr>
+                        <th class="th_header th_center_class" style='width:200px'>利用日</th>
+                        <th class="th_header th_center_class" style='width:200px'>店名</th>
+                        <th class="th_header th_right_class" style='width:200px'>利用金額</th>
+                        <th class="th_header th_center_class" style='width:200px'>レシート</th>
+                        <th class="th_header th_center_class" style='width:100px'>編集</th>
+                    </tr>
+                </thead>
+            </table>
+        </div>
+        <!-- ===== ボディー部(TBODY相当)を表す div ===== -->
+        <div style="height:100%; width:100%;overflow-y:scroll;overflow-x:hidden;">
+            <table class="list_class">
+                <tbody>
+                    {% for rec in form %}
+                    <tr class="tr_class" id="row{{assert.id}}">
+                        <td class="td_class" style='width:200px'>
+                            {{rec.used_date}}
+                        </td>
+                        <td class="td_class" style='width:200px'>
+                            {{rec.shop_name}}
+                        </td>
+                        <td class="td_right_class" style='width:200px'>
+                            {{rec.used_amt}}
+                        </td>
+                        <td class="td_class" style='width:200px'>
+                            {{rec.receipt}}
+                        </td>
+                        <td class="td_class" style='width:100px'>
+                            <section>
+                                <select class="submenu_shiharai">
+                                    <option value="top"><img src="{% static 'png/common/edit.png' %}"/></option>
+                                    <option value="/tukuyomi/shiharaih_input_modify/{{rec.id}}/m">利用(鏡)</option>
+                                    <option value="/tukuyomi/shiharaim_input/{{assert_cd}}/{{rec.used_date}}/{{rec.shop_name}}">利用明細</option>
+                                    <option value="/tukuyomi/shiharaih_input_modify/{{rec.id}}/d">削除</option>
+                                </select>
+                            </section>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <br/>
+        <br/>
+        <table id="controller">
+            <tr>
+                <td style="text-align:center;"><input type="submit" value="新規" class="square_btn" /></td>
+                <td style="text-align:center;"><input type="button" id="btn_cancel" value="キャンセル" class="square_btn" /></td>
+            </tr>    
+        </table>
+    </div>
+</form>
+{% endblock %}

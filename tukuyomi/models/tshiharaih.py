@@ -5,30 +5,29 @@ from django.dispatch import receiver
 
 class TShiharaiH(models.Model):
 
-    userId = models.CharField(
+    user_id = models.CharField(
         verbose_name='利用者コード',
         max_length=30,
         blank=False,
     )
 
-    usedDate = models.DateField(
+    used_date = models.DateField(
         verbose_name='利用日',
         blank=False,
     )
 
-    shopName = models.CharField(
+    shop_name = models.CharField(
         verbose_name='店名',
         max_length=30,
         blank=False,
     )
 
-    asseerCd = models.CharField(
+    assert_cd = models.IntegerField(
         verbose_name='資産名コード',
-        max_length=30,
         blank=False,
     )
 
-    usedAmt = models.IntegerField(
+    used_amt = models.IntegerField(
         verbose_name='利用金額',
         blank=False,
     )
@@ -36,7 +35,7 @@ class TShiharaiH(models.Model):
     receipt = models.ImageField(
         verbose_name='レシート',
         max_length=30,
-        blank=False,
+        blank=True,
     )
 
     create_date = models.DateTimeField(
