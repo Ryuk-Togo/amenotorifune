@@ -80,6 +80,7 @@ a:active.menu_class {
 .th_class {
 	background-color: #02025e;
 	color:#f5f5b4;
+	padding-left: 2px;
 }
 
 .th_center_class {
@@ -99,6 +100,7 @@ a:active.menu_class {
 	border-color: #02025e;
 	background-color: #f5f5b4;
 	color:#02025e;
+	padding-left: 2px;
 }
 
 .td_center_class {

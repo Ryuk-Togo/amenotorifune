@@ -39,12 +39,6 @@ class TShiharaiM(models.Model):
         blank=False,
     )
 
-    # buyer_choice = models.ForeignKey(
-    #     MBuyer,
-    #     verbose_name='購入者',
-    #     on_delete=models.CASCADE
-    # )
-
     sum_user_amt = models.IntegerField(
         verbose_name='金額',
         blank=False,
@@ -53,6 +47,7 @@ class TShiharaiM(models.Model):
     refund_balance = models.IntegerField(
         verbose_name='返金残高',
         blank=False,
+        default=0,
     )
 
     create_date = models.DateTimeField(
@@ -85,6 +80,11 @@ class TShiharaiM(models.Model):
         blank=True,
     )
 
-    def __str__(self):
-        """ファイルのURLを返す"""
-        return self.receipt.url
+    # def __str__(self):
+    #     """ファイルのURLを返す"""
+    #     meta_fields = models._meta.get_fields()
+    #     ret = list()
+    #     for i, meta_field in enumerate(meta_fields):
+    #         if i > 0:
+    #             ret.append(meta_field.value)
+    #     return ret
