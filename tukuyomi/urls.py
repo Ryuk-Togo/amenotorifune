@@ -21,4 +21,7 @@ urlpatterns = [
     path('shiharaim_input/<int:assert_cd>/<int:y>/<int:m>/<int:d>/<str:shop_name>', views.shiharaimView.shiharaim_input, name='shiharaim_input'),
     # path('shiharaim_insert/<int:assert_cd>/<int:y>/<int:m>/<int:d>/<str:shop_name>/<int:insert_row>', views.shiharaimView.shiharaim_insert, name='shiharaim_insert'),
     # path('shiharaim_delete/<int:assert_cd>/<int:y>/<int:m>/<int:d>/<str:shop_name>/<int:delete_row>', views.shiharaimView.shiharaim_delete, name='shiharaim_delete'),
+    url(r'^henkin_header/$', views.henkinView.henkin_header, name='henkin_header'),
+    url(r'^henkin_list/$', views.henkinView.henkin_list, name='henkin_list'),
+    # url(r'^henkin_input/$', views.henkinView.henkin_input, name='henkin_input'),
 ]

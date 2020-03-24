@@ -47,8 +47,10 @@
                     </a>
                 </td>
                 <td style="text-align:center; width:150px;" class="menu th_center_class">
-                    <img src="{% static 'png/tukuyomi/refund.png' %}"/><br/>
-                    返金<br/>
+                    <a class="menu_class" href="{% url 'tukuyomi:henkin_header' %}" >
+                        <img src="{% static 'png/tukuyomi/refund.png' %}"/><br/>
+                        返金<br/>
+                    </a>
                 </td>
                 <td style="text-align:right; width:auto" class="menu th_center_class">
                     {{user_id}}({{user_name}})<br/><br/>

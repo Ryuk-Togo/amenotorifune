@@ -6,3 +6,4 @@ from tukuyomi.views.riyouView import *
 from tukuyomi.views.shiharaiView import *
 from tukuyomi.views.shiharaihView import *
 from tukuyomi.views.shiharaimView import *
+from tukuyomi.views.henkinView import *
