@@ -1,0 +1,99 @@
+{% extends "tukuyomi/base.html" %}
+
+{% load static %}
+{% block header %}
+<script src="{% static 'js/tukuyomi/henkin.js' %}" ></script>
+<style type="text/css">
+    input[id$="sum_user_amt"] {
+        text-align: right;
+    }
+    input[id$="refund_balance"] {
+        text-align: right;
+    }
+</style>
+{% endblock %}
+
+{% block body %}
+<div class="title_class">
+    返金<br/><br/>
+</div>
+
+<form method="post" action="{% url 'tukuyomi:henkin_header' %}">
+    {% csrf_token %}
+    {{user.buyer_name.label}}：{{user.buyer_name}}　
+    {{user.sum_refund_balance.label}}：{{user.sum_refund_balance}}　
+    {{user.row_count}}
+    <input type="hidden" id="zandaka" name="zandaka" value="0" />
+    <input type="submit" value="検索" id="btnUserList" class="square_btn" />
+</form>
+<br/>
+
+<form method="post" action="{% url 'tukuyomi:henkin_list' %}">
+    {% csrf_token %}
+    <input type="hidden" id="id_buyer_id" name="buyer_id" value="{{cmb_buyer_id}}" />
+    <!-- ========== テーブル全体を表す div ========== -->
+    <div style="width:1220px; border-style:solid;border-width:0px; text-align: center;">
+        <!-- ===== ヘッダ部(THEAD相当)を表す div ===== -->
+        <div style="width:100%">
+            <table class="list_class">
+                <thead>
+                    <tr>
+                        <th class="th_header th_center_class" style="width:20px">選</th>
+                        <th class="th_header th_center_class" style="width:200px">利用日</th>
+                        <th class="th_header th_center_class" style="width:200px">店名</th>
+                        <th class="th_header th_center_class" style="width:200px">資産名</th>
+                        <th class="th_header th_center_class" style="width:200px">品名</th>
+                        <th class="th_header th_center_class" style="width:200px">利用金額</th>
+                        <th class="th_header th_center_class" style="width:200px">返金額</th>
+                    </tr>
+                </thead>
+            </table>
+        </div>
+        <!-- ===== ボディー部(TBODY相当)を表す div ===== -->
+        <div style="height:100%; width:100%;overflow-y:scroll;overflow-x:hidden;">
+            {{ formset.management_form }}
+            <table class="list_class">
+                <tbody id="forms">
+                {% for form in formset %}
+                    <tr class="tr_class" id="row">
+                        <td class="td_class" style="width:20px">{{form.is_selected}}{{form.is_selected.errors.0}}</td>
+                        <td class="td_class" style="width:200px">{{form.used_date}}{{form.used_date.errors.0}}</td>
+                        <td class="td_class" style="width:200px">{{form.shop_name}}{{form.shop_name.errors.0}}</td>
+                        <td class="td_class" style="width:200px">{{form.assert_nm}}{{form.assert_nm.errors.0}}</td>
+                        <td class="td_class" style="width:200px">{{form.item_nm}}{{form.item_nm.errors.0}}</td>
+                        <td class="td_class" style="width:200px; text-align: right;">{{form.sum_user_amt}}{{form.sum_user_amt.errors.0}}</td>
+                        <td class="td_class" style="width:200px; text-align: right;">{{form.refund_balance}}{{form.refund_balance.errors.0}}</td>
+                        <td>{{form.id}}</td>
+                        <td>{{form.user_id}}</td>
+                        <td>{{form.assert_cd}}</td>
+                        <td>{{form.buyer_cd}}</td>
+                        <td>{{form.moto_refund_balance}}</td>
+                    </tr>
+                {% endfor %}
+                    <tr class="tr_class" id="sum_row">
+                        <th class="td_right_class" style="width:820px;" colspan="5">合計</td>
+                        <td class="td_class" style="width:200px; text-align: right;"><input type="text" id="sum_user_amt" name="sum_user_amt" readonly="readonly" value=""></td>
+                        <td class="td_class" style="width:200px; text-align: right;"><input type="text" id="sum_refund_balance" name="sum_refund_balance" readonly="readonly" value=""></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="errmsg">
+        <ul>
+        {% for non_field_error in formset.errors %}
+        <li class="errmsg">{{ non_field_error }}</li>
+        {% endfor %}
+        </ul>
+    </div>
+
+    <br/>
+    <table id="controller">
+        <tr>
+            <td style="text-align:center;"><input type="submit" value="登録" class="square_btn" /></td>
+            <td style="text-align:center;"><input type="button" id="btn_cancel" value="キャンセル" class="square_btn" /></td>
+        </tr>    
+    </table>
+
+{% endblock %}
