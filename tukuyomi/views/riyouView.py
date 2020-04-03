@@ -45,14 +45,13 @@ def riyou_info(request,y,m):
         }
         
         sql = ''
-        sql = sql + 'SELECT at.assert_nm, at.id, COALESCE(sum(sh.used_amt),0) '
+        sql = sql + 'SELECT at.assert_nm, at.id, sum(COALESCE(sh.used_amt,0)) '
         sql = sql + '  FROM tukuyomi_massert at '
         sql = sql + '  LEFT OUTER JOIN tukuyomi_tshiharaih sh '
         sql = sql + '  ON ( sh.assert_cd = at.id '
-        sql = sql + '   AND sh.user_id = at.user_id ) '
+        sql = sql + '   AND sh.user_id = at.user_id '
+        sql = sql + '   AND to_char(sh.used_date, \'yyyy/mm\') = %(used_month)s ) '
         sql = sql + ' WHERE at.user_id = %(user_id)s '
-        sql = sql + '   AND ( sh.used_date is null '
-        sql = sql + '    OR to_char(sh.used_date, \'yyyy/mm\') = %(used_month)s) '
         sql = sql + ' GROUP BY at.assert_nm, at.id '
         sql = sql + ' ORDER BY at.assert_nm '
         
