@@ -34,6 +34,7 @@ INSTALLED_APPS = [
     'susanowo.apps.SusanowoConfig',
     'omoikane.apps.OmoikaneConfig',
     'tukuyomi.apps.TukuyomiConfig',
+    'amaterasu.apps.AmaterasuConfig',
     'guestboard.apps.GuestboardConfig',
     'uploader.apps.UploaderConfig',
     'django.contrib.admin',

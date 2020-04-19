@@ -1,0 +1,76 @@
+{% load static %}
+<!DOCTYPE himl>
+<html>
+    <head lang='ja'>
+    <meta charset='UTF-8'>
+    <title>
+        パスワード管理
+    </title>
+    <LINK rel="shortcut icon" href="{% static 'icon/amaterasu.ico' %}">
+    <link rel="stylesheet" href="{% static 'css/amaterasu/amaterasu.css' %}" >
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}" >
+    <link rel="stylesheet" href="{% static 'css/jquery-ui.css' %}" >
+    <script src="{% static 'js/bootstrap.js' %}" ></script>
+    <script src="{% static 'js/jquery-3.3.1.js' %}" ></script>
+    <script src="{% static 'js/jquery-ui.js' %}" ></script>
+    <script src="{% static 'js/common.js' %}" ></script>
+    {% block header %}
+    {% endblock %}
+</head>
+<body>
+    {{message}}
+    <table style="width:100%;height:100%;">
+        <tbody>
+            <tr>
+                <th style="width:200px;height:25px;text-align:center;" class="menu" colspan="2">
+                    <img src="{% static 'png/amaterasu/amaterasu_title.png' %}"/><br/>
+                    <a class="menu_class" style="color:#500000; background-color: #ffffff;" href="{% url 'amaterasu:menu' %}" >
+                    <h4>
+                        パスワード一覧
+                    </h4>
+                    </a>
+                </th>
+                <td style="text-align:right; width:auto;height:20px" class="menu">
+                    {{user_id}}({{user_name}})<br/><br/>
+                    <a class="menu_class" style="color:#500000;" href="/amaterasu/">ログアウト</a>
+                </td>
+            </tr>
+            <tr>
+                <td style="text-align:right; width:100px;height:1px" class="menu">
+                </td>
+                <td style="text-align:right; width:100px;height:1px" class="menu">
+                </td>
+                <td style="text-align:right; height:1px" class="menu">
+                </td>
+            </tr>
+            <tr>
+                <td style="text-align:right; width:100px;height:25px" class="menu th_center_class">
+                    <a class="menu_class" href="{% url 'amaterasu:site_input' 0 %}" >
+                        新規登録
+                    </a>
+                </td>
+                <td class="main_body" colspan="2" rowspan="2">
+                    {% block body %}
+                    {% endblock %}
+                </td>
+            </tr>
+            <tr>
+                <td class="menu th_center_class"></td>
+            </tr>
+        </tbody>
+    </table>
+    <br/>
+    {% if form.non_field_errors %}
+    <br/>
+    <div class="errmsg">
+        <ul>
+        {% for non_field_error in form.non_field_errors %}
+        <li class="errmsg">{{ non_field_error }}</li>
+        {% endfor %}
+        </ul>
+    </div>
+    {% endif %}
+    <br/>
+
+</body>
+</html>

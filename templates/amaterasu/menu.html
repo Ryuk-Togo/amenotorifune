@@ -1,0 +1,35 @@
+{% extends "amaterasu/base.html" %}
+
+{% load static %}
+{% block header %}
+<script src="{% static 'js/amaterasu/menu.js' %}" ></script>
+{% endblock %}
+
+{% block body %}
+    <table style="text-align: center;">
+        {% for form in forms %}
+        <tr class="tr_class">
+            <td>
+                <table class="site_table_class">
+                    <tr>
+                        <th style="width: 100px;" class="th_right_class th_header">サイト名</th>
+                        <td style="width: 800px;" class="td_class"><a href="{{form.site_url}}" >{{form.site_name}}</a></td>
+                    </tr>
+                    <tr>
+                        <th class="th_right_class th_header">ユーザID</th>
+                        <td class="td_class">{{form.login_user_id}}</td>
+                    </tr>
+                    <tr>
+                        <th class="th_right_class th_header">パスワード</th>
+                        <td class="td_class"><input class="input_class" id="user_pw{{form.id}}" type="password" value={{form.login_user_pw}} disabled /></td>
+                    </tr>
+                    <tr>
+                        <th class="th_right_class th_header">表示</th>
+                        <td class="td_class"><input class="input_class check_class" id="pw_mask" type="checkbox" value="{{form.id}}" />　<a href="{% url 'amaterasu:site_input' form.id %}">...</a></td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+{% endblock %}

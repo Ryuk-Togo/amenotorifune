@@ -1,0 +1,182 @@
+@charset "utf-8";
+/* CSS Document */
+
+* {
+	margin:0; padding:0;
+	line-height:1.5;
+}
+
+body{
+	font:120% "Meiryo UI";
+}
+
+a.menu_class {
+	color:#ffffff;
+	text-decoration:none;
+}
+
+a:visited.menu_class {
+	color:#ffffff;
+	text-decoration:none;
+}
+
+a:hover.menu_class {
+	color:#ffffff;
+	text-decoration:none;
+}
+
+a:active.menu_class {
+	color:#ffffff;
+	text-decoration:none;
+}
+
+.square_btn {
+	width:170px;
+	height:50px;
+	padding: 0.5em; 
+    font-weight: bold;
+	margin: 2; 
+}
+
+.errmsg {
+	background-color: #ffffff;
+	color:#FF0000;
+}
+
+.title_class {
+	font-size: 20px;
+	font-weight: bold;
+}
+
+.menu {
+	background-color: #ffffff;
+	color:#500000;
+	padding: 1em;
+    font-weight: bold;
+	margin: 2; 
+}
+
+.list_class {
+	border-collapse: collapse;
+}
+
+.cell_class {
+	border-collapse: collapse;
+	border-style: solid;
+	border-width: 1px;
+}
+
+.input_class {
+	width: 800px;
+}
+
+.tr_class {
+	border-top:2px solid #ffffff;
+	border-bottom:2px solid #500000;
+	height: 50px;
+}
+
+.th_header {
+	border-top:1px solid #ffffff;
+	border-bottom:1px solid #ffffff;
+}
+
+.th_class {
+	background-color: #500000;
+	color:#ffffff;
+	padding-left: 2px;
+}
+
+.th_center_class {
+	background-color: #500000;
+	color:#ffffff;
+	text-align: center;
+}
+
+.th_right_class {
+	background-color: #500000;
+	color:#ffffff;
+	text-align: right;
+	padding-right: 2px;
+}
+
+.td_class {
+	border-color: #500000;
+	background-color: #ffffff;
+	color:#500000;
+	padding-left: 2px;
+	padding-right: 2px;
+}
+
+.td_center_class {
+	border-color: #500000;
+	background-color: #ffffff;
+	text-align: center;
+	color:#500000;
+}
+
+.td_right_class {
+	border-color: #500000;
+	background-color: #ffffff;
+	text-align: right;
+	color:#500000;
+	padding-right: 2px;
+}
+
+.main_body {
+	background-color: #ffffff;
+	color:#500000;
+	vertical-align:top;
+	padding: 1em;
+	margin: 2; 
+}
+
+a.normal_class {
+	color:#ff0000;
+	text-decoration:none;
+    font-weight: bold;
+}
+
+a:visited.normal_class {
+	color:#ff0000;
+	text-decoration:none;
+    font-weight: bold;
+}
+
+a:hover.normal_class {
+	color:#ff0000;
+	text-decoration:none;
+    font-weight: bold;
+}
+
+a:active.normal_class {
+	color:#ff0000;
+	text-decoration:none;
+    font-weight: bold;
+}
+
+site_table_class {
+	border-left:10px solid #ffffff;
+	border-right:10px solid #ffffff;
+	border-top:10px solid #ffffff;
+	border-bottom:10px solid #ffffff;
+	color: #500000;
+	margin: 10px; 
+}
+
+/* サイト情報入力 */
+input#id_site_name {
+	width: 700px;
+}
+input#id_login_user_id {
+	width: 700px;
+}
+input#id_login_user_pw {
+	width: 700px;
+}
+input#id_re_login_user_pw {
+	width: 700px;
+}
+input#id_site_url {
+	width: 700px;
+}
