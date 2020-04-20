@@ -22,4 +22,4 @@ db-datadir/
 !Dockerfile
 !requirements.txt
 media/
-!izanagi/settings.py
+izanagi/settings.py
