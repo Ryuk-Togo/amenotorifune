@@ -1,0 +1,92 @@
+{% extends "amenouzume/base.html" %}
+
+{% load static %}
+{% block header %}
+<script src="{% static 'js/amenouzume/place_input.js' %}" ></script>
+{% endblock %}
+
+{% block body %}
+{% ifequal shori '' %}
+    <form method="post" action="{% url 'amenouzume:item_input' %}">
+{% else %}
+    <form method="post" action="{% url 'amenouzume:item_input_modify' id shori %}">
+{% endifequal %}
+
+    {% csrf_token %}
+    {% ifequal shori '' %}
+    品目登録
+    <table class="simple_class">
+        <tr>
+            <th style="width:100px" class="th_right_class th_header">{{form.item_name.label}}</th>
+            <td style="width:500px" class="td_class">{{form.item_name}}{{form.item_name.errors.0}}</td>
+        </tr>
+        <tr>
+            <th style="width:100px" class="th_right_class th_header">{{form.safety_amt.label}}</th>
+            <td style="width:500px" class="td_class">{{form.safety_amt}}{{form.safety_amt.errors.0}}</td>
+        </tr>
+        <tr>
+            <th style="width:100px" class="th_right_class th_header">{{form.item_term.label}}</th>
+            <td style="width:500px" class="td_class">{{form.item_term}}{{form.item_term.errors.0}}</td>
+        </tr>
+    </table>
+    {% endifequal %}
+
+    {% ifequal shori 'm' %}
+    品目登録
+    <table class="simple_class">
+        <tr>
+            <th style="width:100px" class="th_right_class th_header">{{form.item_name.label}}</th>
+            <td style="width:500px" class="td_class">{{form.item_name}}{{form.item_name.errors.0}}</td>
+        </tr>
+        <tr>
+            <th style="width:100px" class="th_right_class th_header">{{form.safety_amt.label}}</th>
+            <td style="width:500px" class="td_class">{{form.safety_amt}}{{form.safety_amt.errors.0}}</td>
+        </tr>
+        <tr>
+            <th style="width:100px" class="th_right_class th_header">{{form.item_term.label}}</th>
+            <td style="width:500px" class="td_class">{{form.item_term}}{{form.item_term.errors.0}}</td>
+        </tr>
+    </table>
+    {% endifequal %}
+
+    {% ifequal shori 'd' %}
+    品目削除
+    <table class="simple_class">
+        <tr>
+            <th style="width:100px" class="th_right_class th_header">{{form.item_name.label}}</th>
+            <td style="width:500px" class="td_class">{{form.item_name}}{{form.item_name.errors.0}}</td>
+        </tr>
+        <tr>
+            <th style="width:100px" class="th_right_class th_header">{{form.safety_amt.label}}</th>
+            <td style="width:500px" class="td_class">{{form.safety_amt}}{{form.safety_amt.errors.0}}</td>
+        </tr>
+        <tr>
+            <th style="width:100px" class="th_right_class th_header">{{form.item_term.label}}</th>
+            <td style="width:500px" class="td_class">{{form.item_term}}{{form.item_term.errors.0}}</td>
+        </tr>
+    </table>
+    {% endifequal %}
+
+    {% if form.non_field_errors %}
+    <br/>
+    <div class="errmsg">
+        <ul>
+        {% for non_field_error in form.non_field_errors %}
+        <li class="errmsg">{{ non_field_error }}</li>
+        {% endfor %}
+        </ul>
+    </div>
+    {% endif %}
+    <br/>
+    <table id="controller">
+        <tr>
+            {% ifequal shori 'd' %}
+                <td style="text-align:center;"><input type="submit" value="削除" class="square_btn" /></td>
+            {% else %}
+                <td style="text-align:center;"><input type="submit" value="登録" class="square_btn" /></td>
+            {% endifequal %}
+            <td style="text-align:center;"><input type="button" id="btn_cancel" value="キャンセル" class="square_btn" /></td>
+        </tr>    
+    </table>
+
+{% endblock %}
