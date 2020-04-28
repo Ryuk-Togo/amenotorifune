@@ -6,6 +6,7 @@ from omoikane.models import (
 )
 from amenouzume.models import (
     MPlace,
+    MItem,
 )
 
 class LoginModelForm(forms.ModelForm):
@@ -33,5 +34,22 @@ class PlaceDeleteModelForm(forms.ModelForm):
         fields = ('place_name',)
         widgets = {
             'place_name': forms.TextInput(attrs={'readonly': 'readonly'}),
+        }
+
+class ItemModelForm(forms.ModelForm):
+    
+    class Meta:
+        model = MItem
+        fields = ('item_name','safety_amt','item_term')
+
+class ItemDeleteModelForm(forms.ModelForm):
+    
+    class Meta:
+        model = MItem
+        fields = ('item_name','safety_amt','item_term')
+        widgets = {
+            'item_name': forms.TextInput(attrs={'readonly': 'readonly'}),
+            'safety_amt': forms.TextInput(attrs={'readonly': 'readonly'}),
+            'item_term': forms.TextInput(attrs={'readonly': 'readonly'}),
         }
 

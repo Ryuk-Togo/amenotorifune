@@ -10,6 +10,8 @@ from amenouzume.forms import (
     LoginModelForm,
     PlaceModelForm,
     PlaceDeleteModelForm,
+    ItemModelForm,
+    ItemDeleteModelForm,
 )
 from amenouzume.models import (
     MPlace,
@@ -177,12 +179,107 @@ def item(request):
     user_id = request.session.get('LOGIN_USER_ID')
     user_name = request.session.get('LOGIN_USER_NAME')
     if request.method == 'GET':
+        mitems = MItem.objects.filter(user_id=user_id).order_by('item_name')
         context = {
             'user_id':user_id,
             'user_name':user_name,
+            'forms':mitems
         }
+    elif request.method == 'POST':
+        return redirect('/amenouzume/item_input/')
+        
+    return render(request, 'amenouzume/item.html',context)
 
-    return render(request, 'amenouzume/menu.html',context)
+def item_input(request):
+    user_id = request.session.get('LOGIN_USER_ID')
+    user_name = request.session.get('LOGIN_USER_NAME')
+    if request.method == 'GET':
+        form = ItemModelForm()
+        context = {
+            'user_id':user_id,
+            'user_name':user_name,
+            'form': form,
+            'shori': '',
+        }
+        return render(request, 'amenouzume/item_input.html',context)
+    elif request.method == 'POST':
+        form = ItemModelForm(request.POST)
+        if not form.is_valid():
+            context = {
+                'user_id':user_id,
+                'user_name':user_name,
+                'form': form,
+                'shori': '',
+            }
+            return render(request, 'amenouzume/item_input.html', context)
+        mitem = form.save(commit=False)
+        mitem.user_id        = user_id
+        mitem.item_name      = form.cleaned_data['item_name']
+        mitem.safety_amt     = form.cleaned_data['safety_amt']
+        mitem.item_term      = form.cleaned_data['item_term']
+        mitem.create_pg_id   = 'amenouzume.item_input'
+        mitem.create_user_id = user_id
+        mitem.update_pg_id   = 'amenouzume.item_input'
+        mitem.update_user_id = user_id
+        mitem.save()
+
+        return redirect('/amenouzume/item/')
+    
+def item_input_modify(request, id, shori):
+    user_id = request.session.get('LOGIN_USER_ID')
+    user_name = request.session.get('LOGIN_USER_NAME')
+    if request.method == 'GET':
+        mitem = MItem.objects.get(id=id)
+        if shori=='m':
+            form = ItemModelForm(instance=mitem)
+        else:
+            form = ItemDeleteModelForm(instance=mitem)
+        
+        context = {
+            'user_id': user_id,
+            'user_name':user_name,
+            'form': form,
+            'id': id,
+            'shori': shori,
+        }
+        return render(request, 'amenouzume/item_input.html',context)
+    elif request.method == 'POST':
+        mitem = get_object_or_404(MItem, id=id)
+        if shori=='m':
+            form = ItemModelForm(request.POST)
+            if not form.is_valid():
+                context = {
+                    'user_id': user_id,
+                    'user_name':user_name,
+                    'form': form,
+                    'id': id,
+                    'shori': shori,
+                }
+                return render(request, 'amenouzume/item_input.html',context)
+            
+            mitem.item_name      = form.cleaned_data['item_name']
+            mitem.safety_amt     = form.cleaned_data['safety_amt']
+            mitem.item_term      = form.cleaned_data['item_term']
+            mitem.update_date    = timezone.datetime.now()
+            mitem.update_pg_id   = 'amenouzume.item_input'
+            mitem.updaet_user_id = user_id
+            mitem.save()
+            return redirect('/amenouzume/item/')
+
+        elif shori=='d':
+            form = ItemDeleteModelForm(request.POST)
+            if not form.is_valid():
+                context = {
+                    'form': form,
+                    'user_id': user_id,
+                    'user_name':user_name,
+                    'id': id,
+                    'shori': shori,
+                }
+                return render(request, 'amenouzume/item_input.html',context)
+            
+            mitem.delete()
+            return redirect('/amenouzume/item/')
 
 def place_item(request):
     user_id = request.session.get('LOGIN_USER_ID')

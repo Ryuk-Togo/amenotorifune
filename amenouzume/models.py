@@ -57,7 +57,7 @@ class MItem(models.Model):
     )
 
     item_name = models.CharField(
-        verbose_name='場所名',
+        verbose_name='品目名',
         max_length=100,
         blank=False,
     )
