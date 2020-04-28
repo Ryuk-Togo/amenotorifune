@@ -1,0 +1,32 @@
+{% extends "amenouzume/base.html" %}
+
+{% load static %}
+{% block header %}
+<script src="{% static 'js/amenouzume/menu.js' %}" ></script>
+{% endblock %}
+
+{% block body %}
+<form method="post" enctype="multipart/form-data" action="{% url 'amenouzume:place_input' %}">
+    {% csrf_token %}
+    在庫場所一覧
+    <table style="text-align: center;">
+        <tr class="tr_class">
+            <th style="width: 500px;" class="th_center_class th_header">在庫場所名</th>
+            <th class="th_center_class th_header">更新</th>
+            <th class="th_center_class th_header">削除</th>
+        </tr>
+        {% for form in forms %}
+        <tr class="tr_class">
+            <td class="td_left_class">{{form.place_name}}</td>
+            <td class="td_center_class"><a href="{% url 'amenouzume:place_input_modify' form.id　'm' %}"><img src="{% static 'png/common/edit.png' %}"></a></td>
+            <td class="td_center_class"><a href="{% url 'amenouzume:place_input_modify' form.id 'd' %}"><img src="{% static 'png/common/delete.png' %}"></a></td>
+        </tr>
+    {% endfor %}
+    </table>
+    <table id="controller">
+        <tr>
+            <td style="text-align:center;"><input type="submit" value="新規" class="square_btn" /></td>
+        </tr>    
+    </table>
+</form>
+{% endblock %}
