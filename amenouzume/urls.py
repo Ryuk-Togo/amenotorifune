@@ -13,6 +13,7 @@ urlpatterns = [
     url(r'^item_input/$', views.item_input, name='item_input'),
     path('item_input_modify/<int:id>/<str:shori>', views.item_input_modify, name='item_input_modify'),
     url(r'^place_item/$', views.place_item, name='place_item'),
+    url(r'^place_item_list/$', views.place_item_list, name='place_item_list'),
     url(r'^stock_data/$', views.stock_data, name='stock_data'),
     url(r'^stock_data_history/$', views.stock_data_history, name='stock_data_history'),
     # path('site_input/<int:id>', views.site_input, name='site_input'),

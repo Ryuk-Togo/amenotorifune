@@ -1,0 +1,73 @@
+{% extends "amenouzume/base.html" %}
+
+{% load static %}
+{% block header %}
+<script src="{% static 'js/amenouzume/place_item.js' %}" ></script>
+{% endblock %}
+
+{% block body %}
+在庫品目マスタ登録<br/><br/>
+
+<form method="post" action="{% url 'amenouzume:place_item' %}">
+    {% csrf_token %}
+    在庫場所：{{place.place_name}}
+    <input type="submit" value="検索" id="btnPlaceList" class="square_btn" />
+</form>
+
+<form method="post" action="{% url 'amenouzume:place_item_list' %}">
+    {% csrf_token %}
+    <input type="hidden" id="id_place_id" name="place_id" value="{{cmb_place_id}}" />
+    <!-- ========== テーブル全体を表す div ========== -->
+    <div style="width:350px; border-style:solid;border-width:0px;">
+    <!-- ===== ヘッダ部(THEAD相当)を表す div ===== -->
+        <div style="width:100%">
+            <table class="list_class">
+                <thead>
+                    <tr>
+                        <th class="th_class" style='width:50px'>選択</th>
+                        <th class="th_class" style='width:300px'>品目名</th>
+                    </tr>
+                </thead>
+            </table>
+        </div>
+        <!-- ===== ボディー部(TBODY相当)を表す div ===== -->
+        <div style="height:350px; width:100%;overflow-y:scroll;overflow-x:hidden;background:#BBBBBB">
+            {{ formSet.management_form }}
+            <table class="list_class">
+                <tbody name="placeitem">
+                {% for placeitem in formSet %}
+                    <tr id="row">
+                        <td class="td_class" style='width:50px'>
+                            {{placeitem.is_select}}
+                        <td>
+                        <td class="td_class" style='width:300px'>
+                            {{placeitem.item_name}}
+                        </td>
+                        <td>
+                            {{placeitem.item_id}}
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    {% if formSet.non_field_errors %}
+    <br/>
+    <div class="errmsg">
+        <ul>
+        {% for non_field_error in formSet.non_field_errors %}
+        <li class="errmsg">{{ non_field_error }}</li>
+        {% endfor %}
+        </ul>
+    </div>
+    {% endif %}
+    <br/>
+    <table id="controller">
+        <tr>
+            <td style="text-align:center;"><input type="submit" value="登録" class="square_btn" /></td>
+            <td style="text-align:center;"><input type="button" id="btn_cancel" value="キャンセル" class="square_btn" /></td>
+        </tr>    
+    </table>
+
+{% endblock %}
