@@ -12,13 +12,17 @@ from amenouzume.forms import (
     PlaceDeleteModelForm,
     ItemModelForm,
     ItemDeleteModelForm,
+    ItemListFormSet,
+    PlaceHeaderForm,
+    ItemListForm,
+    ItemListFormSet,
 )
 from amenouzume.models import (
     MPlace,
     MItem,
     MItemPlace,
     TStock,
-    TStockHistory
+    TStockHistory,
 )
 from omoikane.models import (
     MUser,
@@ -27,6 +31,7 @@ import datetime
 import logging
 import os
 from izanagi import settings
+from django.forms import formsets
 
 # Create your views here.
 # ログイン画面
@@ -285,12 +290,105 @@ def place_item(request):
     user_id = request.session.get('LOGIN_USER_ID')
     user_name = request.session.get('LOGIN_USER_NAME')
     if request.method == 'GET':
+        form_header = PlaceHeaderForm(request.GET or None)
+        place_id = request.GET.get('place_name', None)
+        formSet = ItemListFormSet()
+
+        # form_header = get_place_list(form_header)
+        # if user_id is None or user_id=='':
+        #     form_header.fields['place_name'].initial = [' ']
+
+        # else:
+        #     form_header.fields['place_name'].initial = [user_id]
+
+        form_header = get_place_list(form_header,user_id)
+        form_header.fields['place_name'].initial = [' ']
+
         context = {
-            'user_id':user_id,
+            'place':form_header,
+            'user_id': user_id,
             'user_name':user_name,
+            'formSet':formSet,
         }
 
-    return render(request, 'amenouzume/menu.html',context)
+        return render(request, 'amenouzume/place_item.html',context)
+
+    elif request.method == 'POST':
+        form_header = PlaceHeaderForm(request.POST or None)
+        form_header = get_place_list(form_header,user_id)
+        place_id = request.POST['place_name']
+        form_header.fields['place_name'].initial = [place_id]
+
+        mitems = MItem.objects.filter(user_id=user_id).order_by('item_name')
+        item_list = []
+
+        for item in mitems:
+            is_select = False
+
+            try:
+                itemPlace = get_object_or_404(MItemPlace, user_id=user_id, place_id=place_id, item_id=item.id)
+            except:
+                itemPlace = None
+
+            if itemPlace is not None:
+                is_select = True
+
+            item_list.append({
+                'is_select': is_select,
+                'item_id': item.id,
+                'item_name': item.item_name,
+            })
+
+        formSet = ItemListFormSet(initial=item_list)
+        context = {
+            'place':form_header,
+            'user_id': user_id,
+            'user_name':user_name,
+            'cmb_place_id':place_id,
+            'formSet':formSet,
+        }
+
+        return render(request, 'amenouzume/place_item.html',context)
+
+def place_item_list(request):
+    user_id = request.session.get('LOGIN_USER_ID')
+    user_name = request.session.get('LOGIN_USER_NAME')
+    if request.method == 'POST':
+        place_id = request.POST['place_id']
+        form_header = PlaceHeaderForm(request.POST or None)
+        formSets = ItemListFormSet(request.POST or None)
+
+        mitemplace = MItemPlace.objects.filter(user_id=user_id)
+        mitemplace.delete()
+
+        if formSets.is_valid():
+            for formSet in formSets:
+                if formSet.cleaned_data['is_select']:
+                    item_id = formSet.cleaned_data['item_id']
+                    mitem = MItem.objects.get(id=item_id)
+                    itemPlace = MItemPlace()
+                    itemPlace.user_id       = user_id
+                    itemPlace.place_id      = place_id
+                    itemPlace.item_id       = item_id
+                    itemPlace.safety_amt    = mitem.safety_amt
+                    itemPlace.item_amt      = 0
+                    itemPlace.buy_amt       = 0
+                    itemPlace.dwonload_date = None
+                    itemPlace.upload_date   = None
+                    itemPlace.save()
+
+        else:
+            context = {
+                'place':form_header,
+                'user_id': user_id,
+                'user_name':user_name,
+                'cmb_place_id':place_id,
+                'formSet':formSets,
+            }
+
+            return render(request, 'amenouzume/place_item.html',context)
+
+        return redirect('/amenouzume/menu/')
 
 def stock_data(request):
     user_id = request.session.get('LOGIN_USER_ID')
@@ -314,3 +412,12 @@ def stock_data_history(request):
 
     return render(request, 'amenouzume/menu.html',context)
 
+def get_place_list(form_header,user_id):
+    mplaces = MPlace.objects.filter(user_id=user_id).order_by('place_name')
+    place_choice = []
+    place_choice.append((' ', ''))
+    for place in mplaces:
+        place_choice.append((place.id, place.place_name))
+
+    form_header.fields['place_name'].choices = place_choice
+    return form_header

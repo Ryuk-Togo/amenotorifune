@@ -124,25 +124,22 @@ class MItemPlace(models.Model):
         blank=False,
     )
 
+    safety_amt = models.IntegerField(
+        verbose_name='安全在庫数',
+        blank=False,
+        default=0,
+    )
+
     item_amt = models.IntegerField(
         verbose_name='在庫数',
         blank=True,
-    )
-
-    dwonload_date = models.DateTimeField(
-        verbose_name='ダウンロード日時',
-        blank=True,
-    )
-
-    upload_date = models.DateTimeField(
-        verbose_name='アップロード日時',
-        max_length=100,
-        blank=True,
+        default=0,
     )
 
     buy_amt = models.IntegerField(
         verbose_name='購入数',
         blank=True,
+        default=0,
     )
 
     create_date = models.DateTimeField(
@@ -205,12 +202,13 @@ class TStock(models.Model):
     dwonload_date = models.DateTimeField(
         verbose_name='ダウンロード日時',
         blank=True,
+        default=now,
     )
 
     upload_date = models.DateTimeField(
         verbose_name='アップロード日時',
-        max_length=100,
         blank=True,
+        default=now,
     )
 
     buy_amt = models.IntegerField(

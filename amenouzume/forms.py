@@ -53,3 +53,34 @@ class ItemDeleteModelForm(forms.ModelForm):
             'item_term': forms.TextInput(attrs={'readonly': 'readonly'}),
         }
 
+class PlaceHeaderForm(forms.Form):
+    
+    place_name = forms.ChoiceField(
+        required=False,
+        label='場所名',
+        widget=forms.Select(attrs={'place_id': 'place_name',})
+    )
+
+class ItemListForm(forms.ModelForm):
+    
+    is_select = forms.BooleanField(
+        label='選択',
+        required=False,
+        widget=forms.CheckboxInput(
+            attrs={'class': 'check'}
+        ),
+    )
+
+    item_id = forms.CharField(label='品目ID',
+        widget=forms.HiddenInput(),
+    )
+
+    class Meta:
+        model = MItem
+        fields = ('id','item_name')
+        widgets = {
+            'id': forms.HiddenInput(),
+            'item_name': forms.TextInput(attrs={'readonly': 'readonly'}),
+        }
+
+ItemListFormSet = formsets.formset_factory(form=ItemListForm, extra=0,)
