@@ -8,7 +8,9 @@
 {% block body %}
 <form method="post" enctype="multipart/form-data" action="{% url 'amenouzume:item_input' %}">
     {% csrf_token %}
-    品目一覧
+    <div class="title_class">
+        品目一覧<br/><br/>
+    </div>
     <table style="text-align: center;">
         <tr class="tr_class">
             <th style="width: 500px;" class="th_center_class th_header">品目名</th>

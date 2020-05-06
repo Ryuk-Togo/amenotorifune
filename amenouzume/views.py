@@ -5,6 +5,7 @@ from django.shortcuts import (
 )
 from django.http import HttpResponse
 from django.utils import timezone
+
 from django import forms
 from amenouzume.forms import (
     LoginModelForm,
@@ -16,6 +17,9 @@ from amenouzume.forms import (
     PlaceHeaderForm,
     ItemListForm,
     ItemListFormSet,
+    StockItemFormSet,
+    # StockItemForm,
+    StockDataFormSet,
 )
 from amenouzume.models import (
     MPlace,
@@ -358,21 +362,17 @@ def place_item_list(request):
         form_header = PlaceHeaderForm(request.POST or None)
         formSets = ItemListFormSet(request.POST or None)
 
-        mitemplace = MItemPlace.objects.filter(user_id=user_id)
+        mitemplace = MItemPlace.objects.filter(user_id=user_id, place_id=place_id)
         mitemplace.delete()
 
         if formSets.is_valid():
             for formSet in formSets:
                 if formSet.cleaned_data['is_select']:
                     item_id = formSet.cleaned_data['item_id']
-                    mitem = MItem.objects.get(id=item_id)
                     itemPlace = MItemPlace()
                     itemPlace.user_id       = user_id
                     itemPlace.place_id      = place_id
                     itemPlace.item_id       = item_id
-                    itemPlace.safety_amt    = mitem.safety_amt
-                    itemPlace.item_amt      = 0
-                    itemPlace.buy_amt       = 0
                     itemPlace.dwonload_date = None
                     itemPlace.upload_date   = None
                     itemPlace.save()
@@ -386,20 +386,75 @@ def place_item_list(request):
                 'formSet':formSets,
             }
 
-            return render(request, 'amenouzume/place_item.html',context)
-
-        return redirect('/amenouzume/menu/')
+        return render(request, 'amenouzume/place_item.html',context)
 
 def stock_data(request):
     user_id = request.session.get('LOGIN_USER_ID')
     user_name = request.session.get('LOGIN_USER_NAME')
     if request.method == 'GET':
+        stock_data = []
+        mplace = MPlace.objects.filter(user_id=user_id).order_by('place_name')
+        for place in mplace:
+            mitemplaces = MItemPlace.objects.filter(user_id=user_id, place_id=place.id).order_by('item_id')
+            tstock = TStock.objects.filter(place_id=place.id)
+            is_inserted = False
+            if tstock:
+                is_inserted = True
+            item_data = []
+            for itemplace in mitemplaces:
+                mitem = MItem.objects.get(id=itemplace.item_id)
+                item_data.append({
+                    'id':itemplace.id,
+                    'item_id':mitem.id,
+                    'item_name':mitem.item_name,
+                    'safety_amt':mitem.safety_amt,
+                })
+            
+            place = {
+                'place_id':place.id,
+                'place_name':place.place_name,
+                'item':item_data,
+                'is_inserted':is_inserted
+            }
+            stock_data.append(place)
+
         context = {
             'user_id':user_id,
             'user_name':user_name,
+            'stock_data':stock_data,
         }
 
-    return render(request, 'amenouzume/menu.html',context)
+        return render(request, 'amenouzume/stock_data.html',context)
+    else:
+        selected_list = request.POST.getlist('is_selected')
+        now_timestamp = timezone.datetime.now()
+        for id in selected_list:
+            mitemplace = MItemPlace.objects.filter(place_id=id)
+            for data in mitemplace:
+                mitem = MItem.objects.get(id=data.item_id)
+                tstock = TStock()
+                tstock.user_id        = user_id
+                tstock.place_id       = data.place_id
+                tstock.item_id        = data.item_id
+                tstock.item_name      = mitem.item_name
+                tstock.item_amt       = 0
+                tstock.safety_amt     = mitem.safety_amt
+                tstock.buy_amt        = 0
+                tstock.download_date  = now_timestamp
+                tstock.create_pg_id   = 'amenouzume.stock_data'
+                tstock.create_user_id = user_id
+                tstock.update_pg_id   = 'amenouzume.stock_data'
+                tstock.update_user_id = user_id
+                tstock.save()
+
+        context = {
+            'user_id':user_id,
+            'user_name':user_name,
+            # 'stock_data':stock_data,
+        }
+
+        return render(request, 'amenouzume/menu.html',context)
+
 
 def stock_data_history(request):
     user_id = request.session.get('LOGIN_USER_ID')
