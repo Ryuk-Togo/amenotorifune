@@ -6,6 +6,9 @@
 {% endblock %}
 
 {% block body %}
+<div class="title_class">
+    在庫品目マスタ登録<br/><br/>
+</div>
 在庫品目マスタ登録<br/><br/>
 
 <form method="post" action="{% url 'amenouzume:place_item' %}">
@@ -31,7 +34,7 @@
             </table>
         </div>
         <!-- ===== ボディー部(TBODY相当)を表す div ===== -->
-        <div style="height:350px; width:100%;overflow-y:scroll;overflow-x:hidden;background:#BBBBBB">
+        <div style="height:250px; width:100%;overflow-y:scroll;overflow-x:hidden;background:#FFFFFF">
             {{ formSet.management_form }}
             <table class="list_class">
                 <tbody name="placeitem">

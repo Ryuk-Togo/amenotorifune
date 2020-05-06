@@ -14,7 +14,10 @@
 
     {% csrf_token %}
     {% ifequal shori '' %}
-    品目登録
+    <div class="title_class">
+        品目登録<br/><br/>
+    </div>
+        
     <table class="simple_class">
         <tr>
             <th style="width:100px" class="th_right_class th_header">{{form.item_name.label}}</th>

@@ -7,6 +7,7 @@ from omoikane.models import (
 from amenouzume.models import (
     MPlace,
     MItem,
+    MItemPlace,
 )
 
 class LoginModelForm(forms.ModelForm):
@@ -84,3 +85,49 @@ class ItemListForm(forms.ModelForm):
         }
 
 ItemListFormSet = formsets.formset_factory(form=ItemListForm, extra=0,)
+
+class StockItemForm(forms.ModelForm):
+
+    item_name = forms.CharField(
+        label='品目名',
+        widget=forms.TextInput(attrs={'readonly': 'readonly'})
+    )
+
+    safety_amt = forms.IntegerField(
+        label='安全在庫数',
+        widget=forms.TextInput(attrs={'readonly': 'readonly'})
+    )
+
+    class Meta:
+        model = MItemPlace
+        fields = ('id','item_id','item_name','safety_amt')
+        widgets = {
+            'id': forms.HiddenInput(),
+            'item_id': forms.HiddenInput(),
+            # 'item_name': forms.TextInput(attrs={'readonly': 'readonly'}),
+            # 'safety_amt': forms.TextInput(attrs={'readonly': 'readonly'}),
+        }
+
+StockItemFormSet = formsets.formset_factory(form=StockItemForm, extra=0,)
+
+class StockDataForm(forms.Form):
+    
+    is_select = forms.BooleanField(
+        label='選択',
+        required=False,
+        widget=forms.CheckboxInput(
+            attrs={'class': 'check'}
+        ),
+    )
+
+    place_id = forms.CharField(label='在庫場所ID',
+        widget=forms.HiddenInput(),
+    )
+
+    place_name = forms.CharField(label='在庫場所名',
+        widget=forms.TextInput(attrs={'readonly': 'readonly'}),
+    )
+
+    item_data = StockItemFormSet()
+
+StockDataFormSet = formsets.formset_factory(form=StockDataForm, extra=0,)

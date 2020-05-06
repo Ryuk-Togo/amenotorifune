@@ -6,6 +6,9 @@
 {% endblock %}
 
 {% block body %}
+<div class="title_class">
+    品目マスタ登録<br/><br/>
+</div>
 {% ifequal shori '' %}
     <form method="post" action="{% url 'amenouzume:place_input' %}">
 {% else %}
