@@ -17,4 +17,7 @@ urlpatterns = [
     url(r'^stock_data/$', views.stock_data, name='stock_data'),
     url(r'^stock_data_history/$', views.stock_data_history, name='stock_data_history'),
     # path('site_input/<int:id>', views.site_input, name='site_input'),
+    url(r'^get_users/$', views.get_users, name='get_users'),
+    path('download_stock_data/<str:user_id>', views.download_stock_data, name='download_stock_data'),
+    path('upload_stock_data/<str:stocks>', views.upload_stock_data, name='upload_stock_data'),
 ]

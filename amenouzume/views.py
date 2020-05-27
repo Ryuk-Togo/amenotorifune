@@ -36,6 +36,8 @@ import logging
 import os
 from izanagi import settings
 from django.forms import formsets
+import json
+from django.http.response import JsonResponse
 
 # Create your views here.
 # ログイン画面
@@ -476,3 +478,49 @@ def get_place_list(form_header,user_id):
 
     form_header.fields['place_name'].choices = place_choice
     return form_header
+
+def get_users(request):
+    musers = MUser.objects.all().order_by('user_id')
+    return HttpResponse(musers)
+
+def download_stock_data(request,user_id):
+    if request.method == 'GET':
+        ret = []
+        tstocks = TStock.objects.filter(user_id=user_id).order_by('place_id')
+        now_timestamp = timezone.datetime.now()
+        for stock in tstocks:
+            place_data = MPlace.objects.get(id=stock.place_id)
+            data = {
+                'user_id'    :stock.user_id,
+                'place_id'   :stock.place_id,
+                'place_name' :place_data.place_name,
+                'item_id'    :stock.item_id,
+                'item_name'  :stock.item_name,
+                'item_amt'   :stock.item_amt,
+                'safety_amt' :stock.safety_amt,
+                'buy_amt'    :stock.buy_amt,
+            }
+            ret.append(data)
+            stock.download_date  = now_timestamp
+            stock.update_date    = now_timestamp
+            stock.update_user_id = user_id
+            stock.update_pg_id   = 'amenouzume.download_stock_data'
+        # jstocks = json.loads(tstocks)
+        return JsonResponse(ret,safe=False)
+
+def upload_stock_data(request,stocks):
+    if request.method == 'POST':
+        for stock_data in stocks:
+            tstock = TStock.objects.get(id=stock_data.id)
+            tstock.user_id        = stock_data.user_id
+            tstock.place_id       = stock_data.place_id
+            tstock.item_id        = stock_data.item_id
+            tstock.item_name      = stock_data.item_name
+            tstock.item_amt       = stock_data.item_amt
+            tstock.safety_amt     = stock_data.safety_amt
+            tstock.buy_amt        = stock_data.buy_amt
+            tstock.download_date  = stock_data.download_date
+            tstock.upload_date    = stock_data.upload_date
+            tstock.save()
+
+    
