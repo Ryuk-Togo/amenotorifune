@@ -1,0 +1,34 @@
+{% extends "amenouzume/base.html" %}
+
+{% load static %}
+{% block header %}
+<script src="{% static 'js/amenouzume/menu.js' %}" ></script>
+{% endblock %}
+
+{% block body %}
+<div class="title_class">
+    POSTテスト<br/><br/>
+</div>
+
+<form method="post" action="{% url 'amenouzume:upload_stock_data_test' %}">
+    {% csrf_token %}
+    {% for stock_data in form %}
+    {{stock_data.id}}
+    {{stock_data.user_id}}
+    {{stock_data.item_id}}
+    {{stock_data.item_name}}
+    {{stock_data.place_id}}
+    {{stock_data.item_amt}}
+    {{stock_data.safety_amt}}
+    {{stock_data.buy_amt}}
+    <br/>
+    {% endfor %}
+    <br/>
+    <input type="submit" value="登録">
+    <br/>
+    <input type="text" class="message" name="message" id="id_message" value="{{message}}" />
+    <br/>
+    {{form}}
+</form>
+
+{% endblock %}

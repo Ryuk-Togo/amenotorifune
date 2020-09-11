@@ -8,6 +8,7 @@ from amenouzume.models import (
     MPlace,
     MItem,
     MItemPlace,
+    TStock,
 )
 
 class LoginModelForm(forms.ModelForm):
@@ -131,3 +132,19 @@ class StockDataForm(forms.Form):
     item_data = StockItemFormSet()
 
 StockDataFormSet = formsets.formset_factory(form=StockDataForm, extra=0,)
+
+class StockDataFormTest(forms.ModelForm):
+    
+    class Meta:
+        model = TStock
+        fields = ('id','user_id','item_id','item_name','place_id','item_amt','safety_amt','buy_amt')
+        widgets = {
+            'id': forms.TextInput(),
+            'user_id': forms.TextInput(),
+            'item_id': forms.TextInput(),
+            'item_name': forms.TextInput(),
+            'place_id': forms.TextInput(),
+            'item_amt': forms.TextInput(),
+            'safety_amt': forms.TextInput(),
+            'buy_amt': forms.TextInput(),
+        }
