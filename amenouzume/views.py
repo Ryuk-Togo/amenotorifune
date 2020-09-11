@@ -4,6 +4,7 @@ from django.shortcuts import (
     get_object_or_404,
 )
 from django.http import HttpResponse
+from django.views.decorators.csrf import csrf_exempt
 from django.utils import timezone
 
 from django import forms
@@ -20,6 +21,7 @@ from amenouzume.forms import (
     StockItemFormSet,
     # StockItemForm,
     StockDataFormSet,
+    StockDataFormTest,
 )
 from amenouzume.models import (
     MPlace,
@@ -480,8 +482,16 @@ def get_place_list(form_header,user_id):
     return form_header
 
 def get_users(request):
+    ret = []
     musers = MUser.objects.all().order_by('user_id')
-    return HttpResponse(musers)
+    for user in musers:
+        data = {
+            'user_id':user.user_id
+        }
+        ret.append(data)
+    # return HttpResponse(musers)
+    return JsonResponse(ret,safe=False)
+
 
 def download_stock_data(request,user_id):
     if request.method == 'GET':
@@ -491,6 +501,7 @@ def download_stock_data(request,user_id):
         for stock in tstocks:
             place_data = MPlace.objects.get(id=stock.place_id)
             data = {
+                'id'         :stock.id,
                 'user_id'    :stock.user_id,
                 'place_id'   :stock.place_id,
                 'place_name' :place_data.place_name,
@@ -505,22 +516,189 @@ def download_stock_data(request,user_id):
             stock.update_date    = now_timestamp
             stock.update_user_id = user_id
             stock.update_pg_id   = 'amenouzume.download_stock_data'
+            stock.save()
         # jstocks = json.loads(tstocks)
         return JsonResponse(ret,safe=False)
 
-def upload_stock_data(request,stocks):
+def download_place_data(request,user_id):
+    if request.method == 'GET':
+        ret = []
+        mplaces = MPlace.objects.filter(user_id=user_id).order_by('id')
+        for place in mplaces:
+            data = {
+                'id'         :place.id,
+                'place_name' :place.place_name,
+            }
+            ret.append(data)
+        # jstocks = json.loads(tstocks)
+        return JsonResponse(ret,safe=False)
+
+def download_item_data(request,user_id):
+    if request.method == 'GET':
+        ret = []
+        mitems = MItem.objects.filter(user_id=user_id).order_by('id')
+        for item in mitems:
+            data = {
+                'id'        :item.id,
+                'item_name' :item.item_name,
+            }
+            ret.append(data)
+        # jstocks = json.loads(tstocks)
+        return JsonResponse(ret,safe=False)
+
+@csrf_exempt
+def upload_stock_data(request):
+
     if request.method == 'POST':
-        for stock_data in stocks:
-            tstock = TStock.objects.get(id=stock_data.id)
-            tstock.user_id        = stock_data.user_id
-            tstock.place_id       = stock_data.place_id
-            tstock.item_id        = stock_data.item_id
-            tstock.item_name      = stock_data.item_name
-            tstock.item_amt       = stock_data.item_amt
-            tstock.safety_amt     = stock_data.safety_amt
-            tstock.buy_amt        = stock_data.buy_amt
-            tstock.download_date  = stock_data.download_date
-            tstock.upload_date    = stock_data.upload_date
+        json_stocks = None
+        now_timestamp = timezone.datetime.now()
+        ret = []
+
+        try:
+            # json_stocks = json.loads(request.json)
+            json_stocks = json.loads(request.body.decode('utf-8'))
+        except Exception as e:
+            context = {
+                'message' : e,
+                'return'  : False,
+            }
+            ret.append(context)
+            return JsonResponse(ret,safe=False)
+
+        for stock_data in json_stocks:
+            try:
+                tstock = TStock.objects.get(id=stock_data["id"])
+            except:
+                tstock = TStock()
+
+            tstock.user_id        = stock_data["user_id"]
+            tstock.item_name      = stock_data["item_name"]
+            tstock.place_id       = stock_data["place_id"]
+            tstock.item_id        = stock_data["item_id"]
+            tstock.item_amt       = stock_data["item_amt"]
+            tstock.safety_amt     = stock_data["safety_amt"]
+            tstock.buy_amt        = stock_data["buy_amt"]
+            tstock.download_date  = datetime.datetime.strptime(stock_data["download_date"],'%Y/%m/%d %H:%M:%S')
+            tstock.upload_date    = now_timestamp
+            tstock.update_date    = now_timestamp
+            tstock.update_user_id = stock_data["user_id"]
+            tstock.update_pg_id   = 'StockChecker'
             tstock.save()
 
+        context = {
+            'message' :"正常に受信しました。",
+            'return'  : True,
+        }
+        ret.append(context)
+        return JsonResponse(ret,safe=False)
+
+    else:
+        user_id = request.session.get('LOGIN_USER_ID')
+        user_name = request.session.get('LOGIN_USER_NAME')
+        tstocks = TStock.objects.all()
+        # form = StockDataFormTest(tstocks)
+        # print(tstocks)
+        # formSet = StockItemFormTestSet(initial=tstocks)
+
+        ret = []
+        for stock in tstocks:
+            data = {
+                'id'         :stock.id,
+                # 'user_id'    :stock.user_id,
+                'place_id'   :stock.place_id,
+                'item_id'    :stock.item_id,
+                'item_name'  :stock.item_name,
+                # 'item_amt'   :stock.item_amt,
+                'safety_amt' :stock.safety_amt,
+                # 'buy_amt'    :stock.buy_amt,
+            }
+            form = StockDataFormTest(data)
+            ret.append(form)
+        context = {
+            'user_id'  : user_id,
+            'user_name': user_name,
+            'form'     : ret,
+            # 'form'     : form,
+            # 'form'     : formSet,
+        }
+        return render(request, 'amenouzume/stock_data_test.html',context)
+
+    return HttpResponse('<p>Not Fund 404.</p>')
+
+
+def download_user_data(request):
+    if request.method == 'GET':
+        ret = []
+        musers = MUser.objects.all().order_by('user_id')
+        for user in musers:
+            data = {
+                'user_id'    :user.user_id,
+                'user_name'  :user.user_name,
+            }
+            ret.append(data)
+        # jstocks = json.loads(tstocks)
+        return JsonResponse(ret,safe=False)
+
+def upload_stock_data_test(request):
     
+    user_id = request.session.get('LOGIN_USER_ID')
+    user_name = request.session.get('LOGIN_USER_NAME')
+
+    if request.method == 'POST':
+        stock_data_list = request.POST.getlist('user_id')
+        message = request.POST.get('message',"null")
+
+        ret = []
+        for stock_id in stock_data_list:
+            # stock = TStock.objects.get(user_id=stock_id)
+            # data = {
+            #     'id'         :stock.id,
+            #     'user_id'    :stock.user_id,
+            #     'place_id'   :stock.place_id,
+            #     'item_id'    :stock.item_id,
+            #     'item_name'  :stock.item_name,
+            #     'item_amt'   :stock.item_amt,
+            #     'safety_amt' :stock.safety_amt,
+            #     'buy_amt'    :stock.buy_amt,
+            # }
+            data = {
+                'user_id':stock_id
+            }
+            form = StockDataFormTest(data)
+            ret.append(form)
+
+        context = {
+            'user_id'  : user_id,
+            'user_name': user_name,
+            'form'     : ret,
+            # 'message'  : "post success.",
+            'message'  : "post success. " + message,
+        }
+
+        return render(request, 'amenouzume/stock_data_test.html',context)
+
+    else:
+        tstocks = TStock.objects.all()
+
+        ret = []
+        for stock in tstocks:
+            data = {
+                'id'         :stock.id,
+                'user_id'    :stock.user_id,
+                'place_id'   :stock.place_id,
+                'item_id'    :stock.item_id,
+                'item_name'  :stock.item_name,
+                'item_amt'   :stock.item_amt,
+                'safety_amt' :stock.safety_amt,
+                'buy_amt'    :stock.buy_amt,
+            }
+            form = StockDataFormTest(data)
+            ret.append(form)
+            # ret.append(data)
+        context = {
+            'user_id'  : user_id,
+            'user_name': user_name,
+            'form'     : ret,
+            'message'  : "get success.",
+        }
+        return render(request, 'amenouzume/stock_data_test.html',context)
