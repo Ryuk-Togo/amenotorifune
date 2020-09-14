@@ -148,3 +148,16 @@ class StockDataFormTest(forms.ModelForm):
             'safety_amt': forms.TextInput(),
             'buy_amt': forms.TextInput(),
         }
+
+class StockDataUploadForm(forms.Form):
+    
+    is_select = forms.BooleanField(
+        label='選択',
+        required=False,
+        widget=forms.CheckboxInput(
+            attrs={'class': 'check'}
+        ),
+    )
+
+    item_data = StockItemFormSet()
+
