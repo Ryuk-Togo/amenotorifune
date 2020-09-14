@@ -554,6 +554,7 @@ def upload_stock_data(request):
         now_timestamp = timezone.datetime.now()
         ret = []
 
+        #  jsonデータを取得
         try:
             # json_stocks = json.loads(request.json)
             json_stocks = json.loads(request.body.decode('utf-8'))
@@ -565,6 +566,7 @@ def upload_stock_data(request):
             ret.append(context)
             return JsonResponse(ret,safe=False)
 
+        # jsonデータを在庫データに登録
         for stock_data in json_stocks:
             try:
                 tstock = TStock.objects.get(id=stock_data["id"])
@@ -585,10 +587,66 @@ def upload_stock_data(request):
             tstock.update_pg_id   = 'StockChecker'
             tstock.save()
 
+        # 在庫データを在庫データ履歴に移動
+        cnt = 0
+        tstocks = TStock.objects.all().order_by('id')
+        for tstock in tstocks:
+            try:
+                # tstock_history = get_object_or_404(TStockHistory)
+
+                tstock_history = TStockHistory()
+                tstock_history.user_id = tstock.user_id
+                tstock_history.item_id = tstock.item_id
+                tstock_history.place_id = tstock.place_id
+                tstock_history.item_amt = tstock.item_amt
+                tstock_history.download_date = tstock.download_date
+                tstock_history.upload_date = tstock.upload_date
+                tstock_history.buy_amt = tstock.buy_amt
+                tstock_history.create_date = tstock.create_date
+                tstock_history.create_pg_id = tstock.create_pg_id
+                tstock_history.create_user_id = tstock.create_user_id
+                tstock_history.update_date = tstock.update_date
+                tstock_history.update_pg_id = tstock.update_pg_id
+                tstock_history.update_user_id = tstock.update_user_id
+                tstock_history.item_name = tstock.item_name
+                tstock_history.safety_amt = tstock.safety_amt
+                tstock_history.save()
+                # tstock_history = TStockHistory.objects.create(
+                # # tstock_history = TStockHistory(
+                #     user_id = tstock.user_id,
+                #     item_id = tstock.item_id,
+                #     place_id = tstock.place_id,
+                #     item_amt = tstock.item_amt,
+                #     download_date = tstock.download_date,
+                #     upload_date = tstock.upload_date,
+                #     buy_amt = tstock.buy_amt,
+                #     create_date = tstock.create_date,
+                #     create_pg_id = tstock.create_pg_id,
+                #     create_user_id = tstock.create_user_id,
+                #     update_date = tstock.update_date,
+                #     update_pg_id = tstock.update_pg_id,
+                #     updaet_user_id = tstock.updaet_user_id,
+                #     item_name = tstock.item_name,
+                #     safety_amt = tstock.safety_amt,
+                # )
+                # tstock_history.save()
+
+                cnt += 1
+            except Exception as e:
+                context = {
+                    'message' : e,
+                    'return'  : False,
+                }
+                ret.append(context)
+                return JsonResponse(ret,safe=False)
+
+            tstocks.delete()
+
         context = {
-            'message' :"正常に受信しました。",
+            'message' :"正常に受信しました。" + str(cnt),
             'return'  : True,
         }
+        
         ret.append(context)
         return JsonResponse(ret,safe=False)
 

@@ -260,12 +260,24 @@ class TStockHistory(models.Model):
         blank=False,
     )
 
+    item_name = models.CharField(
+        verbose_name='品目名',
+        max_length=100,
+        blank=True,
+    )
+
+    safety_amt = models.IntegerField(
+        verbose_name='安全在庫数',
+        blank=False,
+        default=0,
+    )
+
     item_amt = models.IntegerField(
         verbose_name='在庫数',
         blank=True,
     )
 
-    dwonload_date = models.DateTimeField(
+    download_date = models.DateTimeField(
         verbose_name='ダウンロード日時',
         blank=True,
     )
