@@ -332,19 +332,30 @@ def place_item(request):
 
         for item in mitems:
             is_select = False
+            place_name = ''
 
             try:
                 itemPlace = get_object_or_404(MItemPlace, user_id=user_id, place_id=place_id, item_id=item.id)
             except:
                 itemPlace = None
 
-            if itemPlace is not None:
+            if itemPlace is not None :
                 is_select = True
+
+            anotherPlace = MItemPlace.objects.filter(user_id=user_id, item_id=item.id).exclude(place_id=place_id).first()
+            if anotherPlace is not None:
+                if anotherPlace.place_id is not None:
+                    # if anotherPlace.place_id != place_id:
+                        place_data = get_object_or_404(MPlace, id=anotherPlace.place_id)
+                    # place_data = MPlace.objects.get(id=anotherPlace.place_id)
+                #     place_name = mplace.place_name
+                        place_name = place_data.place_name
 
             item_list.append({
                 'is_select': is_select,
                 'item_id': item.id,
                 'item_name': item.item_name,
+                'place_name': place_name,
             })
 
         formSet = ItemListFormSet(initial=item_list)
@@ -390,7 +401,8 @@ def place_item_list(request):
                 'formSet':formSets,
             }
 
-        return render(request, 'amenouzume/place_item.html',context)
+        # return render(request, 'amenouzume/place_item.html',context)
+        return redirect('/amenouzume/place_item/')
 
 def stock_data(request):
     user_id = request.session.get('LOGIN_USER_ID')
@@ -432,6 +444,8 @@ def stock_data(request):
     else:
         selected_list = request.POST.getlist('is_selected')
         now_timestamp = timezone.datetime.now()
+        TStock.objects.all().delete()
+
         for id in selected_list:
             mitemplace = MItemPlace.objects.filter(place_id=id)
             for data in mitemplace:
@@ -592,8 +606,6 @@ def upload_stock_data(request):
         tstocks = TStock.objects.all().order_by('id')
         for tstock in tstocks:
             try:
-                # tstock_history = get_object_or_404(TStockHistory)
-
                 tstock_history = TStockHistory()
                 tstock_history.user_id = tstock.user_id
                 tstock_history.item_id = tstock.item_id
@@ -611,26 +623,6 @@ def upload_stock_data(request):
                 tstock_history.item_name = tstock.item_name
                 tstock_history.safety_amt = tstock.safety_amt
                 tstock_history.save()
-                # tstock_history = TStockHistory.objects.create(
-                # # tstock_history = TStockHistory(
-                #     user_id = tstock.user_id,
-                #     item_id = tstock.item_id,
-                #     place_id = tstock.place_id,
-                #     item_amt = tstock.item_amt,
-                #     download_date = tstock.download_date,
-                #     upload_date = tstock.upload_date,
-                #     buy_amt = tstock.buy_amt,
-                #     create_date = tstock.create_date,
-                #     create_pg_id = tstock.create_pg_id,
-                #     create_user_id = tstock.create_user_id,
-                #     update_date = tstock.update_date,
-                #     update_pg_id = tstock.update_pg_id,
-                #     updaet_user_id = tstock.updaet_user_id,
-                #     item_name = tstock.item_name,
-                #     safety_amt = tstock.safety_amt,
-                # )
-                # tstock_history.save()
-
                 cnt += 1
             except Exception as e:
                 context = {
@@ -643,7 +635,7 @@ def upload_stock_data(request):
             tstocks.delete()
 
         context = {
-            'message' :"正常に受信しました。" + str(cnt),
+            'message' :"正常に受信しました。件数：" + str(cnt),
             'return'  : True,
         }
         
@@ -682,7 +674,6 @@ def upload_stock_data(request):
         return render(request, 'amenouzume/stock_data_test.html',context)
 
     return HttpResponse('<p>Not Fund 404.</p>')
-
 
 def download_user_data(request):
     if request.method == 'GET':

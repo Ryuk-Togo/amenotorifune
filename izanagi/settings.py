@@ -32,6 +32,7 @@ ALLOWED_HOSTS = ['127.0.0.1']
 # Application definition
 
 INSTALLED_APPS = [
+    'izanagi.apps.IzanagiConfig',
     'susanowo.apps.SusanowoConfig',
     'omoikane.apps.OmoikaneConfig',
     'tukuyomi.apps.TukuyomiConfig',

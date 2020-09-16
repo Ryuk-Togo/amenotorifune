@@ -77,6 +77,10 @@ class ItemListForm(forms.ModelForm):
         widget=forms.HiddenInput(),
     )
 
+    place_name = forms.CharField(label='在庫名',
+        widget=forms.TextInput(),
+    )
+
     class Meta:
         model = MItem
         fields = ('id','item_name')

@@ -21,7 +21,7 @@
     {% csrf_token %}
     <input type="hidden" id="id_place_id" name="place_id" value="{{cmb_place_id}}" />
     <!-- ========== テーブル全体を表す div ========== -->
-    <div style="width:350px; border-style:solid;border-width:0px;">
+    <div style="width:650px; border-style:solid;border-width:0px;">
     <!-- ===== ヘッダ部(THEAD相当)を表す div ===== -->
         <div style="width:100%">
             <table class="list_class">
@@ -29,6 +29,7 @@
                     <tr>
                         <th class="th_class" style='width:50px'>選択</th>
                         <th class="th_class" style='width:300px'>品目名</th>
+                        <th class="th_class" style='width:300px'>場所名</th>
                     </tr>
                 </thead>
             </table>
@@ -44,7 +45,10 @@
                             {{placeitem.is_select}}
                         <td>
                         <td class="td_class" style='width:300px'>
-                            {{placeitem.item_name}}
+                            {{placeitem.item_name.value}}
+                        </td>
+                        <td class="td_class" style='width:300px'>
+                            {{placeitem.place_name.value}}
                         </td>
                         <td>
                             {{placeitem.item_id}}
