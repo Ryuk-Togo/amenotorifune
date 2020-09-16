@@ -62,9 +62,12 @@ class MItem(models.Model):
         blank=False,
     )
 
-    safety_amt = models.IntegerField(
+    safety_amt = models.DecimalField(
         verbose_name='安全在庫数',
+        max_digits=5,
+        decimal_places=2,
         blank=False,
+        default=0.00,
     )
 
     item_term = models.IntegerField(
