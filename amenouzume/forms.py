@@ -77,8 +77,10 @@ class ItemListForm(forms.ModelForm):
         widget=forms.HiddenInput(),
     )
 
-    place_name = forms.CharField(label='在庫名',
-        widget=forms.TextInput(),
+    place_name = forms.CharField(
+        label='在庫名',
+        required=False,
+        widget=forms.HiddenInput(),
     )
 
     class Meta:
@@ -86,7 +88,8 @@ class ItemListForm(forms.ModelForm):
         fields = ('id','item_name')
         widgets = {
             'id': forms.HiddenInput(),
-            'item_name': forms.TextInput(attrs={'readonly': 'readonly'}),
+            'item_name': forms.HiddenInput(),
+            # 'item_name': forms.TextInput(attrs={'readonly': 'readonly'}),
         }
 
 ItemListFormSet = formsets.formset_factory(form=ItemListForm, extra=0,)
