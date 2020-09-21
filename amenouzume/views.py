@@ -380,28 +380,28 @@ def place_item_list(request):
         mitemplace = MItemPlace.objects.filter(user_id=user_id, place_id=place_id)
         mitemplace.delete()
 
-        if formSets.is_valid():
-            for formSet in formSets:
-                if formSet.cleaned_data['is_select']:
-                    item_id = formSet.cleaned_data['item_id']
+        for form in formSets:
+            if form.is_valid():
+                if form.cleaned_data['is_select']:
                     itemPlace = MItemPlace()
-                    itemPlace.user_id       = user_id
-                    itemPlace.place_id      = place_id
-                    itemPlace.item_id       = item_id
-                    itemPlace.dwonload_date = None
-                    itemPlace.upload_date   = None
+                    itemPlace.user_id        = user_id
+                    itemPlace.place_id       = place_id
+                    itemPlace.item_id        = form.cleaned_data['item_id']
+                    itemPlace.create_user_id = user_id
+                    itemPlace.create_pg_id   = 'amenouzune.place_item_list'
+                    itemPlace.update_user_id = user_id
+                    itemPlace.update_pg_id   = 'amenouzune.place_item_list'
                     itemPlace.save()
-
-        else:
-            context = {
-                'place':form_header,
-                'user_id': user_id,
-                'user_name':user_name,
-                'cmb_place_id':place_id,
-                'formSet':formSets,
-            }
-
-        # return render(request, 'amenouzume/place_item.html',context)
+            else :
+                context = {
+                    'place':form_header,
+                    'user_id': user_id,
+                    'user_name':user_name,
+                    'cmb_place_id':place_id,
+                    'formSet':formSets,
+                }
+                # return HttpResponse(form)
+                return render(request, 'amenouzume/place_item.html',context)
         return redirect('/amenouzume/place_item/')
 
 def stock_data(request):
