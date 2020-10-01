@@ -30,6 +30,7 @@ urlpatterns = [
     path('tukuyomi/', include('tukuyomi.urls')),
     path('amaterasu/', include('amaterasu.urls')),
     path('amenouzume/', include('amenouzume.urls')),
+    path('sarutahiko/', include('sarutahiko.urls')),
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

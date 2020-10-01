@@ -25,8 +25,8 @@ SECRET_KEY = 'f7*j=9$h^5*0_(n%vc!k*kfi43c(#$ksskg9!1dt%d0s6mcs-t'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['192.168.11.51']
-# ALLOWED_HOSTS = ['127.0.0.1']
+# ALLOWED_HOSTS = ['192.168.11.51']
+ALLOWED_HOSTS = ['127.0.0.1']
 
 
 # Application definition
@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'tukuyomi.apps.TukuyomiConfig',
     'amaterasu.apps.AmaterasuConfig',
     'amenouzume.apps.AmenouzumeConfig',
+    'sarutahiko.apps.SarutahikoConfig',
     'guestboard.apps.GuestboardConfig',
     'uploader.apps.UploaderConfig',
     'django.contrib.admin',
@@ -94,8 +95,8 @@ DATABASES = {
         'NAME': 'izanami',
         'USER': 'izanami',
         'PASSWORD': 'izanami',
-        'HOST': '192.168.11.51',
-        # 'HOST': 'db',
+        # 'HOST': '192.168.11.51',
+        'HOST': 'db',
         'PORT': 5432,
     }
 }
