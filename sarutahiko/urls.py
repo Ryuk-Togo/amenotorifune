@@ -5,7 +5,8 @@ from . import views
 app_name = "sarutahiko"
 urlpatterns = [
     url(r'^$', views.login, name='login'),
-    url(r'^menu/$', views.menu, name='menu'),
+    # url(r'^calendar/$', views.calendar, name='calendar'),
+    path('calendar/<int:year>/<int:month>', views.calendar, name='calendar'),
     url(r'^recipe/$', views.recipe, name='recipe'),
     url(r'^kondate/$', views.kondate, name='kondate'),
     url(r'^item/$', views.item, name='item'),

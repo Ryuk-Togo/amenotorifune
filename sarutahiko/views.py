@@ -33,7 +33,9 @@ def login(request):
     user_name = request.session.get('LOGIN_USER_NAME')
     if request.method == 'GET':
         if not (user_id is None and user_name is None):
-            return redirect('/sarutahiko/menu/')
+            year = timezone.strftime('%Y')
+            month = timezone.strftime('%m')
+            return redirect('/sarutahiko/calendar%year=' + year + '&month=' + month)
 
         form = LoginModelForm(request.GET or None)
         context = {
@@ -61,7 +63,7 @@ def login(request):
             'user_name':user_name,
         }
 
-        return redirect('/sarutahiko/menu/')
+        return redirect('/sarutahiko/calendar/')
         # return render(request, 'amenouzume/menu.html',context)
 
 def menu(request):
@@ -77,6 +79,18 @@ def menu(request):
 
 def recipe(request):
     return render(request, 'sarutahiko/recipe.html',context)
+
+def calendar(request, year, month):
+    user_id = request.session.get('LOGIN_USER_ID')
+    user_name = request.session.get('LOGIN_USER_NAME')
+    if request.method == 'GET':
+
+        context = {
+            'user_id':user_id,
+            'user_name':user_name,
+        }
+
+        return render(request, 'sarutahiko/calendar.html',context)
 
 def kondate(request):
     return render(request, 'sarutahiko/kondate.html',context)

@@ -1,0 +1,24 @@
+{% extends "sarutahiko/base.html" %}
+
+{% load static %}
+{% block header %}
+<script src="{% static 'js/sarutahiko/menu.js' %}" ></script>
+{% endblock %}
+
+{% block body %}
+    {{year}}年{{month}}月
+    <table>
+        <tbody>
+            {% for week in form.week %}
+            <tr>
+                {% for day week.date %}
+                <td>
+                    {{day.date}}<br/>
+                    {{day.dd}}
+                </td>
+                {% end for%}
+            </tr>
+            {% end for %}
+        </tbody>
+    </table>
+{% endblock %}
