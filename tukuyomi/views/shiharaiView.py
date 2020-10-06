@@ -67,6 +67,8 @@ def shiharai_info(request,y,m,assert_cd):
             'used_year': used_year,
             'used_month': used_month,
             'form': form,
+            'now_year':datetime.strftime(datetime.now(), '%Y'),
+            'now_month':datetime.strftime(datetime.now(), '%m'),
         }
 
         return render(request, 'tukuyomi/shiharai_info.html',context)

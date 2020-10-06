@@ -6,6 +6,8 @@ $(function() {
     $('.submenu_shiharai').change(function() {
         if ($(this).val() != '') {
             window.location.href = $(this).val();
+            $(this).val('')
         }
     });
+
 });

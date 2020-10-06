@@ -2,6 +2,7 @@ from django.shortcuts import (
     render, 
     redirect,
     get_object_or_404,
+    reverse,
 )
 from django.http import HttpResponse
 from django.utils import timezone
@@ -18,7 +19,7 @@ def riyou_info_init(request):
     if request.method == 'GET':
         year = datetime.strftime(datetime.today(), '%Y')
         month = datetime.strftime(datetime.today(), '%m')
-        return redirect('/tukuyomi/riyou_info/' + year + '/' + month + '/')
+        return redirect('/tukuyomi/riyou_info/' + str(year) + '/' + str(month))
 
 def riyou_info(request,y,m):
     if request.method == 'GET':
@@ -81,9 +82,12 @@ def riyou_info(request,y,m):
             'used_month':used_month,
             'form': form,
             'next_prev': next_prev,
+            'now_year':datetime.strftime(datetime.now(), '%Y'),
+            'now_month':datetime.strftime(datetime.now(), '%m'),
         }
 
         return render(request, 'tukuyomi/riyou_info.html',context)
+        # reverse('riyou_info', kwargs=context)
 
 def add_month(base_date, months):
     """月の増減を行う"""

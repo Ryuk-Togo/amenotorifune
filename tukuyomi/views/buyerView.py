@@ -5,8 +5,9 @@ from django.shortcuts import (
 )
 from django.http import HttpResponse
 from django.utils import timezone
+from datetime import datetime, date, timedelta
 from django import forms
-import datetime
+# import datetime
 import logging
 import os
 from tukuyomi.models.mbuyer import MBuyer
@@ -23,6 +24,8 @@ def buyer_list(request):
             'user_id':user_id,
             'user_name':user_name,
             'form': mbuyer,
+            'now_year':datetime.strftime(datetime.now(), '%Y'),
+            'now_month':datetime.strftime(datetime.now(), '%m'),
         }
 
         return render(request, 'tukuyomi/buyer_list.html',context)
@@ -39,6 +42,8 @@ def buyer_input(request):
             'user_name':user_name,
             'form': form,
             'shori': '',
+            'now_year':datetime.strftime(datetime.now(), '%Y'),
+            'now_month':datetime.strftime(datetime.now(), '%m'),
         }
         return render(request, 'tukuyomi/buyer_input.html',context)
     
@@ -59,6 +64,8 @@ def buyer_input(request):
                 'user_name':user_name,
                 'form': form,
                 'shori': '',
+                'now_year':datetime.strftime(datetime.now(), '%Y'),
+                'now_month':datetime.strftime(datetime.now(), '%m'),
             }
             return render(request, 'tukuyomi/buyer_input.html',context)
 
@@ -76,6 +83,8 @@ def buyer_input_modify(request,id,shori):
             'form': form,
             'shori': shori,
             'id': id,
+            'now_year':datetime.strftime(datetime.now(), '%Y'),
+            'now_month':datetime.strftime(datetime.now(), '%m'),
         }
         return render(request, 'tukuyomi/buyer_input.html',context)
     
@@ -100,5 +109,7 @@ def buyer_input_modify(request,id,shori):
                 'form': form,
                 'shori':shori,
                 'id': id,
+                'now_year':datetime.strftime(datetime.now(), '%Y'),
+                'now_month':datetime.strftime(datetime.now(), '%m'),
             }
             return render(request, 'tukuyomi/buyer_input.html',context)

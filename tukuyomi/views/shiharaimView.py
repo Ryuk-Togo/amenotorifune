@@ -74,6 +74,8 @@ def shiharaim_input(request, assert_cd,y,m,d,shop_name):
             'assert_cd': assert_cd,
             'formset': formset,
             'shiharai_total_row' : shiharai_row,
+            'now_year':datetime.strftime(datetime.now(), '%Y'),
+            'now_month':datetime.strftime(datetime.now(), '%m'),
         }
         return render(request, 'tukuyomi/shiharaim_input.html',context)
     
@@ -136,5 +138,7 @@ def shiharaim_input(request, assert_cd,y,m,d,shop_name):
                 'assert_cd': assert_cd,
                 'formset': formset,
                 'shiharai_row' : shiharai_row,
+                'now_year':datetime.strftime(datetime.now(), '%Y'),
+                'now_month':datetime.strftime(datetime.now(), '%m'),
             }
             return render(request, 'tukuyomi/shiharaim_input.html',context)

@@ -27,9 +27,7 @@
                     電子マネー管理
                 </th>
                 <td style="text-align:center; width:150px;" class="menu th_center_class">
-                {% with year="2020" month="03" %}
-                    <a class="menu_class" href="{% url 'tukuyomi:riyou_info' year month %}" >
-                    {% endwith %}
+                    <a class="menu_class" href="{% url 'tukuyomi:riyou_info' now_year now_month %}" >
                         <img src="{% static 'png/tukuyomi/useinfo.png' %}"/><br/>
                         利用者情報<br/>
                     </a>
