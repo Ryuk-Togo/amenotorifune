@@ -42,6 +42,8 @@ def henkin_header(request):
             'user_name': user_name,
             # 'henkingaku': form_henkingaku,
             'formset': formSet,
+            'now_year':datetime.strftime(datetime.now(), '%Y'),
+            'now_month':datetime.strftime(datetime.now(), '%m'),
         }
         return render(request, 'tukuyomi/henkin.html',context)
 
@@ -107,6 +109,8 @@ def henkin_header(request):
             'cmb_buyer_id':buyer_id,
             # 'henkingaku': form_henkingaku,
             'formset':formSet,
+            'now_year':datetime.strftime(datetime.now(), '%Y'),
+            'now_month':datetime.strftime(datetime.now(), '%m'),
         }
         return render(request, 'tukuyomi/henkin.html',context)
 

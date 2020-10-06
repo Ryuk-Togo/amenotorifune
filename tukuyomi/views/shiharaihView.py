@@ -29,6 +29,8 @@ def shiharaih_input(request, assert_cd):
             'assert_nm':massert.assert_nm,
             'form': form,
             'shori': '',
+            'now_year':datetime.strftime(datetime.now(), '%Y'),
+            'now_month':datetime.strftime(datetime.now(), '%m'),
         }
         return render(request, 'tukuyomi/shiharaih_input.html',context)
     
@@ -55,6 +57,8 @@ def shiharaih_input(request, assert_cd):
                 'assert_nm':massert.assert_nm,
                 'form': form,
                 'shori': '',
+                'now_year':datetime.strftime(datetime.now(), '%Y'),
+                'now_month':datetime.strftime(datetime.now(), '%m'),
             }
             return render(request, 'tukuyomi/shiharaih_input.html',context)
         
@@ -81,6 +85,8 @@ def shiharaih_input_modify(request,shiharaih_id,shori):
             'form': form,
             'shiharaih_id': shiharaih_id,
             'shori': shori,
+            'now_year':datetime.strftime(datetime.now(), '%Y'),
+            'now_month':datetime.strftime(datetime.now(), '%m'),
         }
         return render(request, 'tukuyomi/shiharaih_input.html',context)
     
@@ -127,5 +133,7 @@ def shiharaih_input_modify(request,shiharaih_id,shori):
                 'form': form,
                 'shiharaih_id': shiharaih_id,
                 'shori':shori,
+                'now_year':datetime.strftime(datetime.now(), '%Y'),
+                'now_month':datetime.strftime(datetime.now(), '%m'),
             }
             return render(request, 'tukuyomi/shiharaih_input.html',context)
