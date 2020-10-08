@@ -1,0 +1,59 @@
+{% extends "sarutahiko/base.html" %}
+
+{% load static %}
+{% block header %}
+<script src="{% static 'js/sarutahiko/menu.js' %}" ></script>
+{% endblock %}
+
+{% block body %}
+    <form method="post" action="{% url 'sarutahiko:recipe' %}">
+        {% csrf_token %}
+        <table class="site_table_class" style="width: 350px;">
+        <tbody>
+            <tr>
+                <th>
+                    レシピ名
+                </th>
+                <td class="td_center_class">
+                    {{form.recipe_name}}
+                    {{form.id}}
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    ＵＲＬ
+                </th>
+                <td class="td_center_class">
+                    {{form.url}}
+                </td>
+            </tr>
+            <tr>
+                {{ formSet.management_form }}
+                <table class="site_table_class" style="width: 100%;">
+                    <tbody>
+                        <tr>
+                            <th>
+                                材料名
+                            </th>
+                            <th>
+                                数量
+                            </th>
+                        </tr>
+                        {% for item in formset %}
+                        <tr>
+                            <td>
+                                {{item.item_name}}
+                                {{item.item_id}}
+                                {{item.id}}
+                            </td>
+                            <td>
+                                {{item.item_amt}}
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </tr>
+        </tbody>
+    </form>
+{% endblock %}

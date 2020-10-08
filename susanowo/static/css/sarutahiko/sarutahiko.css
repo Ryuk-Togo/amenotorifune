@@ -49,7 +49,7 @@ a:active.menu_class {
 
 .menu {
 	background-color: #ffffff;
-	color:#ffcf00;
+	color:#ffbb00;
 	padding: 1em;
     font-weight: bold;
 	margin: 2; 
@@ -71,7 +71,7 @@ a:active.menu_class {
 
 .tr_class {
 	border-top:2px solid #ffffff;
-	border-bottom:2px solid #ffcf00;
+	border-bottom:2px solid #ffbb00;
 	height: 50px;
 }
 
@@ -81,58 +81,58 @@ a:active.menu_class {
 }
 
 .th_class {
-	background-color: #ffcf00;
+	background-color: #ffbb00;
 	color:#ffffff;
 	padding-left: 2px;
 }
 
 .th_center_class {
-	background-color: #ffcf00;
+	background-color: #ffbb00;
 	color:#ffffff;
 	text-align: center;
 }
 
 .th_right_class {
-	background-color: #ffcf00;
+	background-color: #ffbb00;
 	color:#ffffff;
 	text-align: right;
 	padding-right: 2px;
 }
 
 .td_class {
-	border-color: #ffcf00;
+	border-color: #ffbb00;
 	background-color: #ffffff;
-	color:#ffcf00;
+	color:#ffbb00;
 	padding-left: 2px;
 	padding-right: 2px;
 }
 
 .td_center_class {
-	border-color: #ffcf00;
+	border-color: #ffbb00;
 	background-color: #ffffff;
 	text-align: center;
-	color:#ffcf00;
+	color:#ffbb00;
 }
 
 .td_right_class {
-	border-color: #ffcf00;
+	border-color: #ffbb00;
 	background-color: #ffffff;
 	text-align: right;
-	color:#ffcf00;
+	color:#ffbb00;
 	padding-right: 2px;
 }
 
 .td_left_class {
-	border-color: #ffcf00;
+	border-color: #ffbb00;
 	background-color: #ffffff;
 	text-align: left;
-	color:#ffcf00;
+	color:#ffbb00;
 	padding-right: 2px;
 }
 
 .main_body {
 	background-color: #ffffff;
-	color:#ffcf00;
+	color:#ffbb00;
 	vertical-align:top;
 	padding: 1em;
 	margin: 2; 
@@ -167,7 +167,7 @@ site_table_class {
 	border-right:10px solid #ffffff;
 	border-top:10px solid #ffffff;
 	border-bottom:10px solid #ffffff;
-	color: #ffcf00;
+	color: #ffbb00;
 	margin: 10px; 
 }
 

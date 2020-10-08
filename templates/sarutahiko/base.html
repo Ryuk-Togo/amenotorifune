@@ -25,13 +25,13 @@
             <tr>
                 <th colspan="3" style="width:70%;height:25px;text-align:left;font-size: 25;" class="menu" colspan="2">
                     <img src="{% static 'png/sarutahiko/sarutahiko_title.png' %}"/>
-                    <a class="menu_class" style="color:#ffcf00; background-color: #ffffff;" href="{% url 'sarutahiko:menu' %}" >
+                    <a class="menu_class" style="color:#ffbb00; background-color: #ffffff;" href="{% url 'sarutahiko:menu' %}" >
                         献立をたてよう！！
                     </a>
                 </th>
                 <td style="text-align:right; widows:30px; height:25px; text-align:right;" class="menu">
                     {{user_id}}({{user_name}})<br/><br/>
-                    <a class="menu_class" style="color:#ffcf00;" href="/sarutahiko/">ログアウト</a>
+                    <a class="menu_class" style="color:#ffbb00;" href="/sarutahiko/">ログアウト</a>
                 </td>
             </tr>
             <tr>
@@ -75,7 +75,7 @@
                 </td>
                 <td style="text-align:center; width:25%; background-color:#000000;" class="menu th_center_class">
                     献立<br/>
-                    <a class="menu_class" href="{% url 'sarutahiko:calendar' %}" >
+                    <a class="menu_class" href="{% url 'sarutahiko:menu_calendar' now_year now_month %}" >
                         <img src="{% static 'png/sarutahiko/kondate.png' %}"/><br/>
                     </a>
                 </td>
