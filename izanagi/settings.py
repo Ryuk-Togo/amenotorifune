@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'tukuyomi.apps.TukuyomiConfig',
     'amaterasu.apps.AmaterasuConfig',
     'amenouzume.apps.AmenouzumeConfig',
+    'sarutahiko.apps.SarutahikoConfig',
     'guestboard.apps.GuestboardConfig',
     'uploader.apps.UploaderConfig',
     'django.contrib.admin',

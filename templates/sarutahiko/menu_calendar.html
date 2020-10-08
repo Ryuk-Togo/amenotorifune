@@ -1,0 +1,44 @@
+{% extends "sarutahiko/base.html" %}
+
+{% load static %}
+{% block header %}
+<script src="{% static 'js/sarutahiko/menu.js' %}" ></script>
+{% endblock %}
+
+{% block body %}
+    <table class="site_table_class" style="width: 70%;">
+        <tbody>
+            <tr>
+                <td>
+                    <a href="">＜</a>
+                </td>
+                <td colspan="5" class="td_center_class">
+                    {{now_year}}年{{now_month}}月
+                </td>
+                <td>
+                    <a href="">＞</a>
+                </td>
+            </tr>
+            <tr>
+                <th class="th_center_class" style="width:10%">日</th>
+                <th class="th_center_class" style="width:10%">月</th>
+                <th class="th_center_class" style="width:10%">火</th>
+                <th class="th_center_class" style="width:10%">水</th>
+                <th class="th_center_class" style="width:10%">木</th>
+                <th class="th_center_class" style="width:10%">金</th>
+                <th class="th_center_class" style="width:10%">土</th>
+            </tr>
+            {% for week in month_data %}
+            <tr>
+                {% for day in week %}
+                <td class="td_center_class">
+                    {% if day != ０ %}
+                    {{day}}
+                    {% endif%}
+                </td>
+                {% endfor%}
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
