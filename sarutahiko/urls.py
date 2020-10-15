@@ -9,6 +9,7 @@ urlpatterns = [
     url(r'^menu/$', views.menu, name='menu'),
     path('menu_calendar/<int:year>/<int:month>', views.menu_calendar, name='menu_calendar'),
     url(r'^recipe/$', views.recipe, name='recipe'),
+    path('recipe_item/<str:process>/<str:row>', views.recipe_item, name='recipe_item'),
     url(r'^kondate/$', views.kondate, name='kondate'),
     url(r'^item/$', views.item, name='item'),
     url(r'^send/$', views.send, name='send'),

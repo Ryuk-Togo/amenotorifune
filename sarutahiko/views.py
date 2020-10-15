@@ -6,6 +6,7 @@ from django.shortcuts import (
 from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.utils import timezone
+from django.db.models import Q
 
 from sarutahiko.forms import (
     LoginModelForm,
@@ -14,7 +15,7 @@ from sarutahiko.forms import (
     KondateForm,
     KondateRecipeForm,
     ItemModelForm,
-    RecipeItemFormSet,
+    # RecipeItemFormSet,
     KondateItemFormSet,
 )
 from omoikane.models import (
@@ -96,8 +97,25 @@ def recipe(request):
     user_id = request.session.get('LOGIN_USER_ID')
     user_name = request.session.get('LOGIN_USER_NAME')
     if request.method == 'GET':
+        data = []
+        form_data = {
+            'id':0,
+            'row':'0',
+            'recipe_id':0,
+            'item_id':0,
+            'item_amt':0,
+            'item_name':'',
+        }
+        # form_data = dict(id=0,row='0',recipe_id=0,item_id=0,item_amt=0,item_name='')
+        data.append(form_data)
+
         form = RecipeForm(request.GET or None)
-        formSet = RecipeItemFormSet()
+        # formSet = RecipeItemFormSet()
+        # formSet = RecipeItemFormSet(initial=data)
+        RecipeItemFormSet = formsets.formset_factory(form=RecipeItemForm, extra=0,)
+        # formSet = RecipeItemFormSet()
+        formSet = RecipeItemFormSet(request.GET or None,initial=data)
+        
         context = {
             'user_id':user_id,
             'user_name':user_name,
@@ -110,6 +128,98 @@ def recipe(request):
     # else:
 
     return render(request, 'sarutahiko/recipe.html',context)
+
+def recipe_item(request,process,row):
+    user_id = request.session.get('LOGIN_USER_ID')
+    user_name = request.session.get('LOGIN_USER_NAME')
+    if request.method == 'GET':
+        form = RecipeForm(request.GET)
+        return HttpResponse(form)
+        # recipeItemFormSet = RecipeItemFormSet(request.GET or None)
+        # formSet = recipeItemFormSet.save(commit=False)
+        RecipeItemFormSet = formsets.formset_factory(form=RecipeItemForm, extra=2,)
+        formSet = RecipeItemFormSet(request.GET or None)
+        return HttpResponse(formSet)
+        if process == 'i':
+            data = []
+            form_row = 0
+            # return HttpResponse(formSet.is_valid())
+            return HttpResponse(formSet)
+            if formSet.is_valid():
+                for recipe_item_form in formSet.cleaned_data:
+                    if str(form_row) == row:
+                        form_data = {
+                            'id':0,
+                            'row':str(form_row),
+                            'recipe_id':0,
+                            'item_id':'',
+                            'item_amt':0,
+                            'item_name':'',
+                        }
+                        data.append(form_data)
+                        form_row += 1
+
+                    form_data = {
+                        'id':recipe_item_form.cleaned_data['id'],
+                        'row':str(form_row),
+                        'recipe_id':recipe_item_form.cleaned_data['recipe_id'],
+                        'item_id':recipe_item_form.cleaned_data['item_id'],
+                        'item_amt':recipe_item_form.cleaned_data['item_amt'],
+                        'item_name':recipe_item_form.cleaned_data['item_name'],
+                    }
+                    data.append(form_data)
+                    form_row += 1
+            
+            else:
+                return HttpResponse(formSet.errors)
+
+
+            # for recipe_item_form in formSet:
+            #     if formSet.is_valid():
+            #         if str(form_row) == row:
+            #             form_data = {
+            #                 'id':None,
+            #                 'row':str(form_row),
+            #                 'recipe_id':0,
+            #                 'item_id':'',
+            #                 'item_amt':0,
+            #                 'item_name':'',
+            #             }
+            #             data.append(form_data)
+            #             form_row += 1
+
+            #         form_data = {
+            #             'id':recipe_item_form.cleaned_data['id'],
+            #             'row':str(form_row),
+            #             'recipe_id':recipe_item_form.cleaned_data['recipe_id'],
+            #             'item_id':recipe_item_form.cleaned_data['item_id'],
+            #             'item_amt':recipe_item_form.cleaned_data['item_amt'],
+            #             'item_name':recipe_item_form.cleaned_data['item_name'],
+            #         }
+            #         data.append(form_data)
+            #         form_row += 1
+
+            #     else:
+            #         return HttpResponse(formSet.errors)
+
+
+            # formSet = RecipeItemFormSet(initial=data)
+            RecipeItemFormSet = formsets.formset_factory(form=RecipeItemForm, extra=form_row,)
+            formSet = RecipeItemFormSet(request.GET or None,initial=data)
+            context = {
+                'user_id':user_id,
+                'user_name':user_name,
+                'now_year':datetime.strftime(datetime.now(), '%Y'),
+                'now_month':datetime.strftime(datetime.now(), '%m'),
+                'form':form,
+                'formset':formSet,
+            }
+            return render(request, 'sarutahiko/recipe.html',context)
+
+    else:
+        return HttpResponse('POST')
+
+
 
 def menu_calendar(request, year, month):
     user_id = request.session.get('LOGIN_USER_ID')

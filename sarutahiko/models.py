@@ -20,7 +20,7 @@ class MRecipe(models.Model):
     url = models.CharField(
         verbose_name='ＵＲＬ',
         max_length=256,
-        blank=False,
+        blank=True,
     )
 
     create_date = models.DateTimeField(
@@ -82,6 +82,12 @@ class MRecipeItem(models.Model):
         default=0,
     )
 
+    row = models.IntegerField(
+        verbose_name='行',
+        blank=False,
+        default=0,
+    )
+
     create_date = models.DateTimeField(
         verbose_name='登録日時',
         blank=True,
@@ -130,7 +136,7 @@ class TKondate(models.Model):
     )
 
     is_noon = models.BooleanField(
-        verbose_name='主菜',
+        verbose_name='午前／午後',
         max_length=100,
         blank=False,
     )

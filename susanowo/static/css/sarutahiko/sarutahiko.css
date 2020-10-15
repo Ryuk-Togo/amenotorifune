@@ -187,3 +187,20 @@ input#id_re_login_user_pw {
 input#id_site_url {
 	width: 700px;
 }
+
+/* オリジナル */
+#id_recipe_name {
+	width: 100%
+}
+#id_url {
+	width: 100%
+}
+
+.item_name_class {
+	width: 450px;
+}
+
+.item_amt_class {
+	width: 100px;
+	text-align: right;
+}

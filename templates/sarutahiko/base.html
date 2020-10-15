@@ -20,7 +20,7 @@
     {% endblock %}
 </head>
 <body>
-    <table style="width:100%;height:100%;">
+    <table style="width:100%;height:100%;text-align: center;">
         <tbody>
             <tr>
                 <th colspan="3" style="width:70%;height:25px;text-align:left;font-size: 25;" class="menu" colspan="2">
@@ -35,7 +35,7 @@
                 </td>
             </tr>
             <tr>
-                <td colspan="4">
+                <td colspan="4" style="background:#fff; height: 25px;">
                     {% if form.non_field_errors %}
                     <div class="errmsg">
                         <ul>
@@ -51,12 +51,12 @@
                 </td>
             </tr>
             <tr>
-                <td colspan="4">
-                    <table>
+                <td colspan="4" style="background-color: #fff; padding-left: 30px; padding-right: 30px;">
+                    <table class="main_body" style="width: 100%; height: 100%;">
                         <tbody>
                             <tr>
                                 <td>
-                                    <div style="height:100%; width:100%;overflow-y:scroll;overflow-x:hidden;background:#FFFFFF">
+                                    <div style="height:100%; width:100%;overflow-y:scroll;overflow-x:hidden;">
                                         {% block body %}
                                         {% endblock %}
                                     </div>
