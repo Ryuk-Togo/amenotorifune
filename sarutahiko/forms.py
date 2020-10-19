@@ -30,6 +30,7 @@ class RecipeForm(forms.ModelForm):
     class Meta:
         model = MRecipe
         fields = ('id','recipe_name','url')
+        # fields = '__all__'
         widgets = {
             'id': forms.HiddenInput(),
             'place_name': forms.TextInput(),
@@ -37,22 +38,52 @@ class RecipeForm(forms.ModelForm):
         }
 
 # レシピ材料入力画面
-class RecipeItemForm(forms.ModelForm):
+class RecipeItemForm(forms.Form):
+
+    id = forms.IntegerField(label='主キー',
+        required=False,
+        widget=forms.HiddenInput(),
+    )
     
-    item_name = forms.CharField(label='材料',required=False,
-        widget=forms.TextInput(),
+    recipe_id = forms.IntegerField(label='レシピID',
+        required=False,
+        widget=forms.HiddenInput(),
+    )
+    
+    item_id = forms.IntegerField(label='材料コード',
+        required=False,
+        widget=forms.HiddenInput(),
     )
 
-    class Meta:
-        model = MRecipeItem
-        fields = ('id','recipe_id','item_id','item_amt')
-        widgets = {
-            'id': forms.HiddenInput(),
-            'item_id': forms.HiddenInput(),
-            'item_amt': forms.TextInput(),
-        }
+    item_name = forms.CharField(label='材料',
+        required=False,
+        widget=forms.TextInput(attrs={'class' : 'item_name_class'}),
+    )
 
-RecipeItemFormSet = formsets.formset_factory(form=RecipeItemForm, extra=0,)
+    item_amt = forms.IntegerField(label='数量',
+        required=False,
+        widget=forms.TextInput(attrs={'class' : 'item_amt_class'}),
+    )
+
+    row = forms.CharField(label='行',
+        required=False,
+        widget=forms.HiddenInput(),
+    )
+
+    # class Meta:
+    #     model = MRecipeItem
+    #     fields = ('id','recipe_id','item_id','item_amt','row','item_name')
+    #     widgets = {
+    #         'id'       : forms.HiddenInput(attrs={'required':False}),
+    #         'recipe_id': forms.HiddenInput(attrs={'required':False}),
+    #         'item_id'  : forms.HiddenInput(attrs={'required':False}),
+    #         'item_amt' : forms.TextInput(attrs={'class' : 'item_amt_class','required':False}),
+    #         'row'      : forms.TextInput(attrs={'required':False}),
+    #         'item_name': forms.TextInput(attrs={'class' : 'item_name_class','required':False}),
+    #     }
+    
+
+
 
 # 献立
 class KondateForm(forms.ModelForm):
