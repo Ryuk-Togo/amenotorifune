@@ -162,6 +162,16 @@ a:active.normal_class {
     font-weight: bold;
 }
 
+list_table_class {
+	border-left:10px solid #ffffff;
+	border-right:10px solid #ffffff;
+	border-top:10px solid #ffffff;
+	border-bottom:10px solid #ffffff;
+	background-color: #ffbb00;
+	color: #ffffff;
+	margin: 10px; 
+}
+
 site_table_class {
 	border-left:10px solid #ffffff;
 	border-right:10px solid #ffffff;
@@ -169,6 +179,12 @@ site_table_class {
 	border-bottom:10px solid #ffffff;
 	color: #ffbb00;
 	margin: 10px; 
+}
+
+detail_row_class {
+	border-bottom:10px solid #ffbb00;
+	margin: 10px; 
+	text-align: left;
 }
 
 /* サイト情報入力 */

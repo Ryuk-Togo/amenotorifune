@@ -96,25 +96,26 @@ def menu(request):
 def recipe(request):
     user_id = request.session.get('LOGIN_USER_ID')
     user_name = request.session.get('LOGIN_USER_NAME')
+    RecipeItemFormSet = formsets.formset_factory(form=RecipeItemForm, extra=0)
     if request.method == 'GET':
-        data = []
-        form_data = {
-            'id':0,
-            'row':'0',
-            'recipe_id':0,
-            'item_id':0,
-            'item_amt':0,
-            'item_name':'',
-        }
+        # data = []
+        # form_data = {
+        #     'id':0,
+        #     'row':'0',
+        #     'recipe_id':0,
+        #     'item_id':0,
+        #     'item_amt':0,
+        #     'item_name':'',
+        # }
         # form_data = dict(id=0,row='0',recipe_id=0,item_id=0,item_amt=0,item_name='')
-        data.append(form_data)
+        # data.append(form_data)
 
         form = RecipeForm(request.GET or None)
         # formSet = RecipeItemFormSet()
         # formSet = RecipeItemFormSet(initial=data)
-        RecipeItemFormSet = formsets.formset_factory(form=RecipeItemForm, extra=0,)
+        # RecipeItemFormSet = formsets.formset_factory(form=RecipeItemForm, extra=0)
         # formSet = RecipeItemFormSet()
-        formSet = RecipeItemFormSet(request.GET or None,initial=data)
+        formSet = RecipeItemFormSet(request.GET or None)
         
         context = {
             'user_id':user_id,
@@ -125,7 +126,87 @@ def recipe(request):
             'formset':formSet,
         }
         return render(request, 'sarutahiko/recipe.html',context)
-    # else:
+    else:
+        form = RecipeForm(request.POST)
+        formSet = RecipeItemFormSet(request.POST)
+        sysDate = datetime.now()
+
+        # レシピマスタ登録
+        if form.is_valid():
+            recipe_data = form.save(commit=False)
+
+            if recipe_data.pk is None:
+                recipe = MRecipe()
+                recipe.create_date    = sysDate
+                recipe.create_pg_id   = 'sarutahiko.recipe'
+                recipe.create_user_id = user_id
+            else:
+                recipe = MRecipe().objects.get(pk=recipe_data.pk)
+
+            recipe.user_id     = user_id
+            recipe.recipe_name = form.cleaned_data['recipe_name']
+            recipe.url         = form.cleaned_data['url']
+            recipe.update_date    = sysDate
+            recipe.update_pg_id   = 'sarutahiko.recipe'
+            recipe.update_user_id = user_id
+            recipe.save()
+
+            # return HttpResponse(recipe)
+        else:
+            return HttpResponse(form.errors)
+
+        # レシピ材料登録
+        if formSet.is_valid():
+            # recipeItems = formSet.save(commit=False)
+            rowCnt = 0
+            for recipe_item_form in formSet:
+
+                # レシピイDと材料コードからレシピ材料を検索
+
+
+                # レシピ材料が無かったら新規
+
+                # レシピ材料があったら更新
+
+                # その他レシピ材料を取得出来なかったら削除
+
+
+                # レシピ材料保存
+
+
+
+                # recipeItem = recipe_item_form.save(commit=False)
+                return HttpResponse(recipe_item_form.cleaned_data['item_name'])
+                # recipeItem = MRecipeItem.objects.get(pk=recipe_item.id)
+                # recipeItem = MRecipeItem()
+                # recipeItem.user_id = user_id
+                # recipeItem.recipe_id = recipe_item.recipe_id
+                # recipeItem.item_id = recipe_item.item_id
+                # recipeItem.item_amt = recipe_item.item_amt
+                # recipeItem.row = rowCnt
+                # recipeItem.create_date    = sysDate
+                # recipeItem.create_pg_id   = 'sarutahiko.recipe'
+                # recipeItem.create_user_id = user_id
+                # recipeItem.update_date    = sysDate
+                # recipeItem.update_pg_id   = 'sarutahiko.recipe'
+                # recipeItem.update_user_id = user_id
+
+                rowCnt += 1
+
+            context = {
+                'user_id':user_id,
+                'user_name':user_name,
+                'now_year':datetime.strftime(datetime.now(), '%Y'),
+                'now_month':datetime.strftime(datetime.now(), '%m'),
+                'form':form,
+                'formset':formSet,
+            }
+            
+            return render(request, 'sarutahiko/recipe.html',context)
+
+        else:
+            return HttpResponse(formSet.errors)
+
 
     return render(request, 'sarutahiko/recipe.html',context)
 

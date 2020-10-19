@@ -30,6 +30,7 @@ class RecipeForm(forms.ModelForm):
     class Meta:
         model = MRecipe
         fields = ('id','recipe_name','url')
+        # fields = '__all__'
         widgets = {
             'id': forms.HiddenInput(),
             'place_name': forms.TextInput(),
@@ -41,17 +42,17 @@ class RecipeItemForm(forms.Form):
 
     id = forms.IntegerField(label='主キー',
         required=False,
-        widget=forms.TextInput(),
+        widget=forms.HiddenInput(),
     )
     
     recipe_id = forms.IntegerField(label='レシピID',
         required=False,
-        widget=forms.TextInput(),
+        widget=forms.HiddenInput(),
     )
     
     item_id = forms.IntegerField(label='材料コード',
         required=False,
-        widget=forms.TextInput(),
+        widget=forms.HiddenInput(),
     )
 
     item_name = forms.CharField(label='材料',
@@ -66,7 +67,7 @@ class RecipeItemForm(forms.Form):
 
     row = forms.CharField(label='行',
         required=False,
-        widget=forms.TextInput(),
+        widget=forms.HiddenInput(),
     )
 
     # class Meta:

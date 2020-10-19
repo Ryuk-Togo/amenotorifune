@@ -1,0 +1,94 @@
+{% extends "sarutahiko/base.html" %}
+
+{% load static %}
+{% block header %}
+<script src="{% static 'js/sarutahiko/menu.js' %}" ></script>
+{% endblock %}
+
+{% block body %}
+    <form method="POST" form="recipe" action="{% url 'sarutahiko:recipe' ' ' ' ' %}">
+        {% csrf_token %}
+        {{ form.management_form }}
+        <table class="site_table_class" style="width: 700px;">
+        <tbody>
+            <tr>
+                <th class="td_right_class" style="width: 100px">
+                    レシピ名
+                </th>
+                <td class="td_left_class" style="width: 600px">
+                    {{form.recipe_name}}
+                    {{form.id}}
+                </td>
+            </tr>
+            <tr>
+                <th class="td_right_class" style="width: 100px">
+                    ＵＲＬ
+                </th>
+                <td class="td_left_class" style="width: 600px">
+                    {{form.url}}
+                </td>
+            </tr>
+            <tr style="height:30px">
+                <td></td>
+            </tr>
+            <tr>
+                <table class="site_table_class" style="width: 700px;">
+                    <tbody>
+                        <tr>
+                            <th style="width: 450px;" class="th_center_class">
+                                材料名
+                            </th>
+                            <th style="width: 100px;" class="th_center_class">
+                                数量
+                            </th>
+                            <th style="width: 50px;" class="th_center_class">
+                                追加
+                            </th>
+                            <th style="width: 50px;" class="th_center_class">
+                                編集
+                            </th>
+                            <th style="width: 50px;" class="th_center_class">
+                                削除
+                            </th>
+                        </tr>
+                    </tbody>
+                </table>
+                <table class="site_table_class" style="overflow-y:scroll;overflow-x:hidden;width:700px;">
+                    <tbody>
+                    {% for item in formset %}
+                    <tr>
+                            <td class="td_center_class" style="width: 450px;">
+                                {{item.item_name}}
+                                {{item.item_id}}
+                                {{item.id}}
+                                {{item.row}}
+                            </td>
+                            <td class="td_center_class" style="width: 100px;">
+                                {{item.item_amt}}
+                            </td>
+                            <td class="td_center_class" style="width: 50px;">
+                                <!-- <a href="{% url 'sarutahiko:recipe' 'i' item.row.value %}" >
+                                    <img src="{% static 'png/common/insert.png' %}"/><br/>
+                                </a> -->
+                                <a href="javascript:recipe.submit()" >
+                                    <img src="{% static 'png/common/insert.png' %}"/><br/>
+                                </a>
+                            </td>
+                            <td class="td_center_class" style="width: 50px;">
+                                <a href="{% url 'sarutahiko:recipe' 'm' item.row.value %}" >
+                                    <img src="{% static 'png/common/edit.png' %}"/><br/>
+                                </a>
+                            </td>
+                            <td class="td_center_class" style="width: 50px;">
+                                <a href="{% url 'sarutahiko:recipe' 'd' item.row.value %}" >
+                                    <img src="{% static 'png/common/delete.png' %}"/><br/>
+                                </a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                </tbody>
+                </table>
+            </tr>
+        </tbody>
+    </form>
+{% endblock %}

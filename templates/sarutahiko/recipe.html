@@ -6,86 +6,88 @@
 {% endblock %}
 
 {% block body %}
-    <form method="post" action="{% url 'sarutahiko:recipe' %}">
+    <form method="POST" form="recipe" action="{% url 'sarutahiko:recipe' %}">
         {% csrf_token %}
         {{ form.management_form }}
-        <table class="site_table_class" style="width: 700px;">
-        <tbody>
-            <tr>
-                <th class="td_right_class" style="width: 100px">
-                    レシピ名
-                </th>
-                <td class="td_left_class" style="width: 600px">
-                    {{form.recipe_name}}
-                    {{form.id}}
-                </td>
-            </tr>
-            <tr>
-                <th class="td_right_class" style="width: 100px">
-                    ＵＲＬ
-                </th>
-                <td class="td_left_class" style="width: 600px">
-                    {{form.url}}
-                </td>
-            </tr>
-            <tr style="height:30px">
-                <td></td>
-            </tr>
-            <tr>
-                <table class="site_table_class" style="width: 700px;">
-                    <tbody>
-                        <tr>
-                            <th style="width: 450px;" class="th_center_class">
-                                材料名
-                            </th>
-                            <th style="width: 100px;" class="th_center_class">
-                                数量
-                            </th>
-                            <th style="width: 50px;" class="th_center_class">
-                                追加
-                            </th>
-                            <th style="width: 50px;" class="th_center_class">
-                                編集
-                            </th>
-                            <th style="width: 50px;" class="th_center_class">
-                                削除
-                            </th>
-                        </tr>
-                    </tbody>
-                </table>
-                <table class="site_table_class" style="overflow-y:scroll;overflow-x:hidden;width:700px;">
-                    <tbody>
-                    {% for item in formset %}
-                    <tr>
-                            <td class="td_center_class" style="width: 450px;">
-                                {{item.item_name}}
-                                {{item.item_id}}
-                                {{item.id}}
-                                {{item.row}}
-                            </td>
-                            <td class="td_center_class" style="width: 100px;">
-                                {{item.item_amt}}
-                            </td>
-                            <td class="td_center_class" style="width: 50px;">
-                                <a href="{% url 'sarutahiko:recipe_item' 'i' item.row.value %}" >
-                                    <img src="{% static 'png/common/insert.png' %}"/><br/>
-                                </a>
-                            </td>
-                            <td class="td_center_class" style="width: 50px;">
-                                <a href="{% url 'sarutahiko:recipe_item' 'm' item.row.value %}" >
-                                    <img src="{% static 'png/common/edit.png' %}"/><br/>
-                                </a>
-                            </td>
-                            <td class="td_center_class" style="width: 50px;">
-                                <a href="{% url 'sarutahiko:recipe_item' 'd' item.row.value %}" >
-                                    <img src="{% static 'png/common/delete.png' %}"/><br/>
-                                </a>
-                            </td>
-                        </tr>
-                        {% endfor %}
-                </tbody>
-                </table>
-            </tr>
-        </tbody>
+        {{ form.as_p }}
+        <hr/>
+        {{ formset.management_form }}
+        <!-- <table style="width:250px;">
+            <tbody>
+                <tr class="tr_class">
+                    <th class="th_center_class" style="padding-top:10px;width:200px;">材料</tH>
+                    <th class="th_center_class" style="padding-top:10px;width:50px;">数量</tH>
+                </tr>    
+            </tbody>
+        </table> -->
+        <dev id="detail_body_class">
+        {% for item in formset %}
+            {{item.as_p}}
+        <hr/>
+        {% endfor %}
+        </dev>
+        <!-- <table style="width:250px;">
+            <tbody>
+                {% for item in formset %}
+                {{item.item_name}}{{item.item_amt}}
+                <tr>
+                    <td style="padding-top:10px;width:200px;" class="td_left_class">{{item.item_name}}</td>
+                    <td style="padding-top:10px;width:50px;" class="td_left_class">{{item.item_amt}}</td>
+                </tr>
+                <dev id="detail_body_class">
+                </dev>
+                {% endfor %}
+            </tbody>
+        </table> -->
+        <br/>
+        <button type="submit" style="width:100px; height:50px">登録</button>
+        <button type="button" id="add" style="width:100px; height:50px">追加</button>
     </form>
+    <script>
+        $(function(){
+            var totalManageElement = $('input#id_form-TOTAL_FORMS');
+            var currentFileCount = parseInt(totalManageElement.val());
+            $('button#add').on('click', function(){
+                var itemNameLabelElement = $('<label>', {
+                    for: 'id_form-' + currentFileCount + '-item_name',
+                    value: '材料:'
+                });
+                var itemAmtLabelElement = $('<label>', {
+                    for: 'id_form-' + currentFileCount + '-item_amt',
+                    value: '数量:'
+                });
+                var itemNameElement = $('<input>', {
+                    type: 'text',
+                    name: 'form-' + currentFileCount + '-item_name',
+                    id: 'id_form_set-' + currentFileCount + '-item_name',
+                    class: 'item_name_class',
+                });
+                var itemAmtElement = $('<input>', {
+                    type: 'text',
+                    name: 'form-' + currentFileCount + '-item_amt',
+                    id: 'id_form_set-' + currentFileCount + '-item_amt',
+                    class: 'item_amt_class',
+                    value: '0'
+                });
+                // $('dev#detail_body_class').append('<tr>');
+                // $('dev#detail_body_class').append('<td style="padding-top:10px;width:200px;" class="td_left_class">');
+                $('dev#detail_body_class').append($('<p>'));
+                $('dev#detail_body_class').append('材料: ');
+                $('dev#detail_body_class').append(itemNameElement);
+                $('dev#detail_body_class').append($('</p>'));
+                // $('dev#detail_body_class').append('</td>');
+                // $('dev#detail_body_class').append('<td style="padding-top:10px;width:50px;" class="td_left_class">');
+                $('dev#detail_body_class').append($('<p>'));
+                $('dev#detail_body_class').append('数量: ');
+                $('dev#detail_body_class').append(itemAmtElement);
+                $('dev#detail_body_class').append($('</p>'));
+                // $('dev#detail_body_class').append('</td>');
+                // $('dev#detail_body_class').append('</tr>');
+                // $('dev#detail_body_class').append('<br/>');
+                $('dev#detail_body_class').append('<hr/>');
+                currentFileCount += 1;
+                totalManageElement.attr('value', currentFileCount);
+            });
+        });
+    </script>
 {% endblock %}
