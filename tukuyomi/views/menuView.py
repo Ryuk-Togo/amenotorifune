@@ -21,6 +21,7 @@ def menu(request):
 
     # 定数初期化
     mbuyers = MBuyer.objects.filter(user_id=user_id).order_by('buyerNm')
+    tukuyomiConst.BUYER_CHOICE = []
     tukuyomiConst.BUYER_CHOICE.append((None, ''))
     for buyer in mbuyers:
         tukuyomiConst.BUYER_CHOICE.append((buyer.id, buyer.buyerNm))

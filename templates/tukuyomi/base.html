@@ -23,8 +23,10 @@
         <tbody>
             <tr>
                 <th style="width:150px;height:25px" class="menu th_center_class">
-                    <img src="{% static 'icon/tukuyomi.ico' %}"/><br/>
-                    電子マネー管理
+                    <a class="menu_class" href="{% url 'tukuyomi:menu' %}">
+                        <img src="{% static 'icon/tukuyomi.ico' %}"/><br/>
+                        電子マネー管理
+                    </a>
                 </th>
                 <td style="text-align:center; width:150px;" class="menu th_center_class">
                     <a class="menu_class" href="{% url 'tukuyomi:riyou_info' now_year now_month %}" >
