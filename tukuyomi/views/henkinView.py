@@ -64,7 +64,7 @@ def henkin_header(request):
         sql = sql + '         ON (s.assert_cd=a.id) '
         sql = sql + ' WHERE s.user_id = %(user_id)s '
         sql = sql + '   AND s.buyer_cd = %(buyer_id)s '
-        sql = sql + '   AND s.sum_user_amt <> s.refund_balance '
+        sql = sql + '   AND s.sum_user_amt > s.refund_balance '
         sql = sql + ' ORDER BY s.used_date , s.shop_name , a.assert_nm , s.item_nm '
 
         data = None

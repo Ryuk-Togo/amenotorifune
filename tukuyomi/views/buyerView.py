@@ -57,7 +57,7 @@ def buyer_input(request):
             mbuyer.update_pg_id   = 'buyer_input'
             mbuyer.update_user_id = user_id
             mbuyer.save()
-            return redirect('/tukuyomi/buyer_list/')
+            return redirect('/tukuyomi/menu/')
         else:
             context = {
                 'user_id':user_id,
@@ -67,7 +67,7 @@ def buyer_input(request):
                 'now_year':datetime.strftime(datetime.now(), '%Y'),
                 'now_month':datetime.strftime(datetime.now(), '%m'),
             }
-            return render(request, 'tukuyomi/buyer_input.html',context)
+            return render(request, 'tukuyomi/menu.html',context)
 
 def buyer_input_modify(request,id,shori):
     user_id = request.session.get('LOGIN_USER_ID')
@@ -101,7 +101,7 @@ def buyer_input_modify(request,id,shori):
                 mbuyer.save()
             elif shori=='d':
                 mbuyer.delete()
-            return redirect('/tukuyomi/buyer_list/')
+            return redirect('/tukuyomi/menu/')
         else:
             context = {
                 'user_id':user_id,
@@ -112,4 +112,4 @@ def buyer_input_modify(request,id,shori):
                 'now_year':datetime.strftime(datetime.now(), '%Y'),
                 'now_month':datetime.strftime(datetime.now(), '%m'),
             }
-            return render(request, 'tukuyomi/buyer_input.html',context)
+            return render(request, 'tukuyomi/menu.html',context)
