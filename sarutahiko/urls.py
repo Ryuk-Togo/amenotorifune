@@ -14,4 +14,6 @@ urlpatterns = [
     url(r'^kondate/$', views.kondate, name='kondate'),
     url(r'^item/$', views.item, name='item'),
     url(r'^send/$', views.send, name='send'),
+    path('recipe_list/<str:recipe_name>', views.recipe_list, name='recipe_list'),
+    path('item_list/<int:recipe_id>/<str:item_name>', views.item_list, name='item_list'),
 ]

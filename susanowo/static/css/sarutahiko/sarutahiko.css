@@ -220,3 +220,7 @@ input#id_site_url {
 	width: 100px;
 	text-align: right;
 }
+
+.recipe_name.p {
+	font:120% "Meiryo UI";
+}

@@ -1,0 +1,17 @@
+<dev id="detail_body_class">
+        
+<p>
+<label for="id_form-0-item_name">材料:</label>
+<input type="text" name="form-0-item_name" class="item_name_class" id="id_form-0-item_name">
+</p>
+<p>
+<label for="id_form-0-item_amt">数量:</label>
+<input type="text" name="form-0-item_amt" class="item_amt_class" id="id_form-0-item_amt">
+<input type="hidden" name="form-0-id" id="id_form-0-id">
+<input type="hidden" name="form-0-recipe_id" id="id_form-0-recipe_id">
+<input type="hidden" name="form-0-item_id" id="id_form-0-item_id">
+<input type="hidden" name="form-0-row" id="id_form-0-row"></p>
+        <hr/>
+        
+</dev>
+        <br/>
