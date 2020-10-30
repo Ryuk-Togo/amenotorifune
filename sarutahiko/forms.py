@@ -27,13 +27,19 @@ class LoginModelForm(forms.ModelForm):
 # レシピ入力画面
 class RecipeForm(forms.ModelForm):
     
+    id = forms.IntegerField(label='主キー',
+        required=False,
+        widget=forms.HiddenInput(),
+    )
+    
     class Meta:
         model = MRecipe
-        fields = ('id','recipe_name','url')
+        # fields = ('id','recipe_name','url')
+        fields = ('recipe_name','url')
         # fields = '__all__'
         widgets = {
-            'id': forms.HiddenInput(),
-            'place_name': forms.TextInput(),
+            # 'id': forms.HiddenInput(),
+            'recipe_name': forms.TextInput(attrs={'class' : 'recipe_name_class'}),
             'url': forms.TextInput(),
         }
 
@@ -47,7 +53,7 @@ class RecipeItemForm(forms.Form):
     
     recipe_id = forms.IntegerField(label='レシピID',
         required=False,
-        widget=forms.HiddenInput(),
+        widget=forms.HiddenInput(attrs={'class' : 'recipe_id_class'}),
     )
     
     item_id = forms.IntegerField(label='材料コード',

@@ -8,11 +8,13 @@
 {% endblock %}
 
 {% block body %}
-    <form method="POST" form="recipe" action="{% url 'sarutahiko:recipe' %}" id="recipe">
+<!-- {% with recipe_name=" " %} -->
+<form method="POST" form="recipe" action="{% url 'sarutahiko:recipe' recipe_name %}" id="recipe">
+<!-- {% endwith %} -->
         {% csrf_token %}
         {{ form.management_form }}
         {{ form.as_p }}
-        <input type="hidden" id="recipe_id" name="recipe_id" value="" />
+        <!-- <p><input type="hidden" id="id_id" name="id" value="" /></p> -->
         <hr/>
         {{ formset.management_form }}
         <dev id="detail_body_class">
@@ -25,6 +27,7 @@
         <button type="submit" style="width:100px; height:50px">登録</button>
         <button type="button" id="add" style="width:100px; height:50px">追加</button>
     </form>
+    <br/>
     <script>
         $(function(){
             var totalManageElement = $('input#id_form-TOTAL_FORMS');
@@ -89,7 +92,8 @@
 
                 // 材料のオートコンプリートを動的に追加
                 var s = document.createElement("script");
-                s.innerHTML = "autocompleteGetItemData('#recipe_id','#id_form-" + currentFileCount + "-item_name','/sarutahiko/item_list/',displayDataItemName," + currentFileCount + ");";
+                s.innerHTML = "autocompleteGetItemData('#id_id','#id_form-" + currentFileCount + "-item_name','/sarutahiko/item_list/',displayDataItemName," + currentFileCount + ");";
+                // s.innerHTML = "autocompleteGetItemData('.recipe_id_class','.item_class_name','/sarutahiko/item_list/',displayDataItemName," + currentFileCount + ");";
                 var ele = document.getElementById("row" + currentFileCount);
                 ele.appendChild(s);
 
