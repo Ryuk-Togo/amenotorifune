@@ -92,46 +92,62 @@ class RecipeItemForm(forms.Form):
 
 
 # 献立
-class KondateForm(forms.ModelForm):
-    
-    class Meta:
-        model = TKondate
-        fields = ('id','recipe_date','is_noon','is_main')
-        widgets = {
-            'id': forms.HiddenInput(),
-            'recipe_date': forms.TextInput(),
-            'is_noon': forms.BooleanField(
-                label='午前／午後',
-                required=False,
-                widget=forms.CheckboxInput(
-                    attrs={'class': 'check'}
-                ),
-            ),
-            'is_main': forms.BooleanField(
-                label='主菜／副菜',
-                required=False,
-                widget=forms.CheckboxInput(
-                    attrs={'class': 'check'}
-                ),
-            ),
-        }
+class KondateForm(forms.Form):
 
-# 献立のレシピ
-class KondateRecipeForm(forms.ModelForm):
-    
-    recipe_name = forms.CharField(label='レシピ名',required=False,
+    year = forms.IntegerField(label='年',
+        required=False,
         widget=forms.TextInput(),
     )
 
-    class Meta:
-        model = TKondateRecipe
-        fields = ('id','recipe_id')
-        widgets = {
-            'id': forms.HiddenInput(),
-            'recipe_id': forms.HiddenInput(),
-        }
+    month = forms.IntegerField(label='月',
+        required=False,
+        widget=forms.TextInput(),
+    )
 
-KondateItemFormSet = formsets.formset_factory(form=RecipeItemForm, extra=0,)
+    day = forms.IntegerField(label='日',
+        required=False,
+        widget=forms.TextInput(),
+    )
+
+    number_of_people = forms.IntegerField(label='人数',
+        required=False,
+        widget=forms.TextInput(),
+    )
+
+# 献立のレシピ
+class KondateRecipeForm(forms.Form):
+    
+    recipe_name = forms.CharField(
+        label='レシピ',
+        required=False,
+        widget=forms.TextInput(),
+    )
+
+    recipe_id = forms.IntegerField(
+        required=False,
+        widget=forms.HiddenInput(),
+    )
+
+    # class Meta:
+    #     model = TKondate
+    #     # fields = ('id','recipe_date','is_noon','is_main')
+    #     fields = '__all__'
+    #     widgets = {
+    #         'id'              : forms.HiddenInput(),
+    #         'user_id'         : forms.HiddenInput(),
+    #         'recipe_date'     : forms.TextInput(),
+    #         'recipe_id'       : forms.TextInput(),
+    #         'time'            : forms.HiddenInput(),
+    #         'is_main'         : forms.HiddenInput,
+    #         'number_of_people': forms.HiddenInput(),
+    #         'create_date'     : forms.HiddenInput(),
+    #         'create_pg_id'    : forms.HiddenInput(),
+    #         'create_user_id'  : forms.HiddenInput(),
+    #         'update_date'     : forms.HiddenInput(),
+    #         'update_pg_id'    : forms.HiddenInput(),
+    #         'update_user_id'  : forms.HiddenInput(),
+    #         'recipe_name'     : forms.TextInput(attrs={'readonly': 'readonly'})
+    #     }
 
 class ItemModelForm(forms.ModelForm):
     

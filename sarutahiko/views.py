@@ -15,7 +15,6 @@ from sarutahiko.forms import (
     KondateForm,
     KondateRecipeForm,
     ItemModelForm,
-    KondateItemFormSet,
 )
 from omoikane.models import (
     MUser,
@@ -29,8 +28,11 @@ from sarutahiko.models import (
     TKondate,
     TKondateRecipe,
 )
-from datetime import datetime, date, timedelta
 import calendar
+import datetime
+from datetime import datetime, date, timedelta
+# from dateutil.relativedelta import relativedelta
+# import dateutil
 import logging
 import os
 from izanagi import settings
@@ -269,26 +271,140 @@ def menu_calendar(request, year, month):
                 if day != month_range[1]:
                     week_date = [0,0,0,0,0,0,0]
 
-        month_day.append(week_date)
+        if week_date[6] != month_range[1]:
+            month_day.append(week_date)
+        changeMonth = linkMonth(year,month)
     
         context = {
-            'user_id':user_id,
-            'user_name':user_name,
-            'now_year':year,
-            'now_month':month,
+            'user_id'   :user_id,
+            'user_name' :user_name,
+            'now_year'  :year,
+            'now_month' :month,
             'month_data':month_day,
+            'prevYear'  :changeMonth['prevYear'],
+            'prevMonth' :changeMonth['prevMonth'],
+            'nextYear'  :changeMonth['nextYear'],
+            'nextMonth' :changeMonth['nextMonth'],
         }
 
         return render(request, 'sarutahiko/menu_calendar.html',context)
 
-def kondate(request):
+def linkMonth(year,month):
+    # dt = datetime.date(year, month, 1)
+    # dt = datetime(year, month, 1)
+    dt = date(year, month, 1)
+    max_day = calendar.monthrange(dt.year, dt.month)[1]
+    # prevMonth = datetime.date(dt.year, dt.month, dt.date) - datetime.timedelta(days=1)
+    # nextMonth = datetime.date(dt.year, dt.month, max_day) + datetime.timedelta(days=1)
+    prevMonth = date(dt.year, dt.month, dt.day) - timedelta(days=1)
+    nextMonth = date(dt.year, dt.month, max_day) + timedelta(days=1)
+    result = {
+        'prevYear' :datetime.strftime(prevMonth, '%Y'),
+        'prevMonth':datetime.strftime(prevMonth, '%m'),
+        'nextYear' :datetime.strftime(nextMonth, '%Y'),
+        'nextMonth':datetime.strftime(nextMonth, '%m'),
+    }
+    return result
+
+def kondate(request,year,month,day):
     user_id = request.session.get('LOGIN_USER_ID')
     user_name = request.session.get('LOGIN_USER_NAME')
+    LanchMainKondateFormSet  = formsets.formset_factory(form=KondateRecipeForm, extra=1)
+    LanchSubKondateFormSet   = formsets.formset_factory(form=KondateRecipeForm, extra=1)
+    DinnerMainKondateFormSet = formsets.formset_factory(form=KondateRecipeForm, extra=1)
+    DinnerSubKondateFormSet  = formsets.formset_factory(form=KondateRecipeForm, extra=1)
+    if request.method == 'GET':
+        form = KondateForm(request.GET or None, initial={
+            'year':year,
+            'month':month,
+            'day':day,
+        })
+        # 昼の主菜
+        lanchMains  = TKondate.objects.filter(user_id=user_id).filter(recipe_date=date(year,month,day)).filter(time='1').filter(is_main=True).order_by('id')
+        lanchMainData = []
+        for lanchMain in lanchMains:
+            lanchMainData.append({
+                'id'               : lanchMain.id,
+                'user_id'          : lanchMain.user_id,
+                'recipe_date'      : lanchMain.recipe_date,
+                'time'             : lanchMain.time,
+                'is_main'          : lanchMain.is_main,
+                'recipe_id'        : lanchMain.recipe_id,
+                'number_of_people' : lanchMain.number_of_people,
+            })
+        lanchMainFormSet = LanchMainKondateFormSet(request.GET or None, initial=lanchMainData)
+
+        # 昼の副菜
+        lanchSubs   = TKondate.objects.filter(user_id=user_id).filter(recipe_date=date(year,month,day)).filter(time='1').filter(is_main=False).order_by('id')
+        lanchSubData = []
+        for lanchSub in lanchSubs:
+            lanchSubData.append({
+                'id'               : lanchSub.id,
+                'user_id'          : lanchSub.user_id,
+                'recipe_date'      : lanchSub.recipe_date,
+                'time'             : lanchSub.time,
+                'is_main'          : lanchSub.is_main,
+                'recipe_id'        : lanchSub.recipe_id,
+                'number_of_people' : lanchSub.number_of_people,
+            })
+        lanchSubFormSet = LanchSubKondateFormSet(request.GET or None, initial=lanchSubData)
+
+        # 夜の主菜
+        dinnerMains = TKondate.objects.filter(user_id=user_id).filter(recipe_date=date(year,month,day)).filter(time='2').filter(is_main=True).order_by('id')
+        dinnerMainData = []
+        for dinnerMain in dinnerMains:
+            dinnerMainData.append({
+                'id'               : dinnerMain.id,
+                'user_id'          : dinnerMain.user_id,
+                'recipe_date'      : dinnerMain.recipe_date,
+                'time'             : dinnerMain.time,
+                'is_main'          : dinnerMain.is_main,
+                'recipe_id'        : dinnerMain.recipe_id,
+                'number_of_people' : dinnerMain.number_of_people,
+            })
+        dinnerMainFormSet = DinnerMainKondateFormSet(request.GET or None, initial=dinnerMainData)
+        # 夜の副菜
+        dinnerSubs  = TKondate.objects.filter(user_id=user_id).filter(recipe_date=date(year,month,day)).filter(time='2').filter(is_main=False).order_by('id')
+        dinnerSubData = []
+        for dinnerSub in dinnerSubs:
+            dinnerSubData.append({
+                'id'               : dinnerSub.id,
+                'user_id'          : dinnerSub.user_id,
+                'recipe_date'      : dinnerSub.recipe_date,
+                'time'             : dinnerSub.time,
+                'is_main'          : dinnerSub.is_main,
+                'recipe_id'        : dinnerSub.recipe_id,
+                'number_of_people' : dinnerSub.number_of_people,
+            })
+        dinnerSubFormSet = DinnerSubKondateFormSet(request.GET or None, initial=dinnerSubData)
+    
+    else:
+        form = KondateForm(request.POST)
+        # lanchMainFormSet  = LanchMainKondateFormSet(request.POST)
+        # lanchSubFormSet   = LanchSubKondateFormSet(request.POST)
+        # dinnerMainFormSet = DinnerMainKondateFormSet(request.POST)
+        # dinnerSubFormSet  = DinnerSubKondateFormSet(request.POST)
+
+        post_lanchMainFormSet  = request.POST.copy()
+        lanchSubFormSet   = request.POST.copy()
+        dinnerMainFormSet = request.POST.copy()
+        dinnerSubFormSet  = request.POST.copy()
+
+        lanchMainFormSet = LanchMainKondateFormSet(post_lanchMainFormSet )
+
+        return HttpResponse(lanchMainFormSet)
+
     context = {
-        'user_id':user_id,
-        'user_name':user_name,
-        'now_year':datetime.strftime(datetime.now(), '%Y'),
-        'now_month':datetime.strftime(datetime.now(), '%m'),
+        'user_id'          :user_id,
+        'user_name'        :user_name,
+        'now_year'         :year,
+        'now_month'        :month,
+        'day'              :day,
+        'form'             :form,
+        'lanchMainFormSet' :lanchMainFormSet,
+        'lanchSubFormSet'  :lanchSubFormSet,
+        'dinnerMainFormSet':dinnerMainFormSet,
+        'dinnerSubFormSet' :dinnerSubFormSet,
     }
     return render(request, 'sarutahiko/kondate.html',context)
 

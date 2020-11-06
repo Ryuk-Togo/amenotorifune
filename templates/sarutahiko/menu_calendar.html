@@ -9,31 +9,34 @@
     <table class="site_table_class" style="width: 70%;">
         <tbody>
             <tr>
-                <td>
-                    <a href="">＜</a>
+                <td style="text-align: center;">
+                    <a href="{% url 'sarutahiko:menu_calendar' prevYear prevMonth %}">前月</a>
                 </td>
                 <td colspan="5" class="td_center_class">
                     {{now_year}}年{{now_month}}月
                 </td>
-                <td>
-                    <a href="">＞</a>
+                <td style="text-align: center;">
+                    <a href="{% url 'sarutahiko:menu_calendar' nextYear nextMonth %}">次月</a>
                 </td>
             </tr>
             <tr>
-                <th class="th_center_class" style="width:10%">日</th>
-                <th class="th_center_class" style="width:10%">月</th>
-                <th class="th_center_class" style="width:10%">火</th>
-                <th class="th_center_class" style="width:10%">水</th>
-                <th class="th_center_class" style="width:10%">木</th>
-                <th class="th_center_class" style="width:10%">金</th>
-                <th class="th_center_class" style="width:10%">土</th>
+                <th class="th_center_class black_line" style="width:10%">日</th>
+                <th class="th_center_class black_line" style="width:10%">月</th>
+                <th class="th_center_class black_line" style="width:10%">火</th>
+                <th class="th_center_class black_line" style="width:10%">水</th>
+                <th class="th_center_class black_line" style="width:10%">木</th>
+                <th class="th_center_class black_line" style="width:10%">金</th>
+                <th class="th_center_class black_line" style="width:10%">土</th>
             </tr>
             {% for week in month_data %}
             <tr>
                 {% for day in week %}
-                <td class="td_center_class">
+                <td class="td_center_class black_line">
                     {% if day != ０ %}
-                    {{day}}
+                    <table style="width:100%;">
+                        <!-- <tr><th style="width :30%; text-align: center;">{{day}}</th> -->
+                        <tr><th style="width :30%; text-align: center;"><a href="{% url 'sarutahiko:kondate' now_year now_month day %}">{{day}}</a></th>
+                    </table>
                     {% endif%}
                 </td>
                 {% endfor%}
@@ -41,4 +44,5 @@
             {% endfor %}
         </tbody>
     </table>
+    <br/>
 {% endblock %}

@@ -1,0 +1,55 @@
+{% extends "sarutahiko/base.html" %}
+
+{% load static %}
+{% block header %}
+<!-- <script src="{% static 'js/sarutahiko/menu.js' %}" ></script> -->
+<script src="{% static 'js/sarutahiko/search_asta.js' %}" ></script>
+<script src="{% static 'js/sarutahiko/recipe.js' %}" ></script>
+{% endblock %}
+
+{% block body %}
+<form method="POST" form="kondate" action="{% url 'sarutahiko:kondate' now_year now_month day %}" id="kondate">
+    {% csrf_token %}
+    {{ form.management_form }}
+    {{ form.year.value}}/{{form.month.value}}/{{form.day.value}}
+    <p style="text-align: right;">人数:{{ form.number_of_people }}</p>
+    <!-- {{ form.as_p }} -->
+
+    <dev id="detail_body_class">
+        <hr/>
+        <p>昼　主菜</p>
+        <!-- {{ lanchMainFormSet.management_form }} -->
+        {% for lanchMain in lanchMainFormSet %}
+        {{lanchMain.as_p}}
+        {% endfor %}
+        <p stype="text-align: right"><button type="button" id="add" style="width:100px; height:50px">追加</button></p>
+
+        <hr/>
+        <p>昼　副菜</p>
+        <!-- {{ lanchSubFormSet.management_form }} -->
+        {% for lanchSub in lanchSubFormSet %}
+        {{lanchSub.as_p}}
+        {% endfor %}
+        <p stype="text-align: right"><button type="button" id="add" style="width:100px; height:50px">追加</button></p>
+
+        <hr/>
+        <p>夜　主菜</p>
+        <!-- {{ dinnerMainFormSet.management_form }} -->
+        {% for dinnerMain in dinnerMainFormSet %}
+        {{dinnerMain.as_p}}
+        {% endfor %}
+        <p stype="text-align: right"><button type="button" id="add" style="width:100px; height:50px">追加</button></p>
+
+        <hr/>
+        <p>夜　副菜</p>
+        <!-- {{ dinnerSubFormSet.management_form }} -->
+        {% for dinnerSub in dinnerSubFormSet %}
+        {{dinnerSub.as_p}}
+        {% endfor %}
+        <p stype="text-align: right"><button type="button" id="add" style="width:100px; height:50px">追加</button></p>
+    </dev>
+    <hr/>
+    <button type="submit" style="width:100px; height:50px">登録</button>
+</form>
+<br/>
+{% endblock %}

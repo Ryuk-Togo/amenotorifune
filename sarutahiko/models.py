@@ -135,15 +135,21 @@ class TKondate(models.Model):
         blank=False,
     )
 
-    is_noon = models.BooleanField(
-        verbose_name='午前／午後',
-        max_length=100,
+    time = models.CharField(
+        verbose_name='時間帯',
+        max_length=1,
         blank=False,
     )
 
     is_main = models.BooleanField(
         verbose_name='主菜',
         max_length=100,
+        blank=False,
+    )
+
+    recipe_id = models.CharField(
+        verbose_name='レシピID',
+        max_length=30,
         blank=False,
     )
 
