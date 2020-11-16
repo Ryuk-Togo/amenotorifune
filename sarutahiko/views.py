@@ -475,13 +475,33 @@ def blank_kondate(request,time,is_sub,user_id,year,month,day,sysDate):
 def item(request):
     user_id = request.session.get('LOGIN_USER_ID')
     user_name = request.session.get('LOGIN_USER_NAME')
-    context = {
-        'user_id':user_id,
-        'user_name':user_name,
-        'now_year':datetime.strftime(datetime.now(), '%Y'),
-        'now_month':datetime.strftime(datetime.now(), '%m'),
-    }
-    return render(request, 'sarutahiko/item.html',context)
+    sysDate = datetime.now()
+
+    if request.method == 'GET':
+        form = ItemModelForm(request.GET or None)
+
+        context = {
+            'user_id'  :user_id,
+            'user_name':user_name,
+            'now_year' :datetime.strftime(datetime.now(), '%Y'),
+            'now_month':datetime.strftime(datetime.now(), '%m'),
+            'form'     :form
+        }
+        return render(request, 'sarutahiko/item.html',context)
+
+    else:
+        form = ItemModelForm(request.POST)
+        if form.is_valid():
+            item_id = form.cleaned_data['id']
+            mitem = get_object_or_404(MItem,id=item_id)
+            mitem.user_id        = user_id
+            mitem.item_name      = form.cleaned_data['item_name_upd']
+            mitem.update_date    = sysDate
+            mitem.update_pg_id   = 'sarutahiko.item'
+            mitem.update_user_id = user_id
+            mitem.save()
+            
+        return redirect('/sarutahiko/menu/')
 
 def send(request):
     user_id = request.session.get('LOGIN_USER_ID')

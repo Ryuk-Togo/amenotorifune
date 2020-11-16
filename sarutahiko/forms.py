@@ -179,6 +179,17 @@ class KondateRecipeForm(forms.Form):
 
 class ItemModelForm(forms.ModelForm):
     
+    id = forms.IntegerField(label='主キー',
+        required=False,
+        widget=forms.HiddenInput(),
+    )
+
+    item_name_upd = forms.CharField(
+        label='変更後',
+        required=True,
+        widget=forms.TextInput(),
+    )
+    
     class Meta:
         model = MItem
         fields = ('id','item_name')
