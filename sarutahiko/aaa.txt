@@ -1,0 +1,37 @@
+<dev id="detail_body_class">
+        
+<p>
+<label for="id_form-0-item_name">材料:</label>
+<input type="text" name="form-0-item_name" class="item_name_class" id="id_form-0-item_name">
+</p>
+<p>
+<label for="id_form-0-item_amt">数量:</label>
+<input type="text" name="form-0-item_amt" class="item_amt_class" id="id_form-0-item_amt">
+<input type="hidden" name="form-0-id" id="id_form-0-id">
+<input type="hidden" name="form-0-recipe_id" id="id_form-0-recipe_id">
+<input type="hidden" name="form-0-item_id" id="id_form-0-item_id">
+<input type="hidden" name="form-0-row" id="id_form-0-row"></p>
+        <hr/>
+        
+</dev>
+        <br/>
+
+
+
+---------
+<p>
+<label for="id_form-0-recipe_name">レシピ:</label>
+<input type="text" name="form-0-recipe_name" id="id_form-0-recipe_name">
+</p>
+
+<p>
+<label for="id_form-0-number_of_people">人数:</label>
+<input type="text" name="form-0-number_of_people" value="0" id="id_form-0-number_of_people">
+<input type="hidden" name="form-0-time" value="0" id="id_form-0-time">
+<input type="hidden" name="form-0-is_sub" value="0" id="id_form-0-is_sub">
+<input type="hidden" name="form-0-id" id="id_form-0-id">
+<input type="hidden" name="form-0-recipe_id" id="id_form-0-recipe_id"></p>
+<p stype="text-align: right">
+<button type="button" id="add_0_0" style="width:100px; height:50px">追加</button>
+</p>
+<hr/>

@@ -220,3 +220,19 @@ input#id_site_url {
 	width: 100px;
 	text-align: right;
 }
+
+.recipe_name_class {
+	width: 300px;
+	font:100% "Meiryo UI";
+}
+
+.number_of_people_class {
+	width: 100px;
+	text-align: right;
+}
+
+.black_line {
+	border-style: solid; 
+	border-width: 3px; 
+	border-color: black;
+}

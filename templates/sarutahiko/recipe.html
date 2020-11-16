@@ -2,47 +2,32 @@
 
 {% load static %}
 {% block header %}
-<script src="{% static 'js/sarutahiko/menu.js' %}" ></script>
+<!-- <script src="{% static 'js/sarutahiko/menu.js' %}" ></script> -->
+<script src="{% static 'js/sarutahiko/search_asta.js' %}" ></script>
+<script src="{% static 'js/sarutahiko/recipe.js' %}" ></script>
 {% endblock %}
 
 {% block body %}
-    <form method="POST" form="recipe" action="{% url 'sarutahiko:recipe' %}">
+<!-- {% with recipe_name=" " %} -->
+<form method="POST" form="recipe" action="{% url 'sarutahiko:recipe' recipe_name %}" id="recipe">
+<!-- {% endwith %} -->
         {% csrf_token %}
         {{ form.management_form }}
         {{ form.as_p }}
+        <!-- <p><input type="hidden" id="id_id" name="id" value="" /></p> -->
         <hr/>
         {{ formset.management_form }}
-        <!-- <table style="width:250px;">
-            <tbody>
-                <tr class="tr_class">
-                    <th class="th_center_class" style="padding-top:10px;width:200px;">材料</tH>
-                    <th class="th_center_class" style="padding-top:10px;width:50px;">数量</tH>
-                </tr>    
-            </tbody>
-        </table> -->
         <dev id="detail_body_class">
         {% for item in formset %}
             {{item.as_p}}
         <hr/>
         {% endfor %}
         </dev>
-        <!-- <table style="width:250px;">
-            <tbody>
-                {% for item in formset %}
-                {{item.item_name}}{{item.item_amt}}
-                <tr>
-                    <td style="padding-top:10px;width:200px;" class="td_left_class">{{item.item_name}}</td>
-                    <td style="padding-top:10px;width:50px;" class="td_left_class">{{item.item_amt}}</td>
-                </tr>
-                <dev id="detail_body_class">
-                </dev>
-                {% endfor %}
-            </tbody>
-        </table> -->
         <br/>
         <button type="submit" style="width:100px; height:50px">登録</button>
         <button type="button" id="add" style="width:100px; height:50px">追加</button>
     </form>
+    <br/>
     <script>
         $(function(){
             var totalManageElement = $('input#id_form-TOTAL_FORMS');
@@ -52,42 +37,70 @@
                     for: 'id_form-' + currentFileCount + '-item_name',
                     value: '材料:'
                 });
+                var itemNameElement = $('<input>', {
+                    type: 'text',
+                    name: 'form-' + currentFileCount + '-item_name',
+                    id: 'id_form-' + currentFileCount + '-item_name',
+                    class: 'item_name_class',
+                });
                 var itemAmtLabelElement = $('<label>', {
                     for: 'id_form-' + currentFileCount + '-item_amt',
                     value: '数量:'
                 });
-                var itemNameElement = $('<input>', {
-                    type: 'text',
-                    name: 'form-' + currentFileCount + '-item_name',
-                    id: 'id_form_set-' + currentFileCount + '-item_name',
-                    class: 'item_name_class',
-                });
                 var itemAmtElement = $('<input>', {
                     type: 'text',
                     name: 'form-' + currentFileCount + '-item_amt',
-                    id: 'id_form_set-' + currentFileCount + '-item_amt',
+                    id: 'id_form-' + currentFileCount + '-item_amt',
                     class: 'item_amt_class',
                     value: '0'
                 });
-                // $('dev#detail_body_class').append('<tr>');
-                // $('dev#detail_body_class').append('<td style="padding-top:10px;width:200px;" class="td_left_class">');
+                var idElement = $('<input>', {
+                    type: 'hidden',
+                    name: 'form-' + currentFileCount + '-id',
+                    id: 'id_form-' + currentFileCount + '-id',
+                });
+                var recipeIdElement = $('<input>', {
+                    type: 'hidden',
+                    name: 'form-' + currentFileCount + '-recipe_id',
+                    id: 'id_form-' + currentFileCount + '-recipe_id',
+                });
+                var itemIdElement = $('<input>', {
+                    type: 'hidden',
+                    name: 'form-' + currentFileCount + '-item_id',
+                    id: 'id_form-' + currentFileCount + '-item_id',
+                });
+                var rowElement = $('<input>', {
+                    type: 'hidden',
+                    name: 'form-' + currentFileCount + '-row',
+                    id: 'id_form-' + currentFileCount + '-row',
+                });
+                $('dev#detail_body_class').append($('<div id="row' + currentFileCount + '">'));
                 $('dev#detail_body_class').append($('<p>'));
-                $('dev#detail_body_class').append('材料: ');
+                $('dev#detail_body_class').append('<label for="id_form-' + currentFileCount + '-item_name">材料:</label>');
                 $('dev#detail_body_class').append(itemNameElement);
                 $('dev#detail_body_class').append($('</p>'));
-                // $('dev#detail_body_class').append('</td>');
-                // $('dev#detail_body_class').append('<td style="padding-top:10px;width:50px;" class="td_left_class">');
                 $('dev#detail_body_class').append($('<p>'));
-                $('dev#detail_body_class').append('数量: ');
+                $('dev#detail_body_class').append('<label for="id_form-' + currentFileCount + '-item_amt">数量:</label>');
                 $('dev#detail_body_class').append(itemAmtElement);
+                $('dev#detail_body_class').append(idElement);
+                $('dev#detail_body_class').append(recipeIdElement);
+                $('dev#detail_body_class').append(itemIdElement);
+                $('dev#detail_body_class').append(rowElement);
                 $('dev#detail_body_class').append($('</p>'));
-                // $('dev#detail_body_class').append('</td>');
-                // $('dev#detail_body_class').append('</tr>');
-                // $('dev#detail_body_class').append('<br/>');
-                $('dev#detail_body_class').append('<hr/>');
+                $('dev#detail_body_class').append($('</div>'));
+                $('dev#detail_body_class').append($('<hr/>'));
+
+                // 材料のオートコンプリートを動的に追加
+                var s = document.createElement("script");
+                s.innerHTML = "autocompleteGetItemData('#id_id','#id_form-" + currentFileCount + "-item_name','/sarutahiko/item_list/',displayDataItemName," + currentFileCount + ");";
+                // s.innerHTML = "autocompleteGetItemData('.recipe_id_class','.item_class_name','/sarutahiko/item_list/',displayDataItemName," + currentFileCount + ");";
+                var ele = document.getElementById("row" + currentFileCount);
+                ele.appendChild(s);
+
                 currentFileCount += 1;
                 totalManageElement.attr('value', currentFileCount);
             });
         });
+
     </script>
 {% endblock %}
