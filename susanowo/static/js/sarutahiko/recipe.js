@@ -2,6 +2,10 @@ $(document).ready(function(){
     var totalManageElement = $('input#id_form-TOTAL_FORMS');
     var currentFileCount = parseInt(totalManageElement.val());
 
+    // autocompleteGetRecipeData('.recipe_name_class','/sarutahiko/recipe_list/',displayDataRecipeName,0)
+    autocompleteGetRecipeData('#id_recipe_name','/sarutahiko/recipe_list/',displayDataRecipeName,0)
+    // autocompleteGetItemData('#id_id','#id_form-' + currentFileCount + '-item_name','/sarutahiko/item_list/',displayDataItemName,0);
+
     for (i=0; i<currentFileCount; i++) {
         // 材料のオートコンプリートを動的に追加
         var s = document.createElement("script");
@@ -11,7 +15,7 @@ $(document).ready(function(){
     }
 });
 
-function displayDataRecipeName(data) {
+function displayDataRecipeName(data,row) {
     $('#id_id').val(data.code);
     $('#id_url').val(data.url);
     // for (let i=0; i<data.items.length; i++) {

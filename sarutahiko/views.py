@@ -26,7 +26,7 @@ from sarutahiko.models import (
     MRecipe,
     MRecipeItem,
     TKondate,
-    TKondateRecipe,
+    # TKondateRecipe,
 )
 import calendar
 import datetime
@@ -100,24 +100,35 @@ def recipe(request,recipe_name):
             })
             formSet = RecipeItemFormSet(request.GET or None)
         else:
-            mrecipe = MRecipe.objects.filter(user_id=user_id).get(recipe_name=recipe_name)
-            form = RecipeForm(initial={
-                'id'          : mrecipe.id,
-                'recipe_name' : mrecipe.recipe_name,
-                'url'         :  mrecipe.url,
-            })
-            mrecipeItem = MRecipeItem.objects.filter(user_id=user_id).filter(recipe_id=mrecipe.id).order_by('row')
-            recipeItemData = []
-            for recipeItem in mrecipeItem:
-                mitem = MItem.objects.get(id=recipeItem.item_id)
-                recipeItemData.append({
-                    'id'       :recipeItem.id,
-                    'recipe_id':mrecipe.id,
-                    'item_id'  :recipeItem.item_id,
-                    'item_name':mitem.item_name,
-                    'item_amt' :recipeItem.item_amt,
-                    'row'      :recipeItem.row,
+            try:
+                mrecipe = MRecipe.objects.filter(user_id=user_id).get(recipe_name=recipe_name)
+                form = RecipeForm(initial={
+                    'id'          : mrecipe.id,
+                    'recipe_name' : mrecipe.recipe_name,
+                    'url'         :  mrecipe.url,
                 })
+            except:
+                form = RecipeForm(initial={
+                    'id'          : None,
+                    'recipe_name' : recipe_name,
+                    'url'         : '',
+                })
+
+            recipeItemData = []
+            try:
+                mrecipeItem = MRecipeItem.objects.filter(user_id=user_id).filter(recipe_id=mrecipe.id).order_by('row')
+                for recipeItem in mrecipeItem:
+                    mitem = MItem.objects.get(id=recipeItem.item_id)
+                    recipeItemData.append({
+                        'id'       :recipeItem.id,
+                        'recipe_id':mrecipe.id,
+                        'item_id'  :recipeItem.item_id,
+                        'item_name':mitem.item_name,
+                        'item_amt' :recipeItem.item_amt,
+                        'row'      :recipeItem.row,
+                    })
+            except:
+                pass
             formSet = RecipeItemFormSet(initial=recipeItemData)
 
         context = {
@@ -306,13 +317,12 @@ def linkMonth(year,month):
     }
     return result
 
+
 def kondate(request,year,month,day):
     user_id = request.session.get('LOGIN_USER_ID')
     user_name = request.session.get('LOGIN_USER_NAME')
-    LanchMainKondateFormSet  = formsets.formset_factory(form=KondateRecipeForm, extra=1)
-    LanchSubKondateFormSet   = formsets.formset_factory(form=KondateRecipeForm, extra=1)
-    DinnerMainKondateFormSet = formsets.formset_factory(form=KondateRecipeForm, extra=1)
-    DinnerSubKondateFormSet  = formsets.formset_factory(form=KondateRecipeForm, extra=1)
+    KondateFormSet  = formsets.formset_factory(form=KondateRecipeForm, extra=0)
+
     if request.method == 'GET':
         form = KondateForm(request.GET or None, initial={
             'year':year,
@@ -320,94 +330,148 @@ def kondate(request,year,month,day):
             'day':day,
         })
         # 昼の主菜
-        lanchMains  = TKondate.objects.filter(user_id=user_id).filter(recipe_date=date(year,month,day)).filter(time='1').filter(is_main=True).order_by('id')
-        lanchMainData = []
-        for lanchMain in lanchMains:
-            lanchMainData.append({
-                'id'               : lanchMain.id,
-                'user_id'          : lanchMain.user_id,
-                'recipe_date'      : lanchMain.recipe_date,
-                'time'             : lanchMain.time,
-                'is_main'          : lanchMain.is_main,
-                'recipe_id'        : lanchMain.recipe_id,
-                'number_of_people' : lanchMain.number_of_people,
+        kondates  = TKondate.objects.filter(user_id=user_id).filter(recipe_date=date(year,month,day)).order_by('time','is_sub','id')
+        kondateData = []
+        blancHeck   = []
+        for kondate in kondates:
+            recipe_name = ""
+            if kondate.recipe_id!='':
+                try:
+                    recipe = get_object_or_404(MRecipe,id=kondate.recipe_id)
+                    recipe_name = recipe.recipe_name
+                except:
+                    recipe_name = ""
+                
+            kondateData.append({
+                'id'               : kondate.id,
+                'recipe_date'      : kondate.recipe_date,
+                'time'             : kondate.time,
+                'is_sub'           : kondate.is_sub,
+                'recipe_id'        : kondate.recipe_id,
+                'recipe_name'      : recipe_name,
+                'number_of_people' : kondate.number_of_people,
             })
-        lanchMainFormSet = LanchMainKondateFormSet(request.GET or None, initial=lanchMainData)
 
-        # 昼の副菜
-        lanchSubs   = TKondate.objects.filter(user_id=user_id).filter(recipe_date=date(year,month,day)).filter(time='1').filter(is_main=False).order_by('id')
-        lanchSubData = []
-        for lanchSub in lanchSubs:
-            lanchSubData.append({
-                'id'               : lanchSub.id,
-                'user_id'          : lanchSub.user_id,
-                'recipe_date'      : lanchSub.recipe_date,
-                'time'             : lanchSub.time,
-                'is_main'          : lanchSub.is_main,
-                'recipe_id'        : lanchSub.recipe_id,
-                'number_of_people' : lanchSub.number_of_people,
+        if kondateData == blancHeck:
+            kondateData.append({
+                'id'               : '',
+                'user_id'          : user_id,
+                'recipe_date'      : date(year,month,day),
+                'time'             : '0',
+                'is_sub'           : '0',
+                'recipe_id'        : '',
+                'recipe_name'      : '',
+                'number_of_people' : 0,
             })
-        lanchSubFormSet = LanchSubKondateFormSet(request.GET or None, initial=lanchSubData)
+            kondateData.append({
+                'id'               : '',
+                'user_id'          : user_id,
+                'recipe_date'      : date(year,month,day),
+                'time'             : '0',
+                'is_sub'           : '1',
+                'recipe_id'        : '',
+                'recipe_name'      : '',
+                'number_of_people' : 0,
+            })
+            kondateData.append({
+                'id'               : '',
+                'user_id'          : user_id,
+                'recipe_date'      : date(year,month,day),
+                'time'             : '1',
+                'is_sub'           : '0',
+                'recipe_id'        : '',
+                'recipe_name'      : '',
+                'number_of_people' : 0,
+            })
+            kondateData.append({
+                'id'               : '',
+                'user_id'          : user_id,
+                'recipe_date'      : date(year,month,day),
+                'time'             : '1',
+                'is_sub'           : '1',
+                'recipe_id'        : '',
+                'recipe_name'      : '',
+                'number_of_people' : 0,
+            })
 
-        # 夜の主菜
-        dinnerMains = TKondate.objects.filter(user_id=user_id).filter(recipe_date=date(year,month,day)).filter(time='2').filter(is_main=True).order_by('id')
-        dinnerMainData = []
-        for dinnerMain in dinnerMains:
-            dinnerMainData.append({
-                'id'               : dinnerMain.id,
-                'user_id'          : dinnerMain.user_id,
-                'recipe_date'      : dinnerMain.recipe_date,
-                'time'             : dinnerMain.time,
-                'is_main'          : dinnerMain.is_main,
-                'recipe_id'        : dinnerMain.recipe_id,
-                'number_of_people' : dinnerMain.number_of_people,
-            })
-        dinnerMainFormSet = DinnerMainKondateFormSet(request.GET or None, initial=dinnerMainData)
-        # 夜の副菜
-        dinnerSubs  = TKondate.objects.filter(user_id=user_id).filter(recipe_date=date(year,month,day)).filter(time='2').filter(is_main=False).order_by('id')
-        dinnerSubData = []
-        for dinnerSub in dinnerSubs:
-            dinnerSubData.append({
-                'id'               : dinnerSub.id,
-                'user_id'          : dinnerSub.user_id,
-                'recipe_date'      : dinnerSub.recipe_date,
-                'time'             : dinnerSub.time,
-                'is_main'          : dinnerSub.is_main,
-                'recipe_id'        : dinnerSub.recipe_id,
-                'number_of_people' : dinnerSub.number_of_people,
-            })
-        dinnerSubFormSet = DinnerSubKondateFormSet(request.GET or None, initial=dinnerSubData)
+        kondateFormSet = KondateFormSet(request.GET or None, initial=kondateData)
+        context = {
+            'user_id'          :user_id,
+            'user_name'        :user_name,
+            'now_year'         :year,
+            'now_month'        :month,
+            'day'              :day,
+            'form'             :form,
+            'kondateFormSet'   :kondateFormSet,
+        }
+        return render(request, 'sarutahiko/kondate.html',context)
     
     else:
-        form = KondateForm(request.POST)
-        # lanchMainFormSet  = LanchMainKondateFormSet(request.POST)
-        # lanchSubFormSet   = LanchSubKondateFormSet(request.POST)
-        # dinnerMainFormSet = DinnerMainKondateFormSet(request.POST)
-        # dinnerSubFormSet  = DinnerSubKondateFormSet(request.POST)
+        kondateFormSet = KondateFormSet(request.POST)
+        sysDate = datetime.now()
 
-        post_lanchMainFormSet  = request.POST.copy()
-        lanchSubFormSet   = request.POST.copy()
-        dinnerMainFormSet = request.POST.copy()
-        dinnerSubFormSet  = request.POST.copy()
+        if kondateFormSet.is_valid():
+            for kondateForm in kondateFormSet:
 
-        lanchMainFormSet = LanchMainKondateFormSet(post_lanchMainFormSet )
+                if kondateForm.cleaned_data['recipe_name'] is None or kondateForm.cleaned_data['recipe_name']=='':
+                    if kondateForm.cleaned_data['id'] is not None:
+                        # 元々データがあったが、レシピ名を消した
+                        tkondates = TKondate.objects.filter(pk=kondateForm.cleaned_data['id'])
+                        if tkondates.count()!=0:
+                            for tkondate in tkondates:
+                                tkondate.delete()
+                    # 元々データが無かった場合は、何もしない
+                else:
+                    if kondateForm.cleaned_data['id'] is None:
+                        # 元々データが無いが、新たに入力した
+                        tkondate = TKondate()
+                        tkondate.create_date    = sysDate
+                        tkondate.create_pg_id   = 'sarutahiko.kondate'
+                        tkondate.create_user_id = user_id
+                    else:
+                        # 元々データがあったので、更新した
+                        tkondate = get_object_or_404(TKondate,pk=kondateForm.cleaned_data['id'])
+                    tkondate.user_id          = user_id
+                    tkondate.recipe_date      = date(year=year,month=month,day=day)
+                    tkondate.time             = kondateForm.cleaned_data['time']
+                    tkondate.is_sub           = kondateForm.cleaned_data['is_sub']
+                    tkondate.number_of_people = kondateForm.cleaned_data['number_of_people']
+                    tkondate.recipe_id        = kondateForm.cleaned_data['recipe_id']
+                    tkondate.update_date      = sysDate
+                    tkondate.update_pg_id     = 'sarutahiko.kondate'
+                    tkondate.update_user_id   = user_id
+                    tkondate.save()
 
-        return HttpResponse(lanchMainFormSet)
+            # データが無かった場合は、空データを挿入
+            blank_kondate(request,'0','0',user_id,year,month,day,sysDate)
+            blank_kondate(request,'0','1',user_id,year,month,day,sysDate)
+            blank_kondate(request,'1','0',user_id,year,month,day,sysDate)
+            blank_kondate(request,'1','1',user_id,year,month,day,sysDate)
 
-    context = {
-        'user_id'          :user_id,
-        'user_name'        :user_name,
-        'now_year'         :year,
-        'now_month'        :month,
-        'day'              :day,
-        'form'             :form,
-        'lanchMainFormSet' :lanchMainFormSet,
-        'lanchSubFormSet'  :lanchSubFormSet,
-        'dinnerMainFormSet':dinnerMainFormSet,
-        'dinnerSubFormSet' :dinnerSubFormSet,
-    }
-    return render(request, 'sarutahiko/kondate.html',context)
+            return redirect('/sarutahiko/menu_calendar/' + str(year) + '/' + str(month))
 
+        else:
+            return HttpResponse(kondateFormSet)
+
+def blank_kondate(request,time,is_sub,user_id,year,month,day,sysDate):
+    tkondates = TKondate.objects.filter(user_id=user_id).filter(recipe_date=date(year=year,month=month,day=day)).filter(time=time).filter(is_sub=is_sub)
+    if tkondates.count()==0:
+        tkondate = TKondate()
+        tkondate.user_id          = user_id
+        tkondate.recipe_date      = date(year=year,month=month,day=day)
+        tkondate.time             = time
+        tkondate.is_sub           = is_sub
+        tkondate.number_of_people = 0
+        tkondate.create_date      = sysDate
+        tkondate.create_pg_id     = 'sarutahiko.kondate'
+        tkondate.create_user_id   = user_id
+        tkondate.update_date      = sysDate
+        tkondate.update_pg_id     = 'sarutahiko.kondate'
+        tkondate.update_user_id   = user_id
+        tkondate.save()
+
+    return
+    
 def item(request):
     user_id = request.session.get('LOGIN_USER_ID')
     user_name = request.session.get('LOGIN_USER_NAME')
@@ -462,12 +526,12 @@ def item_list(request,recipe_id,item_name,proccess):
             recipeItem = MRecipeItem.objects.filter(user_id=user_id).filter(recipe_id=recipe_id).filter(item_id=item.id)
             try:
                 recipeItemAmt = recipeItem.item_amt
-                recipeItemId  = recipeItem.id
-                recipeItemRow = recipeItem.row
+                # recipeItemId  = recipeItem.id
+                # recipeItemRow = recipeItem.row
             except:
                 recipeItemAmt = 0
-                recipeItemId  = ""
-                recipeItemRow = ""
+                # recipeItemId  = ""
+                # recipeItemRow = ""
             
             result.append({
                 'item_name':item.item_name,

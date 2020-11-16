@@ -141,20 +141,20 @@ class TKondate(models.Model):
         blank=False,
     )
 
-    is_main = models.BooleanField(
-        verbose_name='主菜',
+    is_sub = models.CharField(
+        verbose_name='主菜／副菜',
         max_length=100,
+        blank=False,
+    )
+
+    number_of_people = models.IntegerField(
+        verbose_name='人数',
         blank=False,
     )
 
     recipe_id = models.CharField(
         verbose_name='レシピID',
         max_length=30,
-        blank=False,
-    )
-
-    number_of_people = models.IntegerField(
-        verbose_name='人数',
         blank=False,
     )
 
@@ -191,49 +191,12 @@ class TKondate(models.Model):
     )
 
 # 献立の内容
-class TKondateRecipe(models.Model):
+# class TKondateRecipe(models.Model):
     
-    user_id = models.CharField(
-        verbose_name='利用者コード',
-        max_length=30,
-        blank=False,
-    )
+#     user_id = models.CharField(
+#         verbose_name='利用者コード',
+#         max_length=30,
+#         blank=False,
+#     )
 
-    recipe_id = models.CharField(
-        verbose_name='レシピID',
-        max_length=30,
-        blank=False,
-    )
-
-    create_date = models.DateTimeField(
-        verbose_name='登録日時',
-        blank=True,
-        default=now,
-    )
-
-    create_pg_id = models.CharField(
-        max_length=30,
-        blank=True,
-    )
-
-    create_user_id = models.CharField(
-        max_length=30,
-        blank=True,
-    )
-
-    update_date = models.DateTimeField(
-        verbose_name='更新日時',
-        blank=True,
-        default=now,
-    )
-
-    update_pg_id = models.CharField(
-        max_length=30,
-        blank=True,
-    )
-
-    update_user_id = models.CharField(
-        max_length=30,
-        blank=True,
-    )
 

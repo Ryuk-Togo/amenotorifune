@@ -221,8 +221,14 @@ input#id_site_url {
 	text-align: right;
 }
 
-.recipe_name.p {
-	font:120% "Meiryo UI";
+.recipe_name_class {
+	width: 300px;
+	font:100% "Meiryo UI";
+}
+
+.number_of_people_class {
+	width: 100px;
+	text-align: right;
 }
 
 .black_line {

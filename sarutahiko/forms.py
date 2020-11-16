@@ -11,7 +11,7 @@ from sarutahiko.models import (
     MRecipe,
     MRecipeItem,
     TKondate,
-    TKondateRecipe,
+    # TKondateRecipe,
 )
 
 # ログイン画面
@@ -96,58 +96,86 @@ class KondateForm(forms.Form):
 
     year = forms.IntegerField(label='年',
         required=False,
-        widget=forms.TextInput(),
+        widget=forms.HiddenInput(),
     )
 
     month = forms.IntegerField(label='月',
         required=False,
-        widget=forms.TextInput(),
+        widget=forms.HiddenInput(),
     )
 
     day = forms.IntegerField(label='日',
         required=False,
-        widget=forms.TextInput(),
+        widget=forms.HiddenInput(),
     )
 
-    number_of_people = forms.IntegerField(label='人数',
-        required=False,
-        widget=forms.TextInput(),
-    )
+# # 献立のレシピ
+# class KondateRecipeForm(forms.ModelForm):
+    
+#     class Meta:
+#         model = TKondate
+#         # fields = ('id','recipe_date','is_noon','is_main')
+#         fields = '__all__'
+#         widgets = {
+#             'id'              : forms.HiddenInput(),
+#             'user_id'         : forms.HiddenInput(),
+#             'recipe_id'       : forms.HiddenInput(),
+#             'recipe_date'     : forms.HiddenInput(),
+#             'time'            : forms.HiddenInput(),
+#             'is_sub'          : forms.HiddenInput(),
+#             'number_of_people': forms.TextInput(),
+#             'create_date'     : forms.HiddenInput(),
+#             'create_pg_id'    : forms.HiddenInput(),
+#             'create_user_id'  : forms.HiddenInput(),
+#             'update_date'     : forms.HiddenInput(),
+#             'update_pg_id'    : forms.HiddenInput(),
+#             'update_user_id'  : forms.HiddenInput(),
+#         }
+
+#     recipe_name = forms.CharField(
+#         label='レシピ',
+#         required=False,
+#         widget=forms.TextInput(),
+#     )
 
 # 献立のレシピ
 class KondateRecipeForm(forms.Form):
-    
+
     recipe_name = forms.CharField(
         label='レシピ',
         required=False,
-        widget=forms.TextInput(),
+        widget=forms.TextInput(attrs={'class' : 'recipe_name_class'}),
     )
 
-    recipe_id = forms.IntegerField(
+    number_of_people = forms.IntegerField(
+        label='人数',
+        required=False,
+        widget=forms.TextInput(attrs={'class' : 'number_of_people_class'}),
+    )
+
+    time = forms.CharField(
+        label='時間帯',
         required=False,
         widget=forms.HiddenInput(),
     )
 
-    # class Meta:
-    #     model = TKondate
-    #     # fields = ('id','recipe_date','is_noon','is_main')
-    #     fields = '__all__'
-    #     widgets = {
-    #         'id'              : forms.HiddenInput(),
-    #         'user_id'         : forms.HiddenInput(),
-    #         'recipe_date'     : forms.TextInput(),
-    #         'recipe_id'       : forms.TextInput(),
-    #         'time'            : forms.HiddenInput(),
-    #         'is_main'         : forms.HiddenInput,
-    #         'number_of_people': forms.HiddenInput(),
-    #         'create_date'     : forms.HiddenInput(),
-    #         'create_pg_id'    : forms.HiddenInput(),
-    #         'create_user_id'  : forms.HiddenInput(),
-    #         'update_date'     : forms.HiddenInput(),
-    #         'update_pg_id'    : forms.HiddenInput(),
-    #         'update_user_id'  : forms.HiddenInput(),
-    #         'recipe_name'     : forms.TextInput(attrs={'readonly': 'readonly'})
-    #     }
+    is_sub = forms.CharField(
+        label='主菜／副菜',
+        required=False,
+        widget=forms.HiddenInput(),
+    )
+
+    id = forms.IntegerField(
+        label='主キー',
+        required=False,
+        widget=forms.HiddenInput(),
+    )
+
+    recipe_id = forms.CharField(
+        label='レシピID',
+        required=False,
+        widget=forms.HiddenInput(),
+    )
 
 class ItemModelForm(forms.ModelForm):
     
