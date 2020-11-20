@@ -198,3 +198,17 @@ class ItemModelForm(forms.ModelForm):
             'item_name': forms.TextInput(),
         }
 
+class SendRangeForm(forms.Form):
+
+    start_date = forms.DateField(
+        label='開始日',
+        required=True,
+        widget=forms.TextInput(),
+    )
+
+    end_date = forms.DateField(
+        label='終了日',
+        required=True,
+        widget=forms.TextInput(),
+    )
+

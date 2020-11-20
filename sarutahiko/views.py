@@ -15,6 +15,7 @@ from sarutahiko.forms import (
     KondateForm,
     KondateRecipeForm,
     ItemModelForm,
+    SendRangeForm,
 )
 from omoikane.models import (
     MUser,
@@ -28,6 +29,7 @@ from sarutahiko.models import (
     TKondate,
     # TKondateRecipe,
 )
+from sarutahiko import const
 import calendar
 import datetime
 from datetime import datetime, date, timedelta
@@ -506,13 +508,121 @@ def item(request):
 def send(request):
     user_id = request.session.get('LOGIN_USER_ID')
     user_name = request.session.get('LOGIN_USER_NAME')
-    context = {
-        'user_id':user_id,
-        'user_name':user_name,
-        'now_year':datetime.strftime(datetime.now(), '%Y'),
-        'now_month':datetime.strftime(datetime.now(), '%m'),
-    }
-    return render(request, 'sarutahiko/send.html',context)
+
+    if request.method == 'GET':
+
+        start_date = request.GET.get('start_date')
+        end_date = request.GET.get('end_date')
+
+        form = SendRangeForm(request.GET or None, initial={
+            'start_date':start_date,
+            'end_date':None,
+        })
+
+        result = []
+        itemName = {}
+        # itemAmt = {}
+        if start_date is not None and end_date is not None:
+            start_date_obj = datetime.strptime(start_date, '%Y/%m/%d')
+            end_date_obj = datetime.strptime(end_date, '%Y/%m/%d')
+            # kondate = TKondate.objects.filter(recipe_date__gt=start_date_obj).filter(recipe_date__lte=end_date_obj).order_by('recipe_date')
+            # kondates = TKondate.objects.filter(recipe_date__range=(start_date_obj,end_date_obj)).order_by('recipe_date','time','is_sub')
+            # return HttpResponse(kondate)
+
+            searchRange = (end_date_obj - start_date_obj).days + 1
+            for day in range(searchRange):
+                recipe_date = start_date_obj + timedelta(days=day)
+                kondates = TKondate.objects.filter(user_id=user_id).filter(recipe_date=recipe_date).order_by('recipe_date','time','is_sub')
+                # kondate_data = []
+                lanch = []
+                dinner = []
+
+                for kondate in kondates:
+                    recipe = get_object_or_404(MRecipe,id=kondate.recipe_id)
+                    if kondate.time=='0':
+                        lanch.append({
+                            'time'            :TIME[kondate.time],
+                            'is_sub'          :IS_SUB[kondate.is_sub],
+                            'recipe_name'     :recipe.recipe_name,
+                            'number_of_people':kondate.number_of_people,
+                        })
+                    else:
+                        dinner.append({
+                            'time'            :TIME[kondate.time],
+                            'is_sub'          :IS_SUB[kondate.is_sub],
+                            'recipe_name'     :recipe.recipe_name,
+                            'number_of_people':kondate.number_of_people,
+                        })
+
+                    # レシピの材料を追加する
+                    recipeItems = MRecipeItem.objects.filter(user_id=user_id).filter(recipe_id=kondate.recipe_id)
+                    for recipeItem in recipeItems:
+                        item = get_object_or_404(MItem,pk=recipeItem.item_id)
+                        try:
+                            itemName[item.item_name] = itemName[item.item_name] + (recipeItem.item_amt * kondate.number_of_people)
+                        except:
+                            itemName[item.item_name] = recipeItem.item_amt * kondate.number_of_people
+                        # itemName[recipeItem.item_id] = itemAmt[item.item_name] = recipeItem.item_amt * kondate.number_of_people]
+                        # try:
+                        #     itemAmt[recipeItem.item_id] = itemAmt[recipeItem.item_id] + (recipeItem.item_amt * kondate.number_of_people)
+                        # except:
+                        #     itemAmt[recipeItem.item_id] = 0
+                        # return HttpResponse(itemAmt[recipeItem.item_id])
+
+                        # if recipeItem.item_id in items:
+                        #     itemData = items[recipeItem.item_id]
+                        #     return HttpResponse(itemData)
+                        #     itemDataQty = itemData.qty + (recipeItem.item_amt * kondate.number_of_people)
+                        # else:
+                        #     itemDataQty = recipeItem.item_amt * kondate.number_of_people
+                        
+                        # itemData = {
+                        #         'name':item.item_name,
+                        #         'qty' :itemDataQty,
+                        # }
+                        # items[recipeItem.item_id] = itemData
+
+                result.append({
+                    'recipe_date':recipe_date.strftime('%Y/%m/%d'),
+                    'lanch'   :lanch,
+                    'dinner'  :dinner,
+                })
+        
+        context = {
+            'user_id'  :user_id,
+            'user_name':user_name,
+            'now_year' :datetime.strftime(datetime.now(), '%Y'),
+            'now_month':datetime.strftime(datetime.now(), '%m'),
+            'form'     :form,
+            'result'   :result,
+            'itemName':itemName,
+            # 'itemAmt' :itemAmt,
+        }
+        return render(request, 'sarutahiko/send.html',context)
+
+    else:
+        form = SendRangeForm(request.POST)
+            
+        return redirect('/sarutahiko/menu/')
+
+
+    # context = {
+    #     'user_id':user_id,
+    #     'user_name':user_name,
+    #     'now_year':datetime.strftime(datetime.now(), '%Y'),
+    #     'now_month':datetime.strftime(datetime.now(), '%m'),
+    # }
+    # return render(request, 'sarutahiko/send.html',context)
+
+TIME = dict([
+    ['0','昼食'],
+    ['1','夕食'],
+])
+
+IS_SUB = dict([
+    ['0','主菜'],
+    ['1','副菜'],
+])
 
 def recipe_list(request,recipe_name,proccess):
     user_id = request.session.get('LOGIN_USER_ID')

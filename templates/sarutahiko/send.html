@@ -1,0 +1,104 @@
+{% extends "sarutahiko/base.html" %}
+
+{% load static %}
+{% block header %}
+<!-- <script src="{% static 'js/sarutahiko/menu.js' %}" ></script> -->
+<script src="{% static 'js/sarutahiko/search_asta.js' %}" ></script>
+<script src="{% static 'js/sarutahiko/send.js' %}" ></script>
+{% endblock %}
+
+{% block body %}
+<form method="GET" form="send" action="{% url 'sarutahiko:send' %}" id="send">
+    {% csrf_token %}
+    {{ form.management_form }} 
+    <!-- {{ form.as_p }} -->
+    {{ form.start_date }}〜{{ form.end_date }}
+    <button type="submit" id="select" style="width:100px; height:50px">検索</button>
+    <hr/>
+    <form method="POST" form="send" action="{% url 'sarutahiko:send' %}" id="send">
+    <table style="width:900px">
+        <tr>
+            <th class="th_center_class black_line" style="width:10%">
+
+            </th>
+            <th class="th_center_class black_line" style="width:45%">
+                昼
+            </th>
+            <th class="th_center_class black_line" style="width:45%">
+                夜
+            </th>
+        </tr>
+        {% for day in result %}
+        <tr style="height:150px">
+            <th class="th_center_class black_line">
+            {{ day.recipe_date }}
+            </th>
+            <td class="td_right_class black_line" style="vertical-align: top;">
+                <table style="width:100%;">
+                    {% for kondate_data in day.lanch %}
+                    <tr>
+                        <td style="text-align:center;width:20%">
+                            {% ifchanged kondate_data.is_sub %}
+                            {{ kondate_data.is_sub }}
+                            {% endifchanged %}
+                        </td>
+                        <td style="width:40%">
+                            {{ kondate_data.recipe_name }}
+                        </td>
+                        <td style="width:40%">
+                            {{ kondate_data.number_of_people }}人分
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </table>
+            </td>
+            <td class="td_left_class black_line" style="vertical-align: top;">
+                <table style="width:100%;">
+                    {% for kondate_data in day.dinner %}
+                    <tr>
+                        <td style="text-align:center;width:20%">
+                            {% ifchanged kondate_data.is_sub %}
+                            {{ kondate_data.is_sub }}
+                            {% endifchanged %}
+                        </td>
+                        <td style="width:40%">
+                            {{ kondate_data.recipe_name }}
+                        </td>
+                        <td style="width:40%">
+                            {{ kondate_data.number_of_people }}人分
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </table>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+    <hr/>
+    <table style="width:400px">
+        <tr>
+            <th class="th_center_class black_line" style="width:70%">
+                材料名
+            </th>
+            <th class="th_center_class black_line" style="width:30%">
+                数量
+            </th>
+        </tr>
+        
+        {% for key , value in itemName.items %}
+        <tr>
+            <td class="black_line">
+                {{ key }}
+            </td>
+            <td class="black_line" style="text-align: right;">
+                {{ value }}
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+    <br/>
+    <button type="submit" style="width:100px; height:50px">送信</button>
+    <br/>
+    </form>
+</form>
+{% endblock %}
