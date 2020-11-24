@@ -33,8 +33,6 @@ from sarutahiko import const
 import calendar
 import datetime
 from datetime import datetime, date, timedelta
-# from dateutil.relativedelta import relativedelta
-# import dateutil
 import logging
 import os
 from izanagi import settings
@@ -210,61 +208,61 @@ def recipe(request,recipe_name):
         else:
             return HttpResponse(formSet.errors)
 
-def recipe_item(request,process,row):
-    user_id = request.session.get('LOGIN_USER_ID')
-    user_name = request.session.get('LOGIN_USER_NAME')
-    if request.method == 'GET':
-        form = RecipeForm(request.GET)
-        return HttpResponse(form)
-        RecipeItemFormSet = formsets.formset_factory(form=RecipeItemForm, extra=2,)
-        formSet = RecipeItemFormSet(request.GET or None)
-        return HttpResponse(formSet)
-        if process == 'i':
-            data = []
-            form_row = 0
-            return HttpResponse(formSet)
-            if formSet.is_valid():
-                for recipe_item_form in formSet.cleaned_data:
-                    if str(form_row) == row:
-                        form_data = {
-                            'id':0,
-                            'row':str(form_row),
-                            'recipe_id':0,
-                            'item_id':'',
-                            'item_amt':0,
-                            'item_name':'',
-                        }
-                        data.append(form_data)
-                        form_row += 1
+# def recipe_item(request,process,row):
+#     user_id = request.session.get('LOGIN_USER_ID')
+#     user_name = request.session.get('LOGIN_USER_NAME')
+#     if request.method == 'GET':
+#         form = RecipeForm(request.GET)
+#         return HttpResponse(form)
+#         RecipeItemFormSet = formsets.formset_factory(form=RecipeItemForm, extra=2,)
+#         formSet = RecipeItemFormSet(request.GET or None)
+#         return HttpResponse(formSet)
+#         if process == 'i':
+#             data = []
+#             form_row = 0
+#             return HttpResponse(formSet)
+#             if formSet.is_valid():
+#                 for recipe_item_form in formSet.cleaned_data:
+#                     if str(form_row) == row:
+#                         form_data = {
+#                             'id':0,
+#                             'row':str(form_row),
+#                             'recipe_id':0,
+#                             'item_id':'',
+#                             'item_amt':0,
+#                             'item_name':'',
+#                         }
+#                         data.append(form_data)
+#                         form_row += 1
 
-                    form_data = {
-                        'id':recipe_item_form.cleaned_data['id'],
-                        'row':str(form_row),
-                        'recipe_id':recipe_item_form.cleaned_data['recipe_id'],
-                        'item_id':recipe_item_form.cleaned_data['item_id'],
-                        'item_amt':recipe_item_form.cleaned_data['item_amt'],
-                        'item_name':recipe_item_form.cleaned_data['item_name'],
-                    }
-                    data.append(form_data)
-                    form_row += 1
+#                     form_data = {
+#                         'id':recipe_item_form.cleaned_data['id'],
+#                         'row':str(form_row),
+#                         'recipe_id':recipe_item_form.cleaned_data['recipe_id'],
+#                         'item_id':recipe_item_form.cleaned_data['item_id'],
+#                         'item_amt':recipe_item_form.cleaned_data['item_amt'],
+#                         'item_name':recipe_item_form.cleaned_data['item_name'],
+#                     }
+#                     data.append(form_data)
+#                     form_row += 1
             
-            else:
-                return HttpResponse(formSet.errors)
+#             else:
+#                 return HttpResponse(formSet.errors)
 
-            RecipeItemFormSet = formsets.formset_factory(form=RecipeItemForm, extra=form_row,)
-            formSet = RecipeItemFormSet(request.GET or None,initial=data)
-            context = {
-                'user_id':user_id,
-                'user_name':user_name,
-                'now_year':datetime.strftime(datetime.now(), '%Y'),
-                'now_month':datetime.strftime(datetime.now(), '%m'),
-                'form':form,
-                'formset':formSet,
-            }
-            return render(request, 'sarutahiko/recipe.html',context)
+#             RecipeItemFormSet = formsets.formset_factory(form=RecipeItemForm, extra=form_row,)
+#             formSet = RecipeItemFormSet(request.GET or None,initial=data)
+#             context = {
+#                 'user_id':user_id,
+#                 'user_name':user_name,
+#                 'now_year':datetime.strftime(datetime.now(), '%Y'),
+#                 'now_month':datetime.strftime(datetime.now(), '%m'),
+#                 'form':form,
+#                 'formset':formSet,
+#             }
+#             return render(request, 'sarutahiko/recipe.html',context)
 
-    else:
-        return HttpResponse('POST')
+#     else:
+#         return HttpResponse('POST')
 
 def menu_calendar(request, year, month):
     user_id = request.session.get('LOGIN_USER_ID')
@@ -303,12 +301,8 @@ def menu_calendar(request, year, month):
         return render(request, 'sarutahiko/menu_calendar.html',context)
 
 def linkMonth(year,month):
-    # dt = datetime.date(year, month, 1)
-    # dt = datetime(year, month, 1)
     dt = date(year, month, 1)
     max_day = calendar.monthrange(dt.year, dt.month)[1]
-    # prevMonth = datetime.date(dt.year, dt.month, dt.date) - datetime.timedelta(days=1)
-    # nextMonth = datetime.date(dt.year, dt.month, max_day) + datetime.timedelta(days=1)
     prevMonth = date(dt.year, dt.month, dt.day) - timedelta(days=1)
     nextMonth = date(dt.year, dt.month, max_day) + timedelta(days=1)
     result = {
@@ -318,7 +312,6 @@ def linkMonth(year,month):
         'nextMonth':datetime.strftime(nextMonth, '%m'),
     }
     return result
-
 
 def kondate(request,year,month,day):
     user_id = request.session.get('LOGIN_USER_ID')
@@ -495,9 +488,17 @@ def item(request):
         form = ItemModelForm(request.POST)
         if form.is_valid():
             item_id = form.cleaned_data['id']
-            mitem = get_object_or_404(MItem,id=item_id)
+            if item_id is None:
+                mitem = MItem()
+                mitem.create_date    = sysDate
+                mitem.create_pg_id   = 'sarutahiko.item'
+                mitem.create_user_id = user_id
+            else:
+                mitem = get_object_or_404(MItem,id=item_id)
+            
             mitem.user_id        = user_id
             mitem.item_name      = form.cleaned_data['item_name_upd']
+            mitem.item_term      = 0
             mitem.update_date    = sysDate
             mitem.update_pg_id   = 'sarutahiko.item'
             mitem.update_user_id = user_id
@@ -521,66 +522,44 @@ def send(request):
 
         result = []
         itemName = {}
-        # itemAmt = {}
         if start_date is not None and end_date is not None:
             start_date_obj = datetime.strptime(start_date, '%Y/%m/%d')
             end_date_obj = datetime.strptime(end_date, '%Y/%m/%d')
-            # kondate = TKondate.objects.filter(recipe_date__gt=start_date_obj).filter(recipe_date__lte=end_date_obj).order_by('recipe_date')
-            # kondates = TKondate.objects.filter(recipe_date__range=(start_date_obj,end_date_obj)).order_by('recipe_date','time','is_sub')
-            # return HttpResponse(kondate)
 
             searchRange = (end_date_obj - start_date_obj).days + 1
             for day in range(searchRange):
                 recipe_date = start_date_obj + timedelta(days=day)
                 kondates = TKondate.objects.filter(user_id=user_id).filter(recipe_date=recipe_date).order_by('recipe_date','time','is_sub')
-                # kondate_data = []
                 lanch = []
                 dinner = []
 
                 for kondate in kondates:
-                    recipe = get_object_or_404(MRecipe,id=kondate.recipe_id)
-                    if kondate.time=='0':
-                        lanch.append({
-                            'time'            :TIME[kondate.time],
-                            'is_sub'          :IS_SUB[kondate.is_sub],
-                            'recipe_name'     :recipe.recipe_name,
-                            'number_of_people':kondate.number_of_people,
-                        })
-                    else:
-                        dinner.append({
-                            'time'            :TIME[kondate.time],
-                            'is_sub'          :IS_SUB[kondate.is_sub],
-                            'recipe_name'     :recipe.recipe_name,
-                            'number_of_people':kondate.number_of_people,
-                        })
+                    if kondate.recipe_id is not None and kondate.recipe_id!='':
+                        recipe = get_object_or_404(MRecipe,id=kondate.recipe_id)
+                        if kondate.time=='0':
+                            lanch.append({
+                                'time'            :TIME[kondate.time],
+                                'is_sub'          :IS_SUB[kondate.is_sub],
+                                'recipe_name'     :recipe.recipe_name,
+                                'number_of_people':kondate.number_of_people,
+                            })
+                        else:
+                            dinner.append({
+                                'time'            :TIME[kondate.time],
+                                'is_sub'          :IS_SUB[kondate.is_sub],
+                                'recipe_name'     :recipe.recipe_name,
+                                'number_of_people':kondate.number_of_people,
+                            })
 
-                    # レシピの材料を追加する
-                    recipeItems = MRecipeItem.objects.filter(user_id=user_id).filter(recipe_id=kondate.recipe_id)
-                    for recipeItem in recipeItems:
-                        item = get_object_or_404(MItem,pk=recipeItem.item_id)
-                        try:
-                            itemName[item.item_name] = itemName[item.item_name] + (recipeItem.item_amt * kondate.number_of_people)
-                        except:
-                            itemName[item.item_name] = recipeItem.item_amt * kondate.number_of_people
-                        # itemName[recipeItem.item_id] = itemAmt[item.item_name] = recipeItem.item_amt * kondate.number_of_people]
-                        # try:
-                        #     itemAmt[recipeItem.item_id] = itemAmt[recipeItem.item_id] + (recipeItem.item_amt * kondate.number_of_people)
-                        # except:
-                        #     itemAmt[recipeItem.item_id] = 0
-                        # return HttpResponse(itemAmt[recipeItem.item_id])
+                        # レシピの材料を追加する
+                        recipeItems = MRecipeItem.objects.filter(user_id=user_id).filter(recipe_id=kondate.recipe_id)
+                        for recipeItem in recipeItems:
+                            item = get_object_or_404(MItem,pk=recipeItem.item_id)
+                            try:
+                                itemName[item.item_name] = itemName[item.item_name] + (recipeItem.item_amt * kondate.number_of_people)
+                            except:
+                                itemName[item.item_name] = recipeItem.item_amt * kondate.number_of_people
 
-                        # if recipeItem.item_id in items:
-                        #     itemData = items[recipeItem.item_id]
-                        #     return HttpResponse(itemData)
-                        #     itemDataQty = itemData.qty + (recipeItem.item_amt * kondate.number_of_people)
-                        # else:
-                        #     itemDataQty = recipeItem.item_amt * kondate.number_of_people
-                        
-                        # itemData = {
-                        #         'name':item.item_name,
-                        #         'qty' :itemDataQty,
-                        # }
-                        # items[recipeItem.item_id] = itemData
 
                 result.append({
                     'recipe_date':recipe_date.strftime('%Y/%m/%d'),
@@ -596,7 +575,6 @@ def send(request):
             'form'     :form,
             'result'   :result,
             'itemName':itemName,
-            # 'itemAmt' :itemAmt,
         }
         return render(request, 'sarutahiko/send.html',context)
 
@@ -604,15 +582,6 @@ def send(request):
         form = SendRangeForm(request.POST)
             
         return redirect('/sarutahiko/menu/')
-
-
-    # context = {
-    #     'user_id':user_id,
-    #     'user_name':user_name,
-    #     'now_year':datetime.strftime(datetime.now(), '%Y'),
-    #     'now_month':datetime.strftime(datetime.now(), '%m'),
-    # }
-    # return render(request, 'sarutahiko/send.html',context)
 
 TIME = dict([
     ['0','昼食'],
@@ -656,12 +625,8 @@ def item_list(request,recipe_id,item_name,proccess):
             recipeItem = MRecipeItem.objects.filter(user_id=user_id).filter(recipe_id=recipe_id).filter(item_id=item.id)
             try:
                 recipeItemAmt = recipeItem.item_amt
-                # recipeItemId  = recipeItem.id
-                # recipeItemRow = recipeItem.row
             except:
                 recipeItemAmt = 0
-                # recipeItemId  = ""
-                # recipeItemRow = ""
             
             result.append({
                 'item_name':item.item_name,

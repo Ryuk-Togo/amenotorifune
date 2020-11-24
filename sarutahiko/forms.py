@@ -76,21 +76,6 @@ class RecipeItemForm(forms.Form):
         widget=forms.HiddenInput(),
     )
 
-    # class Meta:
-    #     model = MRecipeItem
-    #     fields = ('id','recipe_id','item_id','item_amt','row','item_name')
-    #     widgets = {
-    #         'id'       : forms.HiddenInput(attrs={'required':False}),
-    #         'recipe_id': forms.HiddenInput(attrs={'required':False}),
-    #         'item_id'  : forms.HiddenInput(attrs={'required':False}),
-    #         'item_amt' : forms.TextInput(attrs={'class' : 'item_amt_class','required':False}),
-    #         'row'      : forms.TextInput(attrs={'required':False}),
-    #         'item_name': forms.TextInput(attrs={'class' : 'item_name_class','required':False}),
-    #     }
-    
-
-
-
 # 献立
 class KondateForm(forms.Form):
 
@@ -108,35 +93,6 @@ class KondateForm(forms.Form):
         required=False,
         widget=forms.HiddenInput(),
     )
-
-# # 献立のレシピ
-# class KondateRecipeForm(forms.ModelForm):
-    
-#     class Meta:
-#         model = TKondate
-#         # fields = ('id','recipe_date','is_noon','is_main')
-#         fields = '__all__'
-#         widgets = {
-#             'id'              : forms.HiddenInput(),
-#             'user_id'         : forms.HiddenInput(),
-#             'recipe_id'       : forms.HiddenInput(),
-#             'recipe_date'     : forms.HiddenInput(),
-#             'time'            : forms.HiddenInput(),
-#             'is_sub'          : forms.HiddenInput(),
-#             'number_of_people': forms.TextInput(),
-#             'create_date'     : forms.HiddenInput(),
-#             'create_pg_id'    : forms.HiddenInput(),
-#             'create_user_id'  : forms.HiddenInput(),
-#             'update_date'     : forms.HiddenInput(),
-#             'update_pg_id'    : forms.HiddenInput(),
-#             'update_user_id'  : forms.HiddenInput(),
-#         }
-
-#     recipe_name = forms.CharField(
-#         label='レシピ',
-#         required=False,
-#         widget=forms.TextInput(),
-#     )
 
 # 献立のレシピ
 class KondateRecipeForm(forms.Form):

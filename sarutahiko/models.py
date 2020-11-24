@@ -189,14 +189,3 @@ class TKondate(models.Model):
         max_length=30,
         blank=True,
     )
-
-# 献立の内容
-# class TKondateRecipe(models.Model):
-    
-#     user_id = models.CharField(
-#         verbose_name='利用者コード',
-#         max_length=30,
-#         blank=False,
-#     )
-
-
