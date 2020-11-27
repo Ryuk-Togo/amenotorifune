@@ -1,6 +1,7 @@
 from django import forms
 from django.forms import formsets
 from django.forms import models
+from django.core.exceptions import ValidationError
 from omoikane.models import (
     MUser,
 )
@@ -13,6 +14,11 @@ from sarutahiko.models import (
     TKondate,
     # TKondateRecipe,
 )
+
+def check_number_of_people(value):
+    if value.isdecimal():
+        raise ValidationError('人数は数値を入力してください。')
+    
 
 # ログイン画面
 class LoginModelForm(forms.ModelForm):
@@ -76,19 +82,13 @@ class RecipeItemForm(forms.Form):
         widget=forms.HiddenInput(),
     )
 
-    # class Meta:
-    #     model = MRecipeItem
-    #     fields = ('id','recipe_id','item_id','item_amt','row','item_name')
-    #     widgets = {
-    #         'id'       : forms.HiddenInput(attrs={'required':False}),
-    #         'recipe_id': forms.HiddenInput(attrs={'required':False}),
-    #         'item_id'  : forms.HiddenInput(attrs={'required':False}),
-    #         'item_amt' : forms.TextInput(attrs={'class' : 'item_amt_class','required':False}),
-    #         'row'      : forms.TextInput(attrs={'required':False}),
-    #         'item_name': forms.TextInput(attrs={'class' : 'item_name_class','required':False}),
-    #     }
-    
-
+    def clean_item_name(self):
+        item_name = self.cleaned_data.get('item_name')
+        item_id   = self.cleaned_data.get('item_id')
+        items = MItem.objects.filter(id=item_id)
+        if items.count()==0:
+            raise forms.ValidationError('入力した材料は存在しません。先に材料を登録してください。')
+        return item_name
 
 
 # 献立
@@ -109,35 +109,6 @@ class KondateForm(forms.Form):
         widget=forms.HiddenInput(),
     )
 
-# # 献立のレシピ
-# class KondateRecipeForm(forms.ModelForm):
-    
-#     class Meta:
-#         model = TKondate
-#         # fields = ('id','recipe_date','is_noon','is_main')
-#         fields = '__all__'
-#         widgets = {
-#             'id'              : forms.HiddenInput(),
-#             'user_id'         : forms.HiddenInput(),
-#             'recipe_id'       : forms.HiddenInput(),
-#             'recipe_date'     : forms.HiddenInput(),
-#             'time'            : forms.HiddenInput(),
-#             'is_sub'          : forms.HiddenInput(),
-#             'number_of_people': forms.TextInput(),
-#             'create_date'     : forms.HiddenInput(),
-#             'create_pg_id'    : forms.HiddenInput(),
-#             'create_user_id'  : forms.HiddenInput(),
-#             'update_date'     : forms.HiddenInput(),
-#             'update_pg_id'    : forms.HiddenInput(),
-#             'update_user_id'  : forms.HiddenInput(),
-#         }
-
-#     recipe_name = forms.CharField(
-#         label='レシピ',
-#         required=False,
-#         widget=forms.TextInput(),
-#     )
-
 # 献立のレシピ
 class KondateRecipeForm(forms.Form):
 
@@ -151,6 +122,7 @@ class KondateRecipeForm(forms.Form):
         label='人数',
         required=False,
         widget=forms.TextInput(attrs={'class' : 'number_of_people_class'}),
+        # validators=[check_number_of_people]
     )
 
     time = forms.CharField(
@@ -177,6 +149,12 @@ class KondateRecipeForm(forms.Form):
         widget=forms.HiddenInput(),
     )
 
+    def clean_number_of_people(self):
+        number_of_people = str(self.cleaned_data.get('number_of_people'))
+        if not number_of_people.isdecimal():
+            raise forms.ValidationError('人数は数値で入力してください。')
+        return number_of_people
+    
 class ItemModelForm(forms.ModelForm):
     
     id = forms.IntegerField(label='主キー',
@@ -211,4 +189,3 @@ class SendRangeForm(forms.Form):
         required=True,
         widget=forms.TextInput(),
     )
-
