@@ -1,6 +1,7 @@
 from django import forms
 from django.forms import formsets
 from django.forms import models
+from django.core.exceptions import ValidationError
 from omoikane.models import (
     MUser,
 )
@@ -13,6 +14,11 @@ from sarutahiko.models import (
     TKondate,
     # TKondateRecipe,
 )
+
+def check_number_of_people(value):
+    if value.isdecimal():
+        raise ValidationError('人数は数値を入力してください。')
+    
 
 # ログイン画面
 class LoginModelForm(forms.ModelForm):
@@ -76,6 +82,15 @@ class RecipeItemForm(forms.Form):
         widget=forms.HiddenInput(),
     )
 
+    def clean_item_name(self):
+        item_name = self.cleaned_data.get('item_name')
+        item_id   = self.cleaned_data.get('item_id')
+        items = MItem.objects.filter(id=item_id)
+        if items.count()==0:
+            raise forms.ValidationError('入力した材料は存在しません。先に材料を登録してください。')
+        return item_name
+
+
 # 献立
 class KondateForm(forms.Form):
 
@@ -107,6 +122,7 @@ class KondateRecipeForm(forms.Form):
         label='人数',
         required=False,
         widget=forms.TextInput(attrs={'class' : 'number_of_people_class'}),
+        # validators=[check_number_of_people]
     )
 
     time = forms.CharField(
@@ -133,6 +149,12 @@ class KondateRecipeForm(forms.Form):
         widget=forms.HiddenInput(),
     )
 
+    def clean_number_of_people(self):
+        number_of_people = str(self.cleaned_data.get('number_of_people'))
+        if not number_of_people.isdecimal():
+            raise forms.ValidationError('人数は数値で入力してください。')
+        return number_of_people
+    
 class ItemModelForm(forms.ModelForm):
     
     id = forms.IntegerField(label='主キー',
@@ -167,4 +189,3 @@ class SendRangeForm(forms.Form):
         required=True,
         widget=forms.TextInput(),
     )
-

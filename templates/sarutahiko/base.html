@@ -21,7 +21,7 @@
     {% endblock %}
 </head>
 <body>
-    <table style="width:100%;height:100%;text-align: center;">
+    <table style="width:100%;height:100%;text-align: left; padding-left: 30px;">
         <tbody>
             <tr>
                 <th colspan="3" style="width:70%;height:25px;text-align:left;font-size: 25;" class="menu" colspan="2">
@@ -36,19 +36,24 @@
                 </td>
             </tr>
             <tr>
-                <td colspan="4" style="background:#fff; height: 25px;">
+                <td colspan="4" style="background:#fff; height: 25px; padding-left: 30px;">
                     {% if form.non_field_errors %}
                     <div class="errmsg">
-                        <ul>
+                        <ul class="err-msg">
                         {% for non_field_error in form.non_field_errors %}
                         <li class="errmsg">{{ non_field_error }}</li>
                         {% endfor %}
                         </ul>
                     </div>
                     {% endif %}
-                    {% if message %}
-                    {{message}}
+                    <div class="errmsg">
+                        {% if message %}
+                            {% for msg in message %}
+                            {{msg.message}}
+                        {% endfor %}
                     {% endif %}
+                    </div>
+                    <br/>
                 </td>
             </tr>
             <tr>

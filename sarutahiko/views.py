@@ -7,6 +7,7 @@ from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.utils import timezone
 from django.db.models import Q
+from django.template import loader
 
 from sarutahiko.forms import (
     LoginModelForm,
@@ -167,7 +168,17 @@ def recipe(request,recipe_name):
             recipe.save()
 
         else:
-            return HttpResponse(form.errors)
+            template = loader.get_template('sarutahiko/recipe.html')
+            context = {
+                'user_id'    :user_id,
+                'user_name'  :user_name,
+                'now_year'   :datetime.strftime(datetime.now(), '%Y'),
+                'now_month'  :datetime.strftime(datetime.now(), '%m'),
+                'form'       :form,
+                'formset'    :formSet,
+                'recipe_name':recipe_name,
+            }
+            return HttpResponse(template.render(context, request))
 
         # レシピ材料登録
         if formSet.is_valid():
@@ -206,7 +217,17 @@ def recipe(request,recipe_name):
             
             return redirect('/sarutahiko/recipe/%20')
         else:
-            return HttpResponse(formSet.errors)
+            template = loader.get_template('sarutahiko/recipe.html')
+            context = {
+                'user_id'    :user_id,
+                'user_name'  :user_name,
+                'now_year'   :datetime.strftime(datetime.now(), '%Y'),
+                'now_month'  :datetime.strftime(datetime.now(), '%m'),
+                'form'       :form,
+                'formset'    :formSet,
+                'recipe_name':recipe_name,
+            }
+            return HttpResponse(template.render(context, request))
 
 # def recipe_item(request,process,row):
 #     user_id = request.session.get('LOGIN_USER_ID')
@@ -317,6 +338,7 @@ def kondate(request,year,month,day):
     user_id = request.session.get('LOGIN_USER_ID')
     user_name = request.session.get('LOGIN_USER_NAME')
     KondateFormSet  = formsets.formset_factory(form=KondateRecipeForm, extra=0)
+    messages = []
 
     if request.method == 'GET':
         form = KondateForm(request.GET or None, initial={
@@ -402,12 +424,14 @@ def kondate(request,year,month,day):
         return render(request, 'sarutahiko/kondate.html',context)
     
     else:
+        form = KondateForm(request.POST)
         kondateFormSet = KondateFormSet(request.POST)
         sysDate = datetime.now()
 
+        # return HttpResponse('kondateFormSet')
         if kondateFormSet.is_valid():
-            for kondateForm in kondateFormSet:
 
+            for kondateForm in kondateFormSet:
                 if kondateForm.cleaned_data['recipe_name'] is None or kondateForm.cleaned_data['recipe_name']=='':
                     if kondateForm.cleaned_data['id'] is not None:
                         # 元々データがあったが、レシピ名を消した
@@ -446,7 +470,19 @@ def kondate(request,year,month,day):
             return redirect('/sarutahiko/menu_calendar/' + str(year) + '/' + str(month))
 
         else:
-            return HttpResponse(kondateFormSet)
+
+            template = loader.get_template('sarutahiko/kondate.html')
+            context = {
+                'user_id'          :user_id,
+                'user_name'        :user_name,
+                'now_year'         :year,
+                'now_month'        :month,
+                'day'              :day,
+                'form'             :form,
+                'kondateFormSet'   :kondateFormSet,
+                'message'          :messages,
+            }
+            return HttpResponse(template.render(context, request))
 
 def blank_kondate(request,time,is_sub,user_id,year,month,day,sysDate):
     tkondates = TKondate.objects.filter(user_id=user_id).filter(recipe_date=date(year=year,month=month,day=day)).filter(time=time).filter(is_sub=is_sub)
@@ -471,6 +507,7 @@ def item(request):
     user_id = request.session.get('LOGIN_USER_ID')
     user_name = request.session.get('LOGIN_USER_NAME')
     sysDate = datetime.now()
+    messages = []
 
     if request.method == 'GET':
         form = ItemModelForm(request.GET or None)
@@ -486,7 +523,28 @@ def item(request):
 
     else:
         form = ItemModelForm(request.POST)
+        message = ''
         if form.is_valid():
+            try:
+                chkMitem = get_object_or_404(MItem,item_name=form.cleaned_data['item_name_upd'])
+
+                if chkMitem.item_name != '':
+                    messages.append({
+                        'message' : '既に品目名が存在します。',
+                    })
+                    template = loader.get_template('sarutahiko/item.html')
+                    context = {
+                        'user_id'  :user_id,
+                        'user_name':user_name,
+                        'now_year' :datetime.strftime(datetime.now(), '%Y'),
+                        'now_month':datetime.strftime(datetime.now(), '%m'),
+                        'form'     :form,
+                        'message'  :messages,
+                    }
+                    return HttpResponse(template.render(context, request))
+            except:
+                pass
+            
             item_id = form.cleaned_data['id']
             if item_id is None:
                 mitem = MItem()
@@ -504,7 +562,7 @@ def item(request):
             mitem.update_user_id = user_id
             mitem.save()
             
-        return redirect('/sarutahiko/menu/')
+        return redirect('/sarutahiko/item/')
 
 def send(request):
     user_id = request.session.get('LOGIN_USER_ID')
